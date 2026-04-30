@@ -148,67 +148,68 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } elseif ($stationContext['station_status'] !== 'active') {
             $messageStatus = false;
             $message = 'This station is not active for reservation.';
-        } elseif (!isValidReservationInterval($startTime, $endTime)) {
-            $messageStatus = false;
-            $message = 'End time must be later than start time.';
-        } elseif (!isReservationStartInFuture($startTime)) {
-            $messageStatus = false;
-            $message = 'Reservation start time must be in the future.';
         } else {
-            $isAvailable = checkAvailability(
-                $pdo,
-                (int) $reservation['station_id'],
-                $startTime,
-                $endTime,
-                (int) $reservation['reservation_id']
-            );
+            $slotValidation = validateFixedReservationSlot($startTime, $endTime);
 
-            if (!$isAvailable) {
+            if ($slotValidation['valid'] !== true) {
                 $messageStatus = false;
-                $message = 'This station is not available for the selected time interval.';
-
-                $conflicts = getConflictingReservations(
+                $message = $slotValidation['message'];
+            } else {
+                $isAvailable = checkAvailability(
                     $pdo,
                     (int) $reservation['station_id'],
                     $startTime,
                     $endTime,
                     (int) $reservation['reservation_id']
                 );
-            } else {
-                try {
-                    $stmt = $pdo->prepare("
-                        UPDATE reservations
-                        SET
-                            start_time = :start_time,
-                            end_time = :end_time,
-                            purpose = :purpose
-                        WHERE reservation_id = :reservation_id
-                        AND user_id = :user_id
-                        AND status = 'active'
-                    ");
 
-                    $stmt->execute([
-                        ':start_time' => $startTime,
-                        ':end_time' => $endTime,
-                        ':purpose' => $purposeValue !== '' ? mb_substr($purposeValue, 0, 255) : null,
-                        ':reservation_id' => (int) $reservation['reservation_id'],
-                        ':user_id' => (int) $userId,
-                    ]);
-
-                    $messageStatus = true;
-                    $message = 'Reservation updated successfully.';
-
-                    $reservation = getReservationDetail($pdo, (int) $reservationId);
-
-                    $startTimeValue = datetimeLocalEditValue($reservation['start_time']);
-                    $endTimeValue = datetimeLocalEditValue($reservation['end_time']);
-                    $purposeValue = $reservation['purpose'] ?? '';
-                    $canEdit = isEditableReservation($reservation);
-                } catch (Exception $e) {
+                if (!$isAvailable) {
                     $messageStatus = false;
-                    $message = DEBUG_MODE
-                        ? 'Reservation update failed: ' . $e->getMessage()
-                        : 'Reservation update failed.';
+                    $message = 'This station is not available for the selected time slot.';
+
+                    $conflicts = getConflictingReservations(
+                        $pdo,
+                        (int) $reservation['station_id'],
+                        $startTime,
+                        $endTime,
+                        (int) $reservation['reservation_id']
+                    );
+                } else {
+                    try {
+                        $stmt = $pdo->prepare("
+                            UPDATE reservations
+                            SET
+                                start_time = :start_time,
+                                end_time = :end_time,
+                                purpose = :purpose
+                            WHERE reservation_id = :reservation_id
+                            AND user_id = :user_id
+                            AND status = 'active'
+                        ");
+
+                        $stmt->execute([
+                            ':start_time' => $startTime,
+                            ':end_time' => $endTime,
+                            ':purpose' => $purposeValue !== '' ? mb_substr($purposeValue, 0, 255) : null,
+                            ':reservation_id' => (int) $reservation['reservation_id'],
+                            ':user_id' => (int) $userId,
+                        ]);
+
+                        $messageStatus = true;
+                        $message = 'Reservation updated successfully.';
+
+                        $reservation = getReservationDetail($pdo, (int) $reservationId);
+
+                        $startTimeValue = datetimeLocalEditValue($reservation['start_time']);
+                        $endTimeValue = datetimeLocalEditValue($reservation['end_time']);
+                        $purposeValue = $reservation['purpose'] ?? '';
+                        $canEdit = isEditableReservation($reservation);
+                    } catch (Exception $e) {
+                        $messageStatus = false;
+                        $message = DEBUG_MODE
+                            ? 'Reservation update failed: ' . $e->getMessage()
+                            : 'Reservation update failed.';
+                    }
                 }
             }
         }
@@ -217,6 +218,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $pageTitle = 'Edit Reservation';
 $pageCss = 'reservation.css';
+$pageJs = 'reservation-edit.js';
 
 require_once __DIR__ . '/../includes/header.php';
 
@@ -449,43 +451,75 @@ require_once __DIR__ . '/../includes/header.php';
                     </span>
                 </div>
 
-                <form method="POST" action="" id="reservationEditForm">
+                <form
+                    method="POST"
+                    action=""
+                    id="reservationEditForm"
+                    data-reservation-id="<?= (int) $reservation['reservation_id'] ?>"
+                    data-station-id="<?= (int) $reservation['station_id'] ?>"
+                    data-current-start="<?= htmlspecialchars(datetimeLocalEditValue($startTimeValue)) ?>"
+                    data-current-end="<?= htmlspecialchars(datetimeLocalEditValue($endTimeValue)) ?>"
+                >
+                    <input
+                        type="hidden"
+                        id="start_time"
+                        name="start_time"
+                        value="<?= htmlspecialchars(datetimeLocalEditValue($startTimeValue)) ?>"
+                    >
 
-                    <div class="reservation-detail-time-grid" style="margin-bottom:24px;">
-                        <div class="form-group">
-                            <label for="start_time" class="form-label">Start Time</label>
+                    <input
+                        type="hidden"
+                        id="end_time"
+                        name="end_time"
+                        value="<?= htmlspecialchars(datetimeLocalEditValue($endTimeValue)) ?>"
+                    >
 
-                            <input
-                                type="datetime-local"
-                                id="start_time"
-                                name="start_time"
-                                class="form-control"
-                                value="<?= htmlspecialchars(datetimeLocalEditValue($startTimeValue)) ?>"
-                                required
-                            >
+                    <div class="form-group">
+                        <label class="form-label">New Reservation Date</label>
 
-                            <small class="field-feedback">
-                                Select the new beginning time.
-                            </small>
-                        </div>
+                        <p class="field-hint">
+                            You can select today or one of the next 14 days.
+                        </p>
 
-                        <div class="form-group">
-                            <label for="end_time" class="form-label">End Time</label>
-
-                            <input
-                                type="datetime-local"
-                                id="end_time"
-                                name="end_time"
-                                class="form-control"
-                                value="<?= htmlspecialchars(datetimeLocalEditValue($endTimeValue)) ?>"
-                                required
-                            >
-
-                            <small class="field-feedback">
-                                End time must be later than start time.
-                            </small>
-                        </div>
+                        <div
+                            class="reservation-date-grid"
+                            id="reservationEditDatePicker"
+                            aria-label="Reservation date selection"
+                        ></div>
                     </div>
+
+                    <div
+                        class="form-group reservation-slot-section"
+                        id="reservationEditSlotSection"
+                        hidden
+                    >
+                        <label class="form-label">Available Time Slots</label>
+
+                        <p class="field-hint">
+                            Each reservation slot is 2 hours. Unavailable slots are shown as disabled.
+                        </p>
+
+                        <div
+                            class="reservation-slot-grid"
+                            id="reservationEditSlotGrid"
+                            aria-label="Reservation time slot selection"
+                        ></div>
+                    </div>
+
+                    <div
+                        class="reservation-selected-slot"
+                        id="reservationEditSelectedSlot"
+                        hidden
+                    >
+                        <strong>Selected Slot:</strong>
+                        <span id="reservationEditSelectedSlotText">-</span>
+                    </div>
+
+                    <div
+                        id="reservationEditClientMessage"
+                        class="reservation-availability-message"
+                        style="display:none; margin-bottom:24px;"
+                    ></div>
 
                     <div class="form-group">
                         <label for="purpose" class="form-label">Purpose</label>

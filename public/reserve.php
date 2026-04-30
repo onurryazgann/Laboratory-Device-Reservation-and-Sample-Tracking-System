@@ -14,7 +14,6 @@ $selectedStation = null;
 
 $message = '';
 $messageStatus = false;
-
 $createdReservationId = null;
 $conflicts = [];
 
@@ -25,36 +24,14 @@ $startTimeValue = $_POST['start_time'] ?? '';
 $endTimeValue = $_POST['end_time'] ?? '';
 $purposeValue = trim($_POST['purpose'] ?? '');
 
-/**
- * Select option helper.
- */
 function selectedOption($currentValue, $expectedValue): string
 {
     return (string) $currentValue === (string) $expectedValue ? 'selected' : '';
 }
 
 /**
- * datetime-local input için değeri güvenli formata çevirir.
- * HTML input şu formatı ister: 2026-04-30T14:30
- */
-function datetimeLocalValue(?string $value): string
-{
-    $value = trim($value ?? '');
-
-    if ($value === '') {
-        return '';
-    }
-
-    try {
-        $value = str_replace('T', ' ', $value);
-        return (new DateTime($value))->format('Y-m-d\TH:i');
-    } catch (Exception $e) {
-        return '';
-    }
-}
-
-/**
- * GET isteği: kullanıcı lab/station seçerken çalışır.
+ * GET isteği:
+ * Kullanıcı lab/station seçerken çalışır.
  */
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     $labIdInput = filter_input(INPUT_GET, 'lab_id', FILTER_VALIDATE_INT);
@@ -87,7 +64,9 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 /**
- * POST isteği: availability check veya reservation create sırasında çalışır.
+ * POST isteği:
+ * AJAX çalışmazsa fallback olarak çalışır.
+ * Asıl yeni akış JS + API üzerinden çalışacak ama burası da güvenli kalmalı.
  */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
@@ -119,10 +98,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $realLabId = (int) $selectedStation['lab_id'];
             $realStationId = (int) $selectedStation['station_id'];
 
-            /**
-             * Güvenlik kontrolü:
-             * Formdan gelen lab_id ile station'ın gerçek lab_id değeri uyuşmalı.
-             */
             if ($labId !== null && $labId !== $realLabId) {
                 $messageStatus = false;
                 $message = 'Selected station does not belong to the selected laboratory.';
@@ -138,70 +113,71 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 } elseif ($selectedStation['station_status'] !== 'active') {
                     $messageStatus = false;
                     $message = 'This station is not active for reservation.';
-                } elseif (!isValidReservationInterval($startTime, $endTime)) {
-                    $messageStatus = false;
-                    $message = 'End time must be later than start time.';
-                } elseif (!isReservationStartInFuture($startTime)) {
-                    $messageStatus = false;
-                    $message = 'Reservation start time must be in the future.';
                 } else {
-                    $isAvailable = checkAvailability(
-                        $pdo,
-                        $stationId,
-                        $startTime,
-                        $endTime
-                    );
+                    $slotValidation = validateFixedReservationSlot($startTime, $endTime);
 
-                    if (!$isAvailable) {
+                    if ($slotValidation['valid'] !== true) {
                         $messageStatus = false;
-                        $message = 'This station is not available for the selected time interval.';
-
-                        $conflicts = getConflictingReservations(
+                        $message = $slotValidation['message'];
+                    } else {
+                        $isAvailable = checkAvailability(
                             $pdo,
                             $stationId,
                             $startTime,
                             $endTime
                         );
-                    } elseif ($action === 'create') {
-                        try {
-                            $pdo->beginTransaction();
 
-                            $createdReservationId = createReservation(
+                        if (!$isAvailable) {
+                            $messageStatus = false;
+                            $message = 'This station is not available for the selected time slot.';
+
+                            $conflicts = getConflictingReservations(
                                 $pdo,
-                                (int) $userId,
-                                $labId,
                                 $stationId,
                                 $startTime,
-                                $endTime,
-                                $purposeValue !== '' ? mb_substr($purposeValue, 0, 255) : null
+                                $endTime
                             );
+                        } elseif ($action === 'create') {
+                            try {
+                                $pdo->beginTransaction();
 
-                            addReservationStatusHistory(
-                                $pdo,
-                                (int) $createdReservationId,
-                                null,
-                                'active',
-                                (int) $userId,
-                                'Reservation created.'
-                            );
+                                $createdReservationId = createReservation(
+                                    $pdo,
+                                    (int) $userId,
+                                    $labId,
+                                    $stationId,
+                                    $startTime,
+                                    $endTime,
+                                    $purposeValue !== '' ? mb_substr($purposeValue, 0, 255) : null
+                                );
 
-                            $pdo->commit();
+                                addReservationStatusHistory(
+                                    $pdo,
+                                    (int) $createdReservationId,
+                                    null,
+                                    'active',
+                                    (int) $userId,
+                                    'Reservation created.'
+                                );
 
-                            $messageStatus = true;
-                            $message = 'Reservation created successfully.';
-                        } catch (Exception $e) {
-                            if ($pdo->inTransaction()) {
-                                $pdo->rollBack();
+                                $pdo->commit();
+
+                                $messageStatus = true;
+                                $message = 'Reservation created successfully.';
+                            } catch (Exception $e) {
+                                if ($pdo->inTransaction()) {
+                                    $pdo->rollBack();
+                                }
+
+                                $messageStatus = false;
+                                $message = DEBUG_MODE
+                                    ? 'Reservation creation failed: ' . $e->getMessage()
+                                    : 'Reservation creation failed.';
                             }
-
-                            $messageStatus = false;
-                            $message = DEBUG_MODE
-                                ? 'Reservation creation failed: ' . $e->getMessage()
-                                : 'Reservation creation failed.';
+                        } else {
+                            $messageStatus = true;
+                            $message = 'This station is available for the selected time slot.';
                         }
-                    } else {
-                        $messageStatus = true;
-                        $message = 'This station is available for the selected time interval.';
                     }
                 }
             }
@@ -334,9 +310,7 @@ require_once __DIR__ . '/../includes/header.php';
                             </option>
 
                             <?php foreach ($stations as $station): ?>
-                                <?php
-                                $isActiveStation = ($station['status'] === 'active');
-                                ?>
+                                <?php $isActiveStation = ($station['status'] === 'active'); ?>
 
                                 <option
                                     value="<?= (int) $station['station_id'] ?>"
@@ -376,7 +350,7 @@ require_once __DIR__ . '/../includes/header.php';
             </form>
         </div>
 
-        <!-- STEP 3 -->
+        <!-- STEP 2 / SELECTED STATION SUMMARY -->
         <div
             class="card"
             id="selectedStationCard"
@@ -440,7 +414,7 @@ require_once __DIR__ . '/../includes/header.php';
             </div>
         </div>
 
-        <!-- MESSAGE -->
+        <!-- PHP FALLBACK MESSAGE -->
         <?php if ($message !== ''): ?>
             <div
                 class="alert <?= $messageStatus ? 'alert-success' : 'alert-error' ?>"
@@ -449,13 +423,6 @@ require_once __DIR__ . '/../includes/header.php';
                 <?= htmlspecialchars($message) ?>
             </div>
         <?php endif; ?>
-
-        <!-- JS AVAILABILITY MESSAGE -->
-        <div
-            id="availabilityMessage"
-            class="reservation-availability-message"
-            style="display:none; margin-bottom:24px;"
-        ></div>
 
         <!-- CREATED -->
         <?php if ($createdReservationId): ?>
@@ -512,13 +479,13 @@ require_once __DIR__ . '/../includes/header.php';
             </div>
         <?php endif; ?>
 
-        <!-- STEP 4 -->
+        <!-- STEP 3 / RESERVATION FORM -->
         <?php if ($selectedStation): ?>
             <div class="card" id="reservationFormCard">
                 <h2 style="margin-top:0;">Step 3 — Reservation Form</h2>
 
                 <p class="section-subtitle" style="margin-bottom:24px;">
-                    Select a future time interval. The system prevents overlapping active reservations.
+                    Select a date within the next 15 days, then choose an available 2-hour time slot.
                 </p>
 
                 <form method="POST" action="" id="reservationForm">
@@ -536,40 +503,59 @@ require_once __DIR__ . '/../includes/header.php';
                         value="<?= (int) $selectedStation['station_id'] ?>"
                     >
 
-                    <div class="grid grid-2">
-                        <div class="form-group">
-                            <label for="start_time" class="form-label">Start Time</label>
+                    <input
+                        type="hidden"
+                        id="start_time"
+                        name="start_time"
+                        value="<?= htmlspecialchars($startTimeValue) ?>"
+                    >
 
-                            <input
-                                type="datetime-local"
-                                id="start_time"
-                                name="start_time"
-                                class="form-control"
-                                value="<?= htmlspecialchars(datetimeLocalValue($startTimeValue)) ?>"
-                                required
-                            >
+                    <input
+                        type="hidden"
+                        id="end_time"
+                        name="end_time"
+                        value="<?= htmlspecialchars($endTimeValue) ?>"
+                    >
 
-                            <small class="field-feedback">
-                                Choose the beginning of your reservation.
-                            </small>
-                        </div>
+                    <div class="form-group">
+                        <label class="form-label">Reservation Date</label>
 
-                        <div class="form-group">
-                            <label for="end_time" class="form-label">End Time</label>
+                        <p class="field-hint">
+                            You can select today or one of the next 14 days.
+                        </p>
 
-                            <input
-                                type="datetime-local"
-                                id="end_time"
-                                name="end_time"
-                                class="form-control"
-                                value="<?= htmlspecialchars(datetimeLocalValue($endTimeValue)) ?>"
-                                required
-                            >
+                        <div
+                            class="reservation-date-grid"
+                            id="reservationDatePicker"
+                            aria-label="Reservation date selection"
+                        ></div>
+                    </div>
 
-                            <small class="field-feedback">
-                                End time must be later than start time.
-                            </small>
-                        </div>
+                    <div
+                        class="form-group reservation-slot-section"
+                        id="reservationSlotSection"
+                        hidden
+                    >
+                        <label class="form-label">Available Time Slots</label>
+
+                        <p class="field-hint">
+                            Each reservation slot is 2 hours. Unavailable slots are shown as disabled.
+                        </p>
+
+                        <div
+                            class="reservation-slot-grid"
+                            id="reservationSlotGrid"
+                            aria-label="Reservation time slot selection"
+                        ></div>
+                    </div>
+
+                    <div
+                        class="reservation-selected-slot"
+                        id="reservationSelectedSlot"
+                        hidden
+                    >
+                        <strong>Selected Slot:</strong>
+                        <span id="reservationSelectedSlotText">-</span>
                     </div>
 
                     <div class="form-group">
@@ -584,14 +570,20 @@ require_once __DIR__ . '/../includes/header.php';
                             placeholder="Example: Database project study"
                         ><?= htmlspecialchars($purposeValue) ?></textarea>
 
-                        <small class="field-feedback">
+                        <p class="field-hint">
                             Optional. Maximum 255 characters.
-                        </small>
+                        </p>
                     </div>
 
-                    <div class="flex" style="gap:16px; flex-wrap:wrap;">
+                    <div
+                        id="availabilityMessage"
+                        class="reservation-availability-message"
+                        style="display:none; margin-bottom:24px;"
+                    ></div>
+
+                    <div class="flex reservation-actions" style="gap:16px; flex-wrap:wrap;">
                         <button
-                            type="submit"
+                            type="button"
                             name="action"
                             value="check"
                             class="btn btn-secondary"
@@ -602,7 +594,7 @@ require_once __DIR__ . '/../includes/header.php';
                         </button>
 
                         <button
-                            type="submit"
+                            type="button"
                             name="action"
                             value="create"
                             class="btn btn-primary"
