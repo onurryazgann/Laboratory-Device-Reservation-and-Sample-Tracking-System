@@ -87,10 +87,10 @@
 /* ===== MAIN GRID ===== */
 .profile-grid,
 .profile-main-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 24px;
-  align-items: stretch;
+ display: grid;
+ grid-template-columns: 1fr;
+ gap: 24px;
+ align-items: stretch;
 }
 
 /* ===== SECTION CARDS ===== */
@@ -277,4 +277,16 @@
   .profile-edit-actions .btn {
     width: 100%;
   }
+}
+
+/* ===== PROFILE FULL WIDTH FIX ===== */
+.profile-page .profile-main-grid {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  width: 100% !important;
+}
+
+.profile-page .profile-main-grid > .profile-section-card {
+  width: 100% !important;
+  max-width: none !important;
 }
