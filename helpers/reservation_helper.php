@@ -584,3 +584,133 @@ function updateReservationStatus(PDO $pdo, int $reservationId, string $newStatus
         ':reservation_id' => $reservationId,
     ]);
 }
+
+if (!function_exists('getReservationSlotStartHours')) {
+    function getReservationSlotStartHours(): array
+    {
+        return [8, 10, 12, 14, 16, 18, 20, 22];
+    }
+}
+
+if (!function_exists('getReservationDateWindowDays')) {
+    function getReservationDateWindowDays(): int
+    {
+        return 15;
+    }
+}
+
+if (!function_exists('isReservationDateInsideAllowedWindow')) {
+    function isReservationDateInsideAllowedWindow(DateTimeInterface $date): bool
+    {
+        $selectedDate = new DateTime($date->format('Y-m-d'));
+        $today = new DateTime('today');
+        $lastSelectableDate = (clone $today)->modify('+' . (getReservationDateWindowDays() - 1) . ' days');
+
+        return $selectedDate >= $today && $selectedDate <= $lastSelectableDate;
+    }
+}
+
+if (!function_exists('validateFixedReservationSlot')) {
+    function validateFixedReservationSlot(?string $startTime, ?string $endTime): array
+    {
+        if ($startTime === null || trim($startTime) === '') {
+            return [
+                'valid' => false,
+                'message' => 'Start time is required.'
+            ];
+        }
+
+        if ($endTime === null || trim($endTime) === '') {
+            return [
+                'valid' => false,
+                'message' => 'End time is required.'
+            ];
+        }
+
+        try {
+            $start = new DateTime($startTime);
+            $end = new DateTime($endTime);
+        } catch (Exception $e) {
+            return [
+                'valid' => false,
+                'message' => 'Invalid reservation date or time.'
+            ];
+        }
+
+        $now = new DateTime();
+
+        if ($start <= $now) {
+            return [
+                'valid' => false,
+                'message' => 'Reservation start time must be in the future.'
+            ];
+        }
+
+        if (!isReservationDateInsideAllowedWindow($start)) {
+            return [
+                'valid' => false,
+                'message' => 'Reservation date must be within the next 15 days.'
+            ];
+        }
+
+        $durationSeconds = $end->getTimestamp() - $start->getTimestamp();
+        $expectedDurationSeconds = 2 * 60 * 60;
+
+        if ($durationSeconds !== $expectedDurationSeconds) {
+            return [
+                'valid' => false,
+                'message' => 'Reservation duration must be exactly 2 hours.'
+            ];
+        }
+
+        $startHour = (int) $start->format('G');
+        $startMinute = (int) $start->format('i');
+        $startSecond = (int) $start->format('s');
+
+        $endMinute = (int) $end->format('i');
+        $endSecond = (int) $end->format('s');
+
+        if (!in_array($startHour, getReservationSlotStartHours(), true)) {
+            return [
+                'valid' => false,
+                'message' => 'Reservation must start at one of the allowed slot hours.'
+            ];
+        }
+
+        if ($startMinute !== 0 || $startSecond !== 0 || $endMinute !== 0 || $endSecond !== 0) {
+            return [
+                'valid' => false,
+                'message' => 'Reservation slots must start and end at exact hours.'
+            ];
+        }
+
+        return [
+            'valid' => true,
+            'message' => 'Reservation slot is valid.'
+        ];
+    }
+}
+
+if (!function_exists('isFixedReservationSlotValid')) {
+    function isFixedReservationSlotValid(?string $startTime, ?string $endTime): bool
+    {
+        $validation = validateFixedReservationSlot($startTime, $endTime);
+
+        return $validation['valid'] === true;
+    }
+}
+
+if (!function_exists('buildReservationSlotLabel')) {
+    function buildReservationSlotLabel(DateTimeInterface $start, DateTimeInterface $end): string
+    {
+        $startLabel = $start->format('H:i');
+
+        if ($end->format('H:i') === '00:00') {
+            $endLabel = '24:00';
+        } else {
+            $endLabel = $end->format('H:i');
+        }
+
+        return $startLabel . ' - ' . $endLabel;
+    }
+}

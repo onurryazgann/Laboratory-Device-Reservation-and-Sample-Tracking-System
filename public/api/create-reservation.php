@@ -24,12 +24,22 @@ if (!isPositiveInteger($stationId)) {
 $startTime = normalizeDateTimeForDatabase($startTimeInput);
 $endTime = normalizeDateTimeForDatabase($endTimeInput);
 
-if (!isValidReservationInterval($startTime, $endTime)) {
-    jsonError('End time must be later than start time.', 400);
-}
+/*
+|--------------------------------------------------------------------------
+| Fixed Slot Validation
+|--------------------------------------------------------------------------
+| Database değişmiyor. Ancak rezervasyon artık sadece:
+| - bugün + sonraki 14 gün içinde,
+| - 08:00-24:00 aralığında,
+| - 2 saatlik slotlar halinde,
+| - 08,10,12,14,16,18,20,22 başlangıç saatlerinde
+| oluşturulabilir.
+*/
 
-if (!isReservationStartInFuture($startTime)) {
-    jsonError('Reservation start time must be in the future.', 400);
+$slotValidation = validateFixedReservationSlot($startTime, $endTime);
+
+if ($slotValidation['valid'] !== true) {
+    jsonError($slotValidation['message'], 400);
 }
 
 $station = getReservationStationContext($pdo, (int) $stationId);
@@ -43,7 +53,9 @@ if ((int) $station['lab_is_active'] !== 1) {
 }
 
 if ($station['station_status'] !== 'active') {
-    jsonError('This station is not active for reservation.', 400);
+    jsonError('This station is not active for reservation.', 400, [
+        'station_status' => $station['station_status']
+    ]);
 }
 
 $isAvailable = checkAvailability($pdo, (int) $stationId, $startTime, $endTime);
@@ -51,7 +63,7 @@ $isAvailable = checkAvailability($pdo, (int) $stationId, $startTime, $endTime);
 if (!$isAvailable) {
     $conflicts = getConflictingReservations($pdo, (int) $stationId, $startTime, $endTime);
 
-    jsonError('This station is not available for the selected time interval.', 409, [
+    jsonError('This station is not available for the selected time slot.', 409, [
         'available' => false,
         'conflicts' => $conflicts
     ]);
@@ -99,7 +111,7 @@ try {
 } catch (Exception $e) {
     $pdo->rollBack();
 
-    if (DEBUG_MODE) {
+    if (defined('DEBUG_MODE') && DEBUG_MODE) {
         jsonError('Reservation creation failed: ' . $e->getMessage(), 500);
     }
 

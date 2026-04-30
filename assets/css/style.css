@@ -1,5 +1,4 @@
-/* BU KOD SADECE BACKEND ORGANİZASYONU VE TESTLERİ SURESİNCE DUZENI SAGLAMAK ICIN YAZILMISITR. 
-GEREKTİGINDE FRONTEND DİZAYNINDA BURASI DUZENLENEBILIR*/
+
 
 * {
     box-sizing: border-box;
@@ -164,8 +163,8 @@ button {
 ======================================================= */
 
 :root {
-    --color-primary: #6ff7f5;
-    --color-primary-dark: #14b8a6;
+    --color-primary: #007c7c;
+    --color-primary-dark: #005f5f;
     --color-surface: #ffffff;
     --color-surface-soft: #f8fafc;
     --color-border: #e2e8f0;

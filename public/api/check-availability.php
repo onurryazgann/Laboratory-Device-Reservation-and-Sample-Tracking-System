@@ -21,12 +21,10 @@ if (!isPositiveInteger($stationId)) {
 $startTime = normalizeDateTimeForDatabase($startTimeInput);
 $endTime = normalizeDateTimeForDatabase($endTimeInput);
 
-if (!isValidReservationInterval($startTime, $endTime)) {
-    jsonError('End time must be later than start time.', 400);
-}
+$slotValidation = validateFixedReservationSlot($startTime, $endTime);
 
-if (!isReservationStartInFuture($startTime)) {
-    jsonError('Reservation start time must be in the future.', 400);
+if ($slotValidation['valid'] !== true) {
+    jsonError($slotValidation['message'], 400);
 }
 
 $station = getReservationStationContext($pdo, (int) $stationId);
@@ -46,6 +44,7 @@ if ($station['station_status'] !== 'active') {
 }
 
 $isAvailable = checkAvailability($pdo, (int) $stationId, $startTime, $endTime);
+
 $conflicts = [];
 
 if (!$isAvailable) {
