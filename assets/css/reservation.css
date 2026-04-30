@@ -402,14 +402,6 @@ textarea.form-control {
   min-width: 160px;
 }
 
-/* ===== DISABLED BUTTON SUPPORT ===== */
-.btn:disabled,
-.btn[disabled] {
-  opacity: 0.58;
-  cursor: not-allowed;
-  transform: none;
-}
-
 /* ===== MOBILE ===== */
 @media (max-width: 1000px) {
   .reservation-detail-hero-grid {
@@ -443,6 +435,15 @@ textarea.form-control {
 @media (max-width: 768px) {
   .reservation-step::before {
     display: none;
+  }
+
+  .reservation-hero-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .reservation-hero-actions .btn {
+    width: 100%;
   }
 
   .reservation-actions {

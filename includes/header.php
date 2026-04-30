@@ -8,7 +8,18 @@ $pageTitle = $pageTitle ?? APP_NAME;
 $currentPath = str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? '');
 $isAdminArea = strpos($currentPath, '/public/admin/') !== false;
 
+// Page area class (existing logic)
 $bodyClass = $isAdminArea ? 'admin-area' : 'user-area';
+
+// User state classes
+if (isset($_SESSION['user_id'])) {
+    $bodyClass .= ' authenticated-user';
+    if (isset($_SESSION['role_name']) && $_SESSION['role_name'] === 'admin') {
+        $bodyClass .= ' admin-user';
+    }
+} else {
+    $bodyClass .= ' guest-user';
+}
 
 ?>
 <!DOCTYPE html>

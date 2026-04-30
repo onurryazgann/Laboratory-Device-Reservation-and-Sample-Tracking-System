@@ -4,6 +4,7 @@
 }
 
 /* ===== KPI ===== */
+/* Standardized via .admin-kpi-grid in admin.css (4col→2col→1col) */
 .admin-kpi-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));

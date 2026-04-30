@@ -703,14 +703,6 @@
   line-height: 1.45;
 }
 
-/* ===== DISABLED BUTTON SUPPORT ===== */
-.btn:disabled,
-.btn[disabled] {
-  opacity: 0.58;
-  cursor: not-allowed;
-  transform: none;
-}
-
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1200px) {
   .labs-grid {
@@ -757,6 +749,15 @@
 @media (max-width: 768px) {
   .labs-stats-grid {
     grid-template-columns: 1fr;
+  }
+
+  .labs-hero-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .labs-hero-actions .btn {
+    width: 100%;
   }
 
   .labs-filter-header,

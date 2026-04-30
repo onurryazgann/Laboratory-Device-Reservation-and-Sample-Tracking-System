@@ -390,6 +390,17 @@
   }
 }
 
+@media (max-width: 600px) {
+  .dashboard-card,
+  .dashboard-kpi-card {
+    padding: 16px;
+  }
+
+  .dashboard-section-title {
+    font-size: 18px;
+  }
+}
+
 @media (max-width: 560px) {
   .dashboard-next-time-grid,
   .dashboard-guide-steps {

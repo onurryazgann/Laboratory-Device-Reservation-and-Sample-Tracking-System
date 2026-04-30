@@ -153,23 +153,29 @@ require_once __DIR__ . '/../../includes/header.php';
     <div class="container">
 
         <!-- HERO -->
-        <div class="card" style="margin-bottom:32px;">
+        <div class="admin-card">
 
-            <h1 class="section-title" style="margin-bottom:8px;">
-                Equipment Asset Governance Center
-            </h1>
+            <div class="admin-page-header">
 
-            <p class="section-subtitle">
-                Monitor inventory ecosystem, manage physical assets,
-                and oversee equipment lifecycle across laboratories.
-            </p>
+                <div>
+                    <h1 class="admin-page-title">
+                        Equipment Asset Governance Center
+                    </h1>
+
+                    <p class="section-subtitle">
+                        Monitor inventory ecosystem, manage physical assets,
+                        and oversee equipment lifecycle across laboratories.
+                    </p>
+                </div>
+
+            </div>
 
         </div>
 
         <!-- FILTERS -->
-        <div class="card" style="margin-bottom:32px;">
+        <div class="admin-card admin-filters">
 
-            <h2 style="margin-top:0;">Filters</h2>
+            <h2>Filters</h2>
 
             <form method="GET" action="">
 
@@ -269,7 +275,7 @@ require_once __DIR__ . '/../../includes/header.php';
 
                 </div>
 
-                <div class="flex" style="gap:12px; flex-wrap:wrap;">
+                <div class="admin-actions">
 
                     <button type="submit" class="btn btn-primary">
                         Apply Filters
@@ -286,9 +292,9 @@ require_once __DIR__ . '/../../includes/header.php';
         </div>
 
         <!-- SUMMARY -->
-        <div class="card" style="margin-bottom:32px;">
+        <div class="admin-card">
 
-            <h2 style="margin-top:0;">Results Summary</h2>
+            <h2>Results Summary</h2>
 
             <p style="margin-bottom:0;">
                 Total equipment shown:
@@ -298,13 +304,13 @@ require_once __DIR__ . '/../../includes/header.php';
         </div>
 
         <!-- TABLE -->
-        <div class="card">
+        <div class="admin-card">
 
-            <h2 style="margin-top:0;">Equipment List</h2>
+            <h2>Equipment List</h2>
 
             <?php if (count($equipmentList) > 0): ?>
 
-                <div class="table-wrapper">
+                <div class="table-wrapper admin-table-wrapper">
 
                     <table class="table">
 

@@ -58,6 +58,9 @@
 }
 
 @media (max-width: 768px) {
+  .table {
+    min-width: auto;
+  }
 
   .admin-filter-actions {
     flex-direction: column;

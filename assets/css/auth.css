@@ -78,10 +78,14 @@ body.user-area {
   }
 
   .grid.grid-2 {
-    gap: 24px !important;
+    gap: 24px;
   }
 
   .card {
     padding: 20px;
+  }
+
+  .auth-title {
+    font-size: 22px;
   }
 }

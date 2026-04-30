@@ -172,14 +172,22 @@ require_once __DIR__ . '/../../includes/header.php';
     <div class="container">
 
         <!-- HERO -->
-        <div class="card" style="margin-bottom:32px;">
-            <h1 class="section-title" style="margin-bottom:8px;">
-                Reservation Governance Center
-            </h1>
+        <div class="admin-card">
 
-            <p class="section-subtitle" style="margin-bottom:0;">
-                Monitor all reservations, manage lifecycle states, and control operational reservation activity system-wide.
-            </p>
+            <div class="admin-page-header">
+
+                <div>
+                    <h1 class="admin-page-title">
+                        Reservation Governance Center
+                    </h1>
+
+                    <p class="section-subtitle">
+                        Monitor all reservations, manage lifecycle states, and control operational reservation activity system-wide.
+                    </p>
+                </div>
+
+            </div>
+
         </div>
 
         <!-- MESSAGE -->
@@ -193,8 +201,9 @@ require_once __DIR__ . '/../../includes/header.php';
         <?php endif; ?>
 
         <!-- FILTERS -->
-        <div class="card" style="margin-bottom:32px;">
-            <h2 style="margin-top:0;">Filters</h2>
+        <div class="admin-card admin-filters">
+
+            <h2>Filters</h2>
 
             <form method="GET" action="">
                 <div class="grid grid-3">
@@ -272,7 +281,7 @@ require_once __DIR__ . '/../../includes/header.php';
                     </div>
                 </div>
 
-                <div class="flex" style="gap:12px; flex-wrap:wrap;">
+                <div class="admin-actions">
                     <button type="submit" class="btn btn-primary">
                         Apply Filters
                     </button>
@@ -285,7 +294,7 @@ require_once __DIR__ . '/../../includes/header.php';
         </div>
 
         <!-- KPI -->
-        <div class="grid grid-4" style="margin-bottom:32px;">
+        <div class="admin-kpi-grid">
             <div class="card card-hover">
                 <h3>Total Shown</h3>
 
@@ -320,11 +329,11 @@ require_once __DIR__ . '/../../includes/header.php';
         </div>
 
         <!-- LIST -->
-        <div class="card">
-            <h2 style="margin-top:0;">Reservation List</h2>
+        <div class="admin-card">
+            <h2>Reservation List</h2>
 
             <?php if (count($reservations) > 0): ?>
-                <div class="table-wrapper">
+                <div class="table-wrapper admin-table-wrapper">
                     <table class="table">
                         <thead>
                             <tr>
@@ -411,7 +420,7 @@ require_once __DIR__ . '/../../includes/header.php';
                                                     value="<?= (int) $reservation['reservation_id'] ?>"
                                                 >
 
-                                                <div class="flex" style="gap:8px; flex-wrap:wrap;">
+                                                <div class="admin-action-cell">
                                                     <select
                                                         name="new_status"
                                                         class="form-control"
