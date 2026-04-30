@@ -35,7 +35,8 @@ $userRole = $_SESSION['role_name'] ?? 'user';
                 <span class="brand-mark">LAB</span>
 
                 <span class="brand-text">
-                    <?= htmlspecialchars(APP_NAME) ?>
+                    <span class="brand-text-full"><?= htmlspecialchars(APP_NAME) ?></span>
+                    <span class="brand-text-short">Lab Reservation</span>
                 </span>
             </a>
 

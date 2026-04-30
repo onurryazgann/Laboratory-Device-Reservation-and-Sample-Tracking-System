@@ -222,7 +222,7 @@
 }
 
 /* ===== STATUS ===== */
-.badge {
+.profile-page .badge {
   min-width: 70px;
   justify-content: center;
   text-align: center;
@@ -253,6 +253,7 @@
 
   .profile-hero-actions {
     width: 100%;
+    flex-direction: column;
   }
 
   .profile-hero-actions .btn {

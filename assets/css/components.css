@@ -13,6 +13,13 @@
   transition: 0.25s ease;
 }
 
+.btn:disabled,
+.btn[disabled] {
+  opacity: 0.58;
+  cursor: not-allowed;
+  transform: none;
+}
+
 .btn-primary {
   background: var(--color-primary);
   color: var(--color-on-primary);
@@ -140,11 +147,6 @@
 }
 
 /* ===== TABLE ===== */
-.table-wrapper {
-  width: 100%;
-  overflow-x: auto;
-}
-
 .table {
   width: 100%;
   border-collapse: collapse;
@@ -297,5 +299,16 @@
 
   .app-toast {
     width: 100%;
+  }
+}
+
+/* ===== RESPONSIVE COMPONENT ADJUSTMENTS ===== */
+@media (max-width: 768px) {
+  .btn {
+    width: 100%;
+  }
+
+  .card {
+    padding: 18px;
   }
 }

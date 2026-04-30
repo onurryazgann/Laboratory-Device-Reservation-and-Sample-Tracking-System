@@ -47,25 +47,31 @@ require_once __DIR__ . '/../../includes/header.php';
     <div class="container">
 
         <!-- HERO -->
-        <div class="card" style="margin-bottom:32px;">
+        <div class="admin-card">
 
-            <h1 class="section-title" style="margin-bottom:8px;">
-                Admin Control Center
-            </h1>
+            <div class="admin-page-header">
 
-            <p class="section-subtitle">
-                Welcome, <?= htmlspecialchars(getCurrentUserName()) ?>.
-                Monitor laboratories, reservations, users and operational system health.
-            </p>
+                <div>
+                    <h1 class="admin-page-title">
+                        Admin Control Center
+                    </h1>
 
-            <div class="badge badge-info">
-                <?= htmlspecialchars($_SESSION['role_name']) ?>
+                    <p class="section-subtitle">
+                        Welcome, <?= htmlspecialchars(getCurrentUserName()) ?>.
+                        Monitor laboratories, reservations, users and operational system health.
+                    </p>
+                </div>
+
+                <div class="badge badge-info">
+                    <?= htmlspecialchars($_SESSION['role_name']) ?>
+                </div>
+
             </div>
 
         </div>
 
         <!-- KPI -->
-        <div class="grid grid-4 admin-kpi-grid" style="margin-bottom:32px;">
+        <div class="admin-kpi-grid">
 
             <div class="card card-hover">
                 <h3>Total Users</h3>
@@ -98,11 +104,11 @@ require_once __DIR__ . '/../../includes/header.php';
         </div>
 
         <!-- QUICK ACTIONS -->
-        <div class="card" style="margin-bottom:32px;">
+        <div class="admin-card">
 
-            <h2 style="margin-top:0;">Quick Actions</h2>
+            <h2>Quick Actions</h2>
 
-            <div class="flex admin-action-group" style="gap:16px; flex-wrap:wrap;">
+            <div class="admin-actions">
 
                 <a href="reservations.php" class="btn btn-primary">
                     Manage Reservations
@@ -125,15 +131,15 @@ require_once __DIR__ . '/../../includes/header.php';
         </div>
 
         <!-- LATEST -->
-        <div class="card">
+        <div class="admin-card">
 
-            <h2 style="margin-top:0;">
+            <h2>
                 Latest Reservations
             </h2>
 
             <?php if (count($latestReservations) > 0): ?>
 
-                <div class="table-wrapper">
+                <div class="table-wrapper admin-table-wrapper">
 
                     <table class="table">
                         <thead>

@@ -313,7 +313,7 @@
 }
 
 /* ===== STATUS ===== */
-.badge {
+[data-my-reservations-page="true"] .badge {
   min-width: 84px;
   justify-content: center;
   text-align: center;

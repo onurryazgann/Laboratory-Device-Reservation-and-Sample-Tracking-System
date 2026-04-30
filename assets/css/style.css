@@ -20,7 +20,8 @@ a:hover {
     text-decoration: underline;
 }
 
-.top-navbar {
+/* Legacy — moved to navbar.css */
+/* .top-navbar {
     min-height: 56px;
     padding: 0 24px;
     background: #1f2937;
@@ -28,41 +29,46 @@ a:hover {
     display: flex;
     align-items: center;
     justify-content: space-between;
-}
+} */
 
-.navbar-brand {
+/* Legacy — moved to navbar.css */
+/* .navbar-brand {
     color: #ffffff;
     font-weight: 700;
     font-size: 18px;
-}
+} */
 
-.navbar-links {
+/* Legacy — moved to navbar.css */
+/* .navbar-links {
     display: flex;
     align-items: center;
     gap: 14px;
     flex-wrap: wrap;
-}
+} */
 
-.navbar-links a {
+/* Legacy — moved to navbar.css */
+/* .navbar-links a {
     color: #ffffff;
     padding: 6px 8px;
     border-radius: 6px;
-}
+} */
 
-.navbar-links a.active,
+/* Legacy — moved to navbar.css */
+/* .navbar-links a.active,
 .navbar-links a:hover {
     background: #374151;
     text-decoration: none;
-}
+} */
 
-.navbar-user {
+/* Legacy — moved to navbar.css */
+/* .navbar-user {
     color: #d1d5db;
     font-size: 14px;
-}
+} */
 
 .app-shell {
     display: flex;
-    min-height: calc(100vh - 56px);
+    min-height: calc(100vh - 76px);
 }
 
 .sidebar {
@@ -135,12 +141,13 @@ button {
 }
 
 @media (max-width: 800px) {
-    .top-navbar {
+    /* Legacy — moved to navbar.css */
+    /* .top-navbar {
         align-items: flex-start;
         flex-direction: column;
         padding: 12px 16px;
         gap: 10px;
-    }
+    } */
 
     .app-shell {
         flex-direction: column;
@@ -158,23 +165,19 @@ button {
 }
 
 /* =======================================================
-   MATERIAL 3 GLOBAL UI SYSTEM
-   FRONTEND MODERNIZATION PACK
+   [PATCH 1] REMOVED: :root re-declaration — theme.css is single source
+   [PATCH 1] REMOVED: .container override — layout.css manages it
+   [PATCH 1] REMOVED: .page-section override — layout.css manages it
+   [PATCH 1] REMOVED: .card rule — components.css manages it
+   [PATCH 1] REMOVED: .grid/.grid-2/.grid-3 rules — layout.css manages them
+   [PATCH 1] REMOVED: .flex rule — layout.css manages it
+   [PATCH 1] REMOVED: .section-title/.section-subtitle — components.css manages them
+   [PATCH 1] REMOVED: .btn rule (section 2, border-radius: 999px) — components.css manages it
+   [PATCH 1] REMOVED: .form-group/.form-label/.form-control — components.css manages them
+   [PATCH 1] REMOVED: .alert/.badge/.table-wrapper/.table — components.css manages them
+   [PATCH 1] REMOVED: .site-footer — layout.css manages .footer
+   [PATCH 1] REMOVED: responsive grid overrides — layout.css manages them
 ======================================================= */
-
-:root {
-    --color-primary: #007c7c;
-    --color-primary-dark: #005f5f;
-    --color-surface: #ffffff;
-    --color-surface-soft: #f8fafc;
-    --color-border: #e2e8f0;
-    --color-text: #0f172a;
-    --color-muted: #64748b;
-    --shadow-soft: 0 10px 30px rgba(15, 23, 42, 0.06);
-    --radius-lg: 20px;
-    --radius-md: 14px;
-    --transition: all 0.25s ease;
-}
 
 /* ===== BODY ===== */
 body {
@@ -183,586 +186,12 @@ body {
         #f5f7fb;
     color: var(--color-text);
 }
-
-/* ===== CONTAINER ===== */
-.container {
-    width: min(1280px, 100%);
-    margin: 0 auto;
-}
-
-/* ===== PAGE SECTION ===== */
-.page-section {
-    padding: 12px 0 32px;
-}
-
-/* ===== CARD ===== */
-.card {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    padding: 24px;
-    box-shadow: var(--shadow-soft);
-    transition: var(--transition);
-}
-
-.card-hover:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
-}
-
-/* ===== GRID ===== */
-.grid {
-    display: grid;
-    gap: 24px;
-}
-
-.grid-2 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.grid-3 {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-/* ===== FLEX ===== */
-.flex {
-    display: flex;
-    align-items: center;
-}
-
-/* ===== TYPOGRAPHY ===== */
-.section-title {
-    font-size: clamp(28px, 4vw, 42px);
-    line-height: 1.15;
-    font-weight: 800;
-    margin: 0;
-    color: var(--color-text);
-}
-
-.section-subtitle {
-    color: var(--color-muted);
-    font-size: 16px;
-    line-height: 1.7;
-}
-
-/* ===== BUTTON ===== */
-.btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    min-height: 48px;
-    padding: 12px 20px;
-    border-radius: 999px;
-    border: none;
-    font-weight: 600;
-    cursor: pointer;
-    transition: var(--transition);
-    text-decoration: none !important;
-}
-
-.btn-primary {
-    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
-    color: #042f2e;
-}
-
-.btn-primary:hover {
-    transform: translateY(-2px);
-}
-
-.btn-secondary {
-    background: #e2e8f0;
-    color: #0f172a;
-}
-
-.btn-outline {
-    border: 1px solid var(--color-border);
-    background: transparent;
-    color: var(--color-text);
-}
-
-/* ===== FORM ===== */
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-label {
-    display: inline-block;
-    margin-bottom: 8px;
-    font-weight: 600;
-}
-
-.form-control {
-    width: 100%;
-    min-height: 52px;
-    padding: 12px 14px;
-    border: 1px solid var(--color-border);
-    border-radius: 14px;
-    background: #fff;
-    transition: var(--transition);
-}
-
-.form-control:focus {
-    outline: none;
-    border-color: var(--color-primary-dark);
-    box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.12);
-}
-
-/* ===== ALERT ===== */
-.alert {
-    padding: 16px 18px;
-    border-radius: 16px;
-    font-weight: 500;
-}
-
-.alert-success {
-    background: #ecfdf5;
-    color: #065f46;
-    border: 1px solid #a7f3d0;
-}
-
-.alert-error {
-    background: #fef2f2;
-    color: #991b1b;
-    border: 1px solid #fecaca;
-}
-
-/* ===== BADGE ===== */
-.badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 32px;
-    padding: 6px 12px;
-    border-radius: 999px;
-    font-size: 13px;
-    font-weight: 700;
-}
-
-.badge-success {
-    background: #dcfce7;
-    color: #166534;
-}
-
-.badge-warning {
-    background: #fef3c7;
-    color: #92400e;
-}
-
-.badge-info {
-    background: #dbeafe;
-    color: #1d4ed8;
-}
-
-/* ===== TABLE ===== */
-.table-wrapper {
-    width: 100%;
-    overflow-x: auto;
-    border-radius: 16px;
-}
-
-.table {
-    width: 100%;
-    border-collapse: collapse;
-    background: #fff;
-}
-
-.table th,
-.table td {
-    padding: 14px;
-    border-bottom: 1px solid var(--color-border);
-    text-align: left;
-}
-
-.table th {
-    background: #f8fafc;
-    font-weight: 700;
-}
-
-/* ===== FOOTER ===== */
-.site-footer {
-    margin-top: 24px;
-    padding: 24px;
-    text-align: center;
-    color: var(--color-muted);
-}
-
-/* ===== RESPONSIVE ===== */
-@media (max-width: 992px) {
-    .grid-3 {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-}
-
-@media (max-width: 768px) {
-    .grid-2,
-    .grid-3 {
-        grid-template-columns: 1fr;
-    }
-
-    .btn {
-        width: 100%;
-    }
-
-    .card {
-        padding: 18px;
-    }
-}
 /* =======================================================
-   FINAL PREMIUM NAVBAR
+   [PATCH 1] REMOVED: Premium Navbar section — navbar.css is single source
 ======================================================= */
-
-.topbar {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    backdrop-filter: blur(14px);
-    background: rgba(15, 23, 42, 0.88);
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-}
-
-.topbar-inner {
-    min-height: 78px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 24px;
-}
-
-/* ===== BRAND ===== */
-.topbar-left {
-    display: flex;
-    align-items: center;
-}
-
-.brand {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    color: #ffffff !important;
-    text-decoration: none !important;
-    font-weight: 800;
-    font-size: 18px;
-}
-
-.brand-mark {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 42px;
-    height: 42px;
-    border-radius: 14px;
-    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
-    color: #042f2e;
-    font-size: 14px;
-    font-weight: 900;
-    letter-spacing: 1px;
-}
-
-.brand-text {
-    white-space: nowrap;
-}
-
-/* ===== NAV ===== */
-.nav-links {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-}
-
-.nav-links a {
-    color: rgba(255,255,255,0.88);
-    padding: 10px 14px;
-    border-radius: 999px;
-    font-weight: 500;
-    transition: var(--transition);
-    text-decoration: none !important;
-}
-
-.nav-links a:hover,
-.nav-links a.active {
-    background: rgba(255,255,255,0.10);
-    color: #ffffff;
-}
-
-/* ===== CTA ===== */
-.nav-cta {
-    margin-left: 4px;
-}
-
-/* ===== USER CHIP ===== */
-.nav-user-chip {
-    display: inline-flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 8px 14px;
-    border-radius: 16px;
-    background: rgba(255,255,255,0.08);
-    color: #ffffff;
-    line-height: 1.2;
-}
-
-.nav-user-name {
-    font-size: 14px;
-    font-weight: 700;
-}
-
-.nav-user-role {
-    font-size: 12px;
-    color: rgba(255,255,255,0.65);
-    text-transform: capitalize;
-}
-
-/* ===== MOBILE BUTTON ===== */
-.mobile-menu-btn {
-    display: none;
-    min-height: 44px;
-}
-
-/* ===== RESPONSIVE ===== */
-@media (max-width: 1100px) {
-
-    .topbar-inner {
-        flex-wrap: wrap;
-        padding: 14px 0;
-    }
-
-    .nav-links {
-        width: 100%;
-        justify-content: center;
-    }
-
-    .nav-user-chip {
-        order: 98;
-    }
-}
-
-@media (max-width: 768px) {
-
-    .topbar-inner {
-        min-height: auto;
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .topbar-left {
-        justify-content: space-between;
-        width: 100%;
-    }
-
-    .mobile-menu-btn {
-        display: inline-flex;
-        width: 100%;
-        margin-top: 8px;
-    }
-
-    .nav-links {
-        flex-direction: column;
-        align-items: stretch;
-        width: 100%;
-        margin-top: 12px;
-    }
-
-    .nav-links a,
-    .nav-links .btn,
-    .nav-user-chip {
-        width: 100%;
-        text-align: center;
-        justify-content: center;
-    }
-
-    .brand {
-        justify-content: center;
-        width: 100%;
-    }
-}
 /* ======================================================
-   GLOBAL PREMIUM UI EXTENSION
-   Material 3 / Enterprise Polish
+   [PATCH 1] REMOVED: Section 4 (Global Premium UI Extension)
+   — All component rules now live in components.css
+   — Grid rules now live in layout.css
+   — Section typography now lives in components.css
 ====================================================== */
-
-/* ===== BUTTON SYSTEM ===== */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: 44px;
-  padding: 10px 18px;
-  border-radius: 12px;
-  border: none;
-  font-weight: 600;
-  font-size: 14px;
-  cursor: pointer;
-  text-decoration: none;
-  transition: all 0.2s ease;
-}
-
-.btn:hover {
-  transform: translateY(-1px);
-  text-decoration: none;
-}
-
-.btn-primary {
-  background: var(--color-primary);
-  color: white;
-}
-
-.btn-primary:hover {
-  background: var(--color-primary-dark);
-}
-
-.btn-secondary {
-  background: #e5e7eb;
-  color: #111827;
-}
-
-.btn-secondary:hover {
-  background: #d1d5db;
-}
-
-.btn-outline {
-  border: 1px solid #d1d5db;
-  background: white;
-  color: #111827;
-}
-
-.btn-outline:hover {
-  background: #f9fafb;
-}
-
-/* ===== FORM SYSTEM ===== */
-.form-group {
-  margin-bottom: 18px;
-}
-
-.form-label {
-  display: inline-block;
-  margin-bottom: 8px;
-  font-weight: 600;
-  color: #111827;
-}
-
-.form-control {
-  width: 100%;
-  min-height: 46px;
-  padding: 12px 14px;
-  border: 1px solid #d1d5db;
-  border-radius: 12px;
-  background: white;
-  font: inherit;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.form-control:focus {
-  outline: none;
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.08);
-}
-
-/* ===== ALERTS ===== */
-.alert {
-  padding: 14px 16px;
-  border-radius: 12px;
-  font-weight: 500;
-}
-
-.alert-success {
-  background: #ecfdf5;
-  color: #065f46;
-  border: 1px solid #a7f3d0;
-}
-
-.alert-error {
-  background: #fef2f2;
-  color: #991b1b;
-  border: 1px solid #fecaca;
-}
-
-/* ===== BADGES ===== */
-.badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 10px;
-  border-radius: 999px;
-  font-size: 13px;
-  font-weight: 600;
-}
-
-.badge-success {
-  background: #dcfce7;
-  color: #166534;
-}
-
-.badge-warning {
-  background: #fef3c7;
-  color: #92400e;
-}
-
-.badge-info {
-  background: #e0e7ff;
-  color: #3730a3;
-}
-
-/* ===== TABLE WRAPPER ===== */
-.table-wrapper {
-  width: 100%;
-  overflow-x: auto;
-  border-radius: 14px;
-}
-
-/* ===== GRID SYSTEM ===== */
-.grid {
-  display: grid;
-  gap: 20px;
-}
-
-.grid-2 {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.grid-3 {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.grid-4 {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-
-/* ===== SECTION TYPOGRAPHY ===== */
-.section-title {
-  font-size: 32px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-}
-
-.section-subtitle {
-  color: #6b7280;
-  line-height: 1.7;
-  max-width: 800px;
-}
-
-/* ===== RESPONSIVE ===== */
-@media (max-width: 992px) {
-  .grid-4,
-  .grid-3 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 768px) {
-  .grid-4,
-  .grid-3,
-  .grid-2 {
-    grid-template-columns: 1fr;
-  }
-
-  .section-title {
-    font-size: 26px;
-  }
-
-  .btn {
-    width: 100%;
-  }
-}

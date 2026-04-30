@@ -282,6 +282,22 @@
     width: 100%;
   }
 
+  .index-hero-image {
+    display: none;
+  }
+
+  .index-hero-grid {
+    text-align: center;
+  }
+
+  .index-hero-content {
+    max-width: 100%;
+  }
+
+  .index-hero-tags {
+    justify-content: center;
+  }
+
   .index-workflow-card {
     padding: 20px;
   }

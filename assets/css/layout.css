@@ -1,7 +1,31 @@
 /* ===== GLOBAL CONTAINER ===== */
 .container {
-  width: min(1280px, calc(100% - 48px));
+  width: min(1280px, calc(100% - 64px));
   margin: 0 auto;
+}
+
+/* ===== OVERFLOW SAFETY ===== */
+/* [PATCH 1] Added: global horizontal scroll prevention */
+html {
+  overflow-x: hidden;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.main-content {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  min-height: calc(100vh - 160px);
+}
+
+/* ===== SAFE PADDING UTILITY ===== */
+/* [PATCH 1] Added: mobile-safe horizontal padding */
+.safe-padding {
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 /* ===== PAGE STRUCTURE ===== */
@@ -48,49 +72,14 @@
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
-/* ===== TOP NAVBAR ===== */
-.topbar {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--color-border);
-}
+/* Navbar: managed exclusively by navbar.css */
 
-.topbar-inner {
-  height: 72px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.brand {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--color-primary);
-}
-
-.nav-links {
-  display: flex;
-  gap: var(--space-lg);
-  align-items: center;
-}
-
-.nav-links a {
-  font-size: 15px;
-  color: var(--color-muted);
-  transition: 0.2s ease;
-}
-
-.nav-links a:hover,
-.nav-links a.active {
-  color: var(--color-primary);
-}
-
-/* ===== MAIN CONTENT ===== */
-.main-content {
-  min-height: calc(100vh - 160px);
+/* ===== TABLE WRAPPER (standardized) ===== */
+/* [PATCH 1] Added: standardized table-wrapper for all pages */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* ===== FOOTER ===== */
@@ -115,7 +104,7 @@
 
 @media (max-width: 768px) {
   .container {
-    width: min(100%, calc(100% - 24px));
+    width: min(100%, calc(100% - 32px));
   }
 
   .grid-2,
@@ -124,11 +113,4 @@
     grid-template-columns: 1fr;
   }
 
-  .nav-links {
-    display: none;
-  }
-
-  .topbar-inner {
-    height: 64px;
-  }
 }

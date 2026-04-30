@@ -41,12 +41,6 @@
 }
 
 /* ===== MOBILE ===== */
-@media (max-width: 992px) {
-  .table-wrapper {
-    overflow-x: auto;
-  }
-}
-
 @media (max-width: 768px) {
   .history-card::before {
     display: none;
