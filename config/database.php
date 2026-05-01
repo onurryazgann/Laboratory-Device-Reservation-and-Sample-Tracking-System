@@ -2,10 +2,25 @@
 
 require_once __DIR__ . '/config.php';
 
-$host = 'localhost';
-$dbname = 'lab_reservation_early';
-$username = 'root';
-$password = '';
+/*
+|--------------------------------------------------------------------------
+| Database Configuration
+|--------------------------------------------------------------------------
+| Localde XAMPP veritabanını kullanır.
+| InfinityFree'de canlı veritabanını kullanır.
+*/
+
+if (IS_LOCAL) {
+    $host = 'localhost';
+    $dbname = 'lab_reservation_early';
+    $username = 'root';
+    $password = '';
+} else {
+    $host = 'sql107.infinityfree.com';
+    $dbname = 'if0_41797269_lab_reservation_early';
+    $username = 'if0_41797269';
+    $password = 'yazgaN06onuR';
+}
 
 try {
     $pdo = new PDO(
@@ -19,7 +34,7 @@ try {
         ]
     );
 } catch (PDOException $e) {
-    if (DEBUG_MODE) {
+    if (defined('DEBUG_MODE') && DEBUG_MODE) {
         die('Database connection failed: ' . $e->getMessage());
     }
 
