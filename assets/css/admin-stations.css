@@ -1,16 +1,16 @@
-/* ===== HERO ===== */
+/* ===== ADMIN STATIONS HERO ===== */
 .admin-stations-hero {
-  margin-bottom: 32px;
+  margin-bottom: var(--space-xl);
 }
 
 /* ===== FILTERS ===== */
 .admin-station-filter-grid {
-  gap: 24px;
+  gap: var(--space-lg);
 }
 
 /* ===== SUMMARY ===== */
 .admin-station-summary strong {
-  color: var(--color-primary-dark);
+  color: var(--color-primary);
   font-size: 20px;
 }
 

@@ -1,16 +1,16 @@
-/* ===== HERO ===== */
+/* ===== ADMIN USERS HERO ===== */
 .admin-users-hero {
-  margin-bottom: 32px;
+  margin-bottom: var(--space-xl);
 }
 
 /* ===== FILTERS ===== */
 .admin-users-filter-grid {
-  gap: 24px;
+  gap: var(--space-lg);
 }
 
 /* ===== SUMMARY ===== */
 .admin-users-summary strong {
-  color: var(--color-primary-dark);
+  color: var(--color-primary);
   font-size: 20px;
 }
 

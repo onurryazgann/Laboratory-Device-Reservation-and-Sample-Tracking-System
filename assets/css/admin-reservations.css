@@ -1,11 +1,11 @@
-/* ===== HERO ===== */
+/* ===== ADMIN RESERVATIONS HERO ===== */
 .admin-reservations-hero {
-  margin-bottom: 32px;
+  margin-bottom: var(--space-xl);
 }
 
 /* ===== FILTERS ===== */
 .admin-filter-grid {
-  gap: 24px;
+  gap: var(--space-lg);
 }
 
 .admin-filter-actions {
@@ -16,7 +16,7 @@
 
 /* ===== SUMMARY ===== */
 .admin-summary-card strong {
-  color: var(--color-primary-dark);
+  color: var(--color-primary);
   font-size: 20px;
 }
 

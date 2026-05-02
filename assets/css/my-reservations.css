@@ -1,12 +1,16 @@
 /* ===== MY RESERVATIONS HERO ===== */
 .reservation-history-hero,
 .my-reservations-hero-card {
-  margin-bottom: 32px;
+  margin-bottom: var(--space-xl);
 }
 
 .my-reservations-hero-card {
   background:
-    linear-gradient(135deg, rgba(111, 247, 245, 0.16), rgba(255, 255, 255, 0.94)),
+    linear-gradient(
+      135deg,
+      rgba(var(--color-primary-container-rgb), 0.16),
+      var(--color-surface)
+    ),
     var(--color-surface);
 }
 
@@ -14,7 +18,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: var(--space-lg);
 }
 
 .my-reservations-hero-actions {
@@ -46,7 +50,7 @@
   top: -24px;
   width: 96px;
   height: 96px;
-  background: rgba(111, 247, 245, 0.12);
+  background: rgba(var(--color-primary-container-rgb), 0.12);
   border-radius: 50%;
 }
 
@@ -94,7 +98,7 @@
 }
 
 .my-reservations-filter-card {
-  background: #ffffff;
+  background: var(--color-surface);
 }
 
 .my-reservations-filter-header {
@@ -102,7 +106,7 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 18px;
-  margin-bottom: 24px;
+  margin-bottom: var(--space-lg);
 }
 
 .my-reservations-tab {
@@ -114,7 +118,7 @@
   padding: 10px 16px;
   border-radius: 999px;
   border: 1px solid var(--color-border);
-  background: #ffffff;
+  background: var(--color-surface);
   color: var(--color-text);
   font-size: 14px;
   font-weight: 700;
@@ -155,7 +159,7 @@
 .my-reservation-card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-  gap: 24px;
+  gap: var(--space-lg);
   align-items: stretch;
 }
 
@@ -171,7 +175,7 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 16px;
+  gap: var(--space-md);
 }
 
 .my-reservation-id {
@@ -179,7 +183,7 @@
   width: fit-content;
   padding: 6px 10px;
   border-radius: 999px;
-  background: rgba(0, 106, 106, 0.08);
+  background: rgba(var(--color-primary-rgb), 0.08);
   color: var(--color-primary);
   font-size: 12px;
   font-weight: 800;
@@ -201,10 +205,10 @@
 }
 
 .my-reservation-time-panel > div {
-  padding: 16px;
+  padding: var(--space-md);
   border-radius: var(--radius-md);
-  background: rgba(111, 247, 245, 0.12);
-  border: 1px solid rgba(0, 106, 106, 0.12);
+  background: rgba(var(--color-primary-container-rgb), 0.12);
+  border: 1px solid rgba(var(--color-primary-rgb), 0.12);
 }
 
 .my-reservation-time-panel span {
@@ -212,7 +216,7 @@
   color: var(--color-muted);
   font-size: 13px;
   font-weight: 700;
-  margin-bottom: 8px;
+  margin-bottom: var(--space-sm);
 }
 
 .my-reservation-time-panel strong {
@@ -235,7 +239,7 @@
   padding: 12px 14px;
   border-radius: var(--radius-md);
   background: var(--color-surface-soft);
-  border: 1px solid rgba(217, 226, 231, 0.75);
+  border: 1px solid var(--color-border);
 }
 
 .my-reservation-meta-row span {
@@ -275,13 +279,13 @@
 }
 
 .btn-danger-soft {
-  background: rgba(211, 47, 47, 0.08);
+  background: rgba(var(--color-error-rgb), 0.08);
   color: var(--color-error);
-  border: 1px solid rgba(211, 47, 47, 0.22);
+  border: 1px solid rgba(var(--color-error-rgb), 0.22);
 }
 
 .btn-danger-soft:hover {
-  background: rgba(211, 47, 47, 0.13);
+  background: rgba(var(--color-error-rgb), 0.13);
   transform: translateY(-1px);
 }
 
@@ -293,7 +297,7 @@
 /* ===== EMPTY ===== */
 .empty-reservations,
 .my-reservations-empty-state {
-  padding: 56px 24px;
+  padding: 56px var(--space-lg);
   text-align: center;
   max-width: 760px;
   margin: 0 auto;
@@ -375,7 +379,7 @@
 
   .my-reservation-meta-row {
     grid-template-columns: 1fr;
-    gap: 4px;
+    gap: var(--space-xs);
   }
 
   .my-reservation-actions {
