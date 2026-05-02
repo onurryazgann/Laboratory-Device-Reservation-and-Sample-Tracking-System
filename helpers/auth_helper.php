@@ -10,6 +10,16 @@ function hashPasswordWithSalt(string $password, string $salt): string
     return hash('sha256', $salt . $password);
 }
 
+function hashPassword(string $password): array
+{
+    $salt = generateSalt();
+
+    return [
+        'hash' => hashPasswordWithSalt($password, $salt),
+        'salt' => $salt
+    ];
+}
+
 function verifyPassword(string $password, string $salt, string $storedHash): bool
 {
     return hashPasswordWithSalt($password, $salt) === $storedHash;
