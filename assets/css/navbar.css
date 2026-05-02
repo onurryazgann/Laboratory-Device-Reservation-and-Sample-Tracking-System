@@ -755,4 +755,143 @@
     .nav-dropdown-menu {
         max-width: calc(100vw - 32px);
     }
+
+/* ===== MOBILE CURRENT PAGE TITLE IN BRAND ===== */
+
+@media (max-width: 1023px) {
+    .brand {
+        min-width: 0;
+        flex: 1;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .brand-text {
+        display: inline-block;
+        color: #ffffff;
+        font-size: 17px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: min(52vw, 360px);
+    }
+
+    .brand-text-full {
+        display: none;
+    }
+
+    .brand-text-short {
+        display: inline-block;
+    }
+}
+
+@media (max-width: 520px) {
+    .brand-text {
+        font-size: 15px;
+        max-width: 44vw;
+    }
+}
+
+/* Admin pages switch to mobile navbar earlier, so show page title there too */
+@media (max-width: 1199px) {
+    .admin-area .brand-text,
+    .admin-user .brand-text {
+        display: inline-block;
+        color: #ffffff;
+        font-size: 17px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: min(52vw, 360px);
+    }
+
+    .admin-area .brand-text-full,
+    .admin-user .brand-text-full {
+        display: none;
+    }
+
+    .admin-area .brand-text-short,
+    .admin-user .brand-text-short {
+        display: inline-block;
+    }
+}
+
+@media (max-width: 520px) {
+    .admin-area .brand-text,
+    .admin-user .brand-text {
+        font-size: 15px;
+        max-width: 44vw;
+    }
+}
+}
+
+
+/* ===== FORCE SHOW CURRENT PAGE TITLE ON MOBILE ===== */
+
+@media (max-width: 1023px) {
+    .brand-text {
+        display: inline-block !important;
+        color: #ffffff;
+        font-size: 17px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: min(52vw, 360px);
+    }
+
+    .brand-text-full {
+        display: none !important;
+    }
+
+    .brand-text-short {
+        display: inline-block !important;
+    }
+}
+
+@media (max-width: 520px) {
+    .brand-text {
+        font-size: 15px;
+        max-width: 44vw;
+    }
+}
+
+/* Admin pages use mobile navbar earlier */
+@media (max-width: 1199px) {
+    .admin-area .brand-text,
+    .admin-user .brand-text {
+        display: inline-block !important;
+        color: #ffffff;
+        font-size: 17px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: min(52vw, 360px);
+    }
+
+    .admin-area .brand-text-full,
+    .admin-user .brand-text-full {
+        display: none !important;
+    }
+
+    .admin-area .brand-text-short,
+    .admin-user .brand-text-short {
+        display: inline-block !important;
+    }
+}
+
+@media (max-width: 520px) {
+    .admin-area .brand-text,
+    .admin-user .brand-text {
+        font-size: 15px;
+        max-width: 44vw;
+    }
 }

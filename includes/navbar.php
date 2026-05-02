@@ -24,6 +24,12 @@ if ($isLoggedIn && $isAdmin) {
 $userName = $isLoggedIn ? getCurrentUserName() : '';
 $userRole = $_SESSION['role_name'] ?? 'user';
 
+$currentPageTitle = trim($pageTitle ?? APP_NAME);
+
+if ($currentPageTitle === APP_NAME) {
+    $currentPageTitle = 'Home';
+}
+
 ?>
 <header class="topbar">
     <div class="topbar-shell">
@@ -36,7 +42,7 @@ $userRole = $_SESSION['role_name'] ?? 'user';
 
                 <span class="brand-text">
                     <span class="brand-text-full"><?= htmlspecialchars(APP_NAME) ?></span>
-                    <span class="brand-text-short">Lab Reservation</span>
+                    <span class="brand-text-short"><?= htmlspecialchars($currentPageTitle) ?></span>
                 </span>
             </a>
 
