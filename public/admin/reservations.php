@@ -337,7 +337,6 @@ require_once __DIR__ . '/../../includes/header.php';
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>User</th>
                                 <th>Email</th>
                                 <th>Laboratory</th>
@@ -353,10 +352,6 @@ require_once __DIR__ . '/../../includes/header.php';
                         <tbody>
                             <?php foreach ($reservations as $reservation): ?>
                                 <tr>
-                                    <td>
-                                        <?= (int) $reservation['reservation_id'] ?>
-                                    </td>
-
                                     <td>
                                         <?= htmlspecialchars($reservation['user_full_name']) ?>
                                     </td>

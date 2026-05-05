@@ -169,8 +169,15 @@ require_once __DIR__ . '/../includes/header.php';
                 <hr style="margin:24px 0; border:none; border-top:1px solid var(--color-border);">
 
                 <div style="font-size:14px; color:var(--color-muted);">
-                    <p><strong>Test admin:</strong> admin@lab.local / 123456</p>
-                    <p><strong>Test student:</strong> onur.demo@ogrenci.karabuk.edu.tr / 123456</p>
+                    <p>
+                        <strong>Test admin:</strong>
+                        admin@lab.local / 123456
+                    </p>
+
+                    <p>
+                        <strong>Test student:</strong>
+                        onur.demo@ogrenci.karabuk.edu.tr / 123456
+                    </p>
                 </div>
 
             </div>

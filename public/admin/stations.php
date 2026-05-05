@@ -138,6 +138,23 @@ function selectedStationAdminOption($currentValue, $expectedValue): string
     return (string) $currentValue === (string) $expectedValue ? 'selected' : '';
 }
 
+function adminStationStatusBadgeClass(string $status): string
+{
+    if ($status === 'active') {
+        return 'badge-success';
+    }
+
+    if ($status === 'maintenance') {
+        return 'badge-warning';
+    }
+
+    if ($status === 'passive') {
+        return 'badge-error';
+    }
+
+    return 'badge-info';
+}
+
 require_once __DIR__ . '/../../includes/header.php';
 
 ?>
@@ -305,7 +322,6 @@ require_once __DIR__ . '/../../includes/header.php';
 
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>Station Code</th>
                                 <th>Station Name</th>
                                 <th>Type</th>
@@ -325,11 +341,13 @@ require_once __DIR__ . '/../../includes/header.php';
 
                                 <tr>
 
-                                    <td><?= (int) $station['station_id'] ?></td>
+                                    <td>
+                                        <?= htmlspecialchars($station['station_code']) ?>
+                                    </td>
 
-                                    <td><?= htmlspecialchars($station['station_code']) ?></td>
-
-                                    <td><?= htmlspecialchars($station['station_name']) ?></td>
+                                    <td>
+                                        <?= htmlspecialchars($station['station_name']) ?>
+                                    </td>
 
                                     <td>
                                         <span class="badge badge-info">
@@ -338,29 +356,33 @@ require_once __DIR__ . '/../../includes/header.php';
                                     </td>
 
                                     <td>
-                                        <?= htmlspecialchars($station['lab_code'] . ' - ' . $station['lab_name']) ?>
+                                        <strong>
+                                            <?= htmlspecialchars($station['lab_code']) ?>
+                                        </strong>
+
+                                        <br>
+
+                                        <span style="color:var(--color-muted);">
+                                            <?= htmlspecialchars($station['lab_name']) ?>
+                                        </span>
                                     </td>
 
-                                    <td><?= htmlspecialchars($station['faculty_name']) ?></td>
+                                    <td>
+                                        <?= htmlspecialchars($station['faculty_name']) ?>
+                                    </td>
 
-                                    <td><?= htmlspecialchars($station['department_name']) ?></td>
+                                    <td>
+                                        <?= htmlspecialchars($station['department_name']) ?>
+                                    </td>
 
                                     <td>
                                         <?= (int) $station['capacity'] ?>
                                     </td>
 
                                     <td>
-
-                                        <?php if ($station['status'] === 'active'): ?>
-                                            <span class="badge badge-success">Active</span>
-
-                                        <?php elseif ($station['status'] === 'maintenance'): ?>
-                                            <span class="badge badge-warning">Maintenance</span>
-
-                                        <?php else: ?>
-                                            <span class="badge badge-info">Passive</span>
-                                        <?php endif; ?>
-
+                                        <span class="badge <?= adminStationStatusBadgeClass($station['status']) ?>">
+                                            <?= htmlspecialchars(ucfirst($station['status'])) ?>
+                                        </span>
                                     </td>
 
                                     <td>
@@ -368,9 +390,7 @@ require_once __DIR__ . '/../../includes/header.php';
                                     </td>
 
                                     <td>
-
                                         <div class="admin-action-cell">
-
                                             <a
                                                 href="../station-detail.php?id=<?= (int) $station['station_id'] ?>"
                                                 class="btn btn-outline"
@@ -386,9 +406,7 @@ require_once __DIR__ . '/../../includes/header.php';
                                                     Reserve
                                                 </a>
                                             <?php endif; ?>
-
                                         </div>
-
                                     </td>
 
                                 </tr>

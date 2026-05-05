@@ -316,7 +316,6 @@ require_once __DIR__ . '/../../includes/header.php';
 
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>Asset Code</th>
                                 <th>Equipment</th>
                                 <th>Category</th>
@@ -334,8 +333,6 @@ require_once __DIR__ . '/../../includes/header.php';
                             <?php foreach ($equipmentList as $equipment): ?>
 
                                 <tr>
-
-                                    <td><?= (int) $equipment['equipment_id'] ?></td>
 
                                     <td><?= htmlspecialchars($equipment['asset_code']) ?></td>
 

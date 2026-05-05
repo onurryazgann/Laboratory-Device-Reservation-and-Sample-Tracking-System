@@ -1,16 +1,15 @@
 /* ===== ADMIN LAYOUT STANDARDIZATION ===== */
-/* Commit 3: centralized admin layout rules */
 
 /* ===== PAGE CONTAINER ===== */
 .admin-area .page-content {
-  padding: 24px;
+  padding: var(--space-lg);
 }
 
 .admin-area .page-card {
-  background: var(--color-surface, #fff);
-  border-radius: var(--radius-lg, 24px);
-  padding: 24px;
-  box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.08));
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-sm);
 }
 
 /* ===== PAGE HEADER / TITLES ===== */
@@ -19,8 +18,8 @@
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 16px;
-  margin-bottom: 24px;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
 }
 
 .admin-page-title {
@@ -54,7 +53,7 @@
   width: 100%;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  border-radius: var(--radius-md, 16px);
+  border-radius: var(--radius-md);
 }
 
 .admin-table-wrapper .table {
@@ -84,12 +83,12 @@
   }
 }
 
-/* ===== KPI GRID (standardized) ===== */
+/* ===== KPI GRID ===== */
 .admin-kpi-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
-  margin-bottom: 24px;
+  margin-bottom: var(--space-lg);
 }
 
 @media (max-width: 1200px) {
@@ -106,11 +105,11 @@
 
 /* ===== CARDS SPACING ===== */
 .admin-card {
-  background: var(--color-surface, #fff);
-  border-radius: var(--radius-lg, 24px);
-  padding: 24px;
-  box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.08));
-  border: 1px solid rgba(217,226,231,0.7);
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
 }
 
 .admin-card + .admin-card {
@@ -119,14 +118,14 @@
 
 @media (max-width: 768px) {
   .admin-card {
-    padding: 16px;
+    padding: var(--space-md);
   }
 }
 
 /* ===== TABLE ACTION CELLS ===== */
 .admin-action-cell {
   display: flex;
-  gap: 8px;
+  gap: var(--space-sm);
   align-items: center;
   white-space: nowrap;
 }
@@ -134,7 +133,7 @@
 @media (max-width: 768px) {
   .admin-action-cell {
     flex-direction: column;
-    gap: 4px;
+    gap: var(--space-xs);
   }
 
   .admin-action-cell .btn {
@@ -146,7 +145,6 @@
 }
 
 /* ===== MOBILE TABLE OVERRIDE ===== */
-/* Allow tables to shrink naturally on small screens */
 @media (max-width: 768px) {
   .admin-table-wrapper .table {
     min-width: auto !important;

@@ -1,16 +1,16 @@
-/* ===== HERO ===== */
+/* ===== ADMIN EQUIPMENT HERO ===== */
 .admin-equipment-hero {
-  margin-bottom: 32px;
+  margin-bottom: var(--space-xl);
 }
 
 /* ===== FILTERS ===== */
 .admin-equipment-filter-grid {
-  gap: 24px;
+  gap: var(--space-lg);
 }
 
 /* ===== SUMMARY ===== */
 .admin-equipment-summary strong {
-  color: var(--color-primary-dark);
+  color: var(--color-primary);
   font-size: 20px;
 }
 

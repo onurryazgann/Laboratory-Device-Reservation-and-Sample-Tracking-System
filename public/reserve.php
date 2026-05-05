@@ -218,8 +218,8 @@ require_once __DIR__ . '/../includes/header.php';
                     </h1>
 
                     <p class="section-subtitle" style="margin-bottom:0;">
-                        Complete your laboratory reservation through a structured,
-                        conflict-safe academic workflow.
+                        Choose a laboratory, select a station and create your reservation
+                        with a clear and simple workflow.
                     </p>
                 </div>
 
@@ -237,34 +237,33 @@ require_once __DIR__ . '/../includes/header.php';
 
         <!-- FLOW STEPS -->
         <div class="reservation-stepper" style="margin-bottom:24px;">
-            <div class="reservation-stepper-item is-active">
+            <div class="reservation-stepper-item <?= !$labId ? 'is-active' : 'is-complete' ?>">
                 <span>1</span>
                 <strong>Lab</strong>
             </div>
 
-            <div class="reservation-stepper-item <?= $labId ? 'is-active' : '' ?>">
+            <div class="reservation-stepper-item <?= $labId && !$selectedStation ? 'is-active' : ($selectedStation ? 'is-complete' : '') ?>">
                 <span>2</span>
                 <strong>Station</strong>
             </div>
 
             <div class="reservation-stepper-item <?= $selectedStation ? 'is-active' : '' ?>">
                 <span>3</span>
-                <strong>Review</strong>
+                <strong>Details</strong>
             </div>
 
-            <div class="reservation-stepper-item <?= $selectedStation ? 'is-active' : '' ?>">
+            <div class="reservation-stepper-item">
                 <span>4</span>
-                <strong>Reserve</strong>
+                <strong>Confirm</strong>
             </div>
         </div>
 
-        <!-- STEP 1 + STEP 2 -->
+        <!-- LABORATORY AND STATION SELECTION -->
         <div class="card" style="margin-bottom:24px;">
-            <h2 style="margin-top:0;">Step 1 — Select Laboratory and Station</h2>
+            <h2 style="margin-top:0;">Select Laboratory and Station</h2>
 
             <p class="section-subtitle" style="margin-bottom:24px;">
-                Choose a laboratory first. Station list can be loaded dynamically with AJAX,
-                and the classic GET fallback stays available.
+                Choose a laboratory first, then select an active station for your reservation.
             </p>
 
             <form
@@ -291,7 +290,7 @@ require_once __DIR__ . '/../includes/header.php';
                         </select>
 
                         <small class="field-feedback">
-                            Select a laboratory to list available stations.
+                            Select a laboratory to view its stations.
                         </small>
                     </div>
 
@@ -333,7 +332,7 @@ require_once __DIR__ . '/../includes/header.php';
                         </select>
 
                         <small class="field-feedback" id="stationSelectFeedback">
-                            Active stations can be selected for reservation.
+                            Only active stations can be selected.
                         </small>
                     </div>
                 </div>
@@ -350,13 +349,13 @@ require_once __DIR__ . '/../includes/header.php';
             </form>
         </div>
 
-        <!-- STEP 2 / SELECTED STATION SUMMARY -->
+        <!-- SELECTED STATION SUMMARY -->
         <div
             class="card"
             id="selectedStationCard"
             style="margin-bottom:24px; <?= $selectedStation ? '' : 'display:none;' ?>"
         >
-            <h2 style="margin-top:0;">Step 2 — Selected Station Summary</h2>
+            <h2 style="margin-top:0;">Selected Station Summary</h2>
 
             <?php if ($selectedStation): ?>
                 <div class="grid grid-2">
@@ -408,7 +407,7 @@ require_once __DIR__ . '/../includes/header.php';
 
                 <div id="stationEquipmentList" class="reservation-equipment-list">
                     <p style="color:var(--color-muted); margin-bottom:0;">
-                        Equipment list will be loaded when station is selected.
+                        Equipment will be shown after a station is selected.
                     </p>
                 </div>
             </div>
@@ -434,8 +433,7 @@ require_once __DIR__ . '/../includes/header.php';
                 <h3>Reservation Created Successfully</h3>
 
                 <p>
-                    Reservation ID:
-                    <strong><?= (int) $createdReservationId ?></strong>
+                    You can view and manage your reservation from your reservations page.
                 </p>
 
                 <a href="my-reservations.php" class="btn btn-primary">
@@ -447,30 +445,29 @@ require_once __DIR__ . '/../includes/header.php';
         <!-- CONFLICT -->
         <?php if (!empty($conflicts)): ?>
             <div class="card" style="margin-bottom:24px;">
-                <h2 style="margin-top:0;">Conflicting Reservations</h2>
+                <h2 style="margin-top:0;">Unavailable Time Slot</h2>
+
+                <p class="section-subtitle" style="margin-bottom:24px;">
+                    The selected station is already reserved during the time below.
+                    Please choose another time slot.
+                </p>
 
                 <div class="table-wrapper">
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>User</th>
                                 <th>Start</th>
                                 <th>End</th>
                                 <th>Status</th>
-                                <th>Purpose</th>
                             </tr>
                         </thead>
 
                         <tbody>
                             <?php foreach ($conflicts as $conflict): ?>
                                 <tr>
-                                    <td><?= (int) $conflict['reservation_id'] ?></td>
-                                    <td><?= htmlspecialchars($conflict['user_full_name']) ?></td>
                                     <td><?= htmlspecialchars($conflict['start_time']) ?></td>
                                     <td><?= htmlspecialchars($conflict['end_time']) ?></td>
                                     <td><?= htmlspecialchars($conflict['status']) ?></td>
-                                    <td><?= htmlspecialchars($conflict['purpose'] ?? '-') ?></td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
@@ -479,10 +476,10 @@ require_once __DIR__ . '/../includes/header.php';
             </div>
         <?php endif; ?>
 
-        <!-- STEP 3 / RESERVATION FORM -->
+        <!-- RESERVATION FORM -->
         <?php if ($selectedStation): ?>
             <div class="card" id="reservationFormCard">
-                <h2 style="margin-top:0;">Step 3 — Reservation Form</h2>
+                <h2 style="margin-top:0;">Reservation Details</h2>
 
                 <p class="section-subtitle" style="margin-bottom:24px;">
                     Select a date within the next 15 days, then choose an available 2-hour time slot.
@@ -539,7 +536,7 @@ require_once __DIR__ . '/../includes/header.php';
                         <label class="form-label">Available Time Slots</label>
 
                         <p class="field-hint">
-                            Each reservation slot is 2 hours. Unavailable slots are shown as disabled.
+                            Each reservation slot is 2 hours. Unavailable slots are disabled.
                         </p>
 
                         <div
@@ -567,7 +564,7 @@ require_once __DIR__ . '/../includes/header.php';
                             class="form-control"
                             rows="4"
                             maxlength="255"
-                            placeholder="Example: Database project study"
+                            placeholder="Example: Laboratory practice session"
                         ><?= htmlspecialchars($purposeValue) ?></textarea>
 
                         <p class="field-hint">

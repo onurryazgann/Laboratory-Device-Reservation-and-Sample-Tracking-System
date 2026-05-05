@@ -1,7 +1,11 @@
 :root {
   --color-primary: #006a6a;
+  --color-primary-rgb: 0, 106, 106;
+
   --color-on-primary: #ffffff;
+
   --color-primary-container: #6ff7f5;
+  --color-primary-container-rgb: 111, 247, 245;
 
   --color-bg: #fafafa;
   --color-surface: #ffffff;
@@ -12,9 +16,34 @@
   --color-border: #d9e2e7;
 
   --color-success: #2e7d32;
+  --color-success-rgb: 46, 125, 50;
+
   --color-warning: #ed6c02;
+  --color-warning-rgb: 237, 108, 2;
+
   --color-error: #d32f2f;
+  --color-error-rgb: 211, 47, 47;
+
   --color-info: #0288d1;
+  --color-info-rgb: 2, 136, 209;
+
+  /* Navbar specific colors */
+  --color-navbar-bg: #273044;
+  --color-navbar-accent: #54ded8;
+  --color-navbar-accent-hover: #6ff1ec;
+  --color-navbar-accent-text: #071827;
+  --color-navbar-text: #ffffff;
+  --color-navbar-link: rgba(255, 255, 255, 0.88);
+  --color-navbar-link-muted: rgba(255, 255, 255, 0.72);
+  --color-navbar-hover: rgba(255, 255, 255, 0.10);
+  --color-navbar-active: rgba(255, 255, 255, 0.16);
+  --color-navbar-border: rgba(255, 255, 255, 0.08);
+  --color-navbar-chip: rgba(255, 255, 255, 0.11);
+
+  --color-danger: #b91c1c;
+  --color-danger-soft: #fee2e2;
+  --color-danger-border: #fecaca;
+  --color-danger-rgb: 239, 68, 68;
 
   --radius-sm: 10px;
   --radius-md: 16px;
@@ -22,6 +51,9 @@
 
   --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.06);
   --shadow-md: 0 12px 30px rgba(15, 23, 42, 0.10);
+  --shadow-navbar: 0 8px 24px rgba(15, 23, 42, 0.18);
+  --shadow-dropdown: 0 20px 50px rgba(15, 23, 42, 0.22);
+  --shadow-mobile-menu: 0 22px 55px rgba(15, 23, 42, 0.22);
 
   --space-xs: 4px;
   --space-sm: 8px;

@@ -1,8 +1,16 @@
 /* ===== AUTH PAGE ===== */
 body.user-area {
   background:
-    radial-gradient(circle at top right, rgba(111, 247, 245, 0.18), transparent 30%),
-    radial-gradient(circle at bottom left, rgba(0, 106, 106, 0.08), transparent 35%),
+    radial-gradient(
+      circle at top right,
+      rgba(var(--color-primary-container-rgb), 0.18),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at bottom left,
+      rgba(var(--color-primary-rgb), 0.08),
+      transparent 35%
+    ),
     var(--color-bg);
 }
 
@@ -29,7 +37,7 @@ body.user-area {
 }
 
 .form-control::placeholder {
-  color: #98a2b3;
+  color: var(--color-muted);
 }
 
 /* ===== BUTTON ===== */
@@ -44,7 +52,7 @@ body.user-area {
   display: flex;
   flex-direction: column;
   gap: 14px;
-  margin-top: 24px;
+  margin-top: var(--space-lg);
 }
 
 .auth-feature-item {
@@ -52,14 +60,14 @@ body.user-area {
   align-items: center;
   gap: 12px;
   padding: 14px 16px;
-  background: rgba(255, 255, 255, 0.65);
-  border: 1px solid rgba(217, 226, 231, 0.8);
+  background: rgba(var(--color-surface-rgb, 255, 255, 255), 0.65);
+  border: 1px solid var(--color-border);
   border-radius: 14px;
 }
 
 /* ===== TEST ACCOUNT BOX ===== */
 .test-account-box {
-  padding: 16px;
+  padding: var(--space-md);
   border-radius: 14px;
   background: var(--color-surface-soft);
   border: 1px solid var(--color-border);
@@ -78,7 +86,7 @@ body.user-area {
   }
 
   .grid.grid-2 {
-    gap: 24px;
+    gap: var(--space-lg);
   }
 
   .card {

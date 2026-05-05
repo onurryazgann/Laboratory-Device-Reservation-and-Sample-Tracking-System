@@ -1,15 +1,11 @@
 /* ===== GLOBAL CONTAINER ===== */
 .container {
-  width: min(1280px, calc(100% - 64px));
+  width: min(1280px, calc(100% - var(--space-xl) - var(--space-xl)));
   margin: 0 auto;
 }
 
 /* ===== OVERFLOW SAFETY ===== */
-/* [PATCH 1] Added: global horizontal scroll prevention */
-html {
-  overflow-x: hidden;
-}
-
+html,
 body {
   overflow-x: hidden;
 }
@@ -22,10 +18,9 @@ body {
 }
 
 /* ===== SAFE PADDING UTILITY ===== */
-/* [PATCH 1] Added: mobile-safe horizontal padding */
 .safe-padding {
-  padding-left: 16px;
-  padding-right: 16px;
+  padding-left: var(--space-md);
+  padding-right: var(--space-md);
 }
 
 /* ===== PAGE STRUCTURE ===== */
@@ -72,10 +67,7 @@ body {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
-/* Navbar: managed exclusively by navbar.css */
-
-/* ===== TABLE WRAPPER (standardized) ===== */
-/* [PATCH 1] Added: standardized table-wrapper for all pages */
+/* ===== TABLE WRAPPER ===== */
 .table-wrapper {
   width: 100%;
   overflow-x: auto;
@@ -104,7 +96,7 @@ body {
 
 @media (max-width: 768px) {
   .container {
-    width: min(100%, calc(100% - 32px));
+    width: min(100%, calc(100% - var(--space-md) - var(--space-md)));
   }
 
   .grid-2,
@@ -112,5 +104,4 @@ body {
   .grid-4 {
     grid-template-columns: 1fr;
   }
-
 }

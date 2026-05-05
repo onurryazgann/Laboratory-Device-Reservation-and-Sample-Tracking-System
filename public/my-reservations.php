@@ -338,10 +338,6 @@ require_once __DIR__ . '/../includes/header.php';
                         <div class="my-reservation-card-header">
 
                             <div>
-                                <span class="my-reservation-id">
-                                    #<?= (int) $reservation['reservation_id'] ?>
-                                </span>
-
                                 <h3 class="my-reservation-title">
                                     <?= htmlspecialchars($reservation['lab_code']) ?>
                                     —

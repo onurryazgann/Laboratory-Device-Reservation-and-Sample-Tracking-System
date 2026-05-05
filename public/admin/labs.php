@@ -186,7 +186,6 @@ require_once __DIR__ . '/../../includes/header.php';
 
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>Code</th>
                                 <th>Laboratory</th>
                                 <th>Faculty</th>
@@ -205,10 +204,6 @@ require_once __DIR__ . '/../../includes/header.php';
                             <?php foreach ($labs as $lab): ?>
 
                                 <tr>
-
-                                    <td>
-                                        <?= (int) $lab['lab_id'] ?>
-                                    </td>
 
                                     <td>
                                         <?= htmlspecialchars($lab['lab_code']) ?>
