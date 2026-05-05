@@ -7,10 +7,6 @@
                     <strong><?= htmlspecialchars(APP_NAME) ?></strong><br>
                     <span>Laboratory Reservation & Station Management System</span>
                 </div>
-
-                <div>
-                    <span>Early Phase • Material 3 Minimal UI</span>
-                </div>
             </div>
         </div>
     </footer>

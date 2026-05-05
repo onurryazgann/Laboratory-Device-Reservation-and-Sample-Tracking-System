@@ -22,17 +22,17 @@ require_once __DIR__ . '/../includes/header.php';
                 <div class="index-hero-content">
 
                     <span class="badge badge-info">
-                        Early Phase Academic System
+                        Laboratory Reservation System
                     </span>
 
                     <h1 class="index-hero-title">
-                        Laboratory Device Reservation & Station Management System
+                        Laboratory Reservation & Station Management System
                     </h1>
 
                     <p class="index-hero-description">
-                        Reserve laboratories, choose workstations, review equipment
-                        and manage academic reservations through a clean,
-                        structured and minimal web system.
+                        Browse laboratories, choose suitable workstations, review assigned
+                        equipment and manage your academic reservations through a clean,
+                        structured and easy-to-use system.
                     </p>
 
                     <div class="index-hero-actions">
@@ -61,31 +61,22 @@ require_once __DIR__ . '/../includes/header.php';
 
                     </div>
 
-                    <div class="index-hero-tags">
-
-                        <span>PHP</span>
-                        <span>MySQL</span>
-                        <span>AJAX</span>
-                        <span>Material 3 UI</span>
-
-                    </div>
-
                 </div>
 
                 <div class="index-workflow-card">
 
                     <div class="index-workflow-header">
                         <span class="badge badge-success">
-                            Demo Flow
+                            How It Works
                         </span>
 
                         <h2>
-                            System Workflow
+                            Reservation Workflow
                         </h2>
 
                         <p>
-                            A simple academic reservation journey from account access
-                            to reservation management.
+                            Follow a simple path from selecting a laboratory to managing
+                            your reservation.
                         </p>
                     </div>
 
@@ -111,7 +102,7 @@ require_once __DIR__ . '/../includes/header.php';
                             <span>3</span>
                             <div>
                                 <strong>Select Station</strong>
-                                <p>Pick an active workstation or experiment station.</p>
+                                <p>Choose an active workstation or experiment station.</p>
                             </div>
                         </div>
 
@@ -119,7 +110,7 @@ require_once __DIR__ . '/../includes/header.php';
                             <span>4</span>
                             <div>
                                 <strong>Check Availability</strong>
-                                <p>Validate date and time conflicts dynamically.</p>
+                                <p>Check whether the selected date and time are available.</p>
                             </div>
                         </div>
 
@@ -127,7 +118,7 @@ require_once __DIR__ . '/../includes/header.php';
                             <span>5</span>
                             <div>
                                 <strong>Create Reservation</strong>
-                                <p>Save and manage your reservation from your profile.</p>
+                                <p>Create and manage your reservation from your account.</p>
                             </div>
                         </div>
 
@@ -150,7 +141,7 @@ require_once __DIR__ . '/../includes/header.php';
         <div class="index-section-header">
 
             <span class="badge badge-info">
-                Supported Environments
+                Laboratory Categories
             </span>
 
             <h2 class="section-title">
@@ -158,7 +149,8 @@ require_once __DIR__ . '/../includes/header.php';
             </h2>
 
             <p class="section-subtitle">
-                Early Phase academic environments supported by the reservation system.
+                Explore different laboratory environments and choose a suitable station
+                for your reservation.
             </p>
 
         </div>
@@ -175,8 +167,8 @@ require_once __DIR__ . '/../includes/header.php';
                 </h3>
 
                 <p>
-                    PC desks, software development workstations and academic
-                    project stations for student use.
+                    Computer desks and software-focused workstations for academic
+                    study and project work.
                 </p>
 
                 <a href="labs.php?lab_type=computer" class="btn btn-outline">
@@ -194,8 +186,8 @@ require_once __DIR__ . '/../includes/header.php';
                 </h3>
 
                 <p>
-                    Router, switch, infrastructure and network practice
-                    stations for applied learning.
+                    Network stations with equipment such as routers, switches and
+                    computers for applied practice.
                 </p>
 
                 <a href="labs.php?lab_type=network" class="btn btn-outline">
@@ -213,8 +205,8 @@ require_once __DIR__ . '/../includes/header.php';
                 </h3>
 
                 <p>
-                    Electronics benches, CNC systems and engineering-focused
-                    technical workstations.
+                    Electronics benches, machine stations and technical workstations
+                    for engineering applications.
                 </p>
 
                 <a href="labs.php" class="btn btn-outline">
@@ -234,7 +226,7 @@ require_once __DIR__ . '/../includes/header.php';
         <div class="index-section-header">
 
             <span class="badge badge-info">
-                Project Capabilities
+                System Features
             </span>
 
             <h2 class="section-title">
@@ -242,7 +234,8 @@ require_once __DIR__ . '/../includes/header.php';
             </h2>
 
             <p class="section-subtitle">
-                Designed for a clear demo flow and IBP/DBS project requirements.
+                Everything students need to browse laboratories, select stations
+                and manage reservations.
             </p>
 
         </div>
@@ -251,7 +244,7 @@ require_once __DIR__ . '/../includes/header.php';
 
             <div class="card index-feature-card">
                 <span class="badge badge-success">
-                    User Flow
+                    Reservations
                 </span>
 
                 <h3>
@@ -261,59 +254,59 @@ require_once __DIR__ . '/../includes/header.php';
                 <ul>
                     <li>View active laboratories and stations</li>
                     <li>Check date and time availability</li>
-                    <li>Create reservations</li>
+                    <li>Create new reservations</li>
                     <li>View, edit and cancel your reservations</li>
                 </ul>
             </div>
 
             <div class="card index-feature-card">
                 <span class="badge badge-info">
-                    Frontend
+                    Laboratories
                 </span>
 
                 <h3>
-                    Modern Academic Interface
+                    Laboratory Browsing
                 </h3>
 
                 <ul>
-                    <li>Material 3 inspired minimalist design</li>
-                    <li>Responsive card-based layouts</li>
-                    <li>JavaScript validation</li>
-                    <li>AJAX-powered dynamic interactions</li>
+                    <li>Browse laboratories by category</li>
+                    <li>View laboratory details</li>
+                    <li>See available stations</li>
+                    <li>Review station capacity and status</li>
                 </ul>
             </div>
 
             <div class="card index-feature-card">
                 <span class="badge badge-warning">
-                    Database
+                    Equipment
                 </span>
 
                 <h3>
-                    Structured Data Model
+                    Equipment Review
                 </h3>
 
                 <ul>
-                    <li>Laboratories, departments and faculties</li>
-                    <li>Workstations and equipment instances</li>
-                    <li>Reservation status history</li>
-                    <li>Conflict-safe reservation logic</li>
+                    <li>View equipment assigned to stations</li>
+                    <li>Check station-related resources</li>
+                    <li>Review equipment before reservation</li>
+                    <li>Choose the most suitable station</li>
                 </ul>
             </div>
 
             <div class="card index-feature-card">
                 <span class="badge badge-success">
-                    Demo Ready
+                    Account
                 </span>
 
                 <h3>
-                    Early Phase Scope
+                    Personal Reservation Area
                 </h3>
 
                 <ul>
-                    <li>Login and register flow</li>
-                    <li>Laboratory browsing</li>
-                    <li>Station selection</li>
-                    <li>Reservation create/edit/cancel flow</li>
+                    <li>Create an account and sign in</li>
+                    <li>Access your dashboard</li>
+                    <li>Track your active reservations</li>
+                    <li>Manage your reservation history</li>
                 </ul>
             </div>
 
@@ -337,7 +330,7 @@ require_once __DIR__ . '/../includes/header.php';
             </h2>
 
             <p class="section-subtitle">
-                Professional, academic, simple and scalable.
+                Simple, organized and reliable laboratory reservation management.
             </p>
 
             <div class="index-cta-actions">

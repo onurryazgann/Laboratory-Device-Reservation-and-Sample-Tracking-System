@@ -58,8 +58,9 @@ if ($currentPageTitle === APP_NAME) {
                 for="mobile-nav-toggle"
                 class="mobile-menu-btn"
                 aria-label="Toggle navigation"
+                title="Menu"
             >
-                Menu
+                <span class="hamburger-icon" aria-hidden="true">☰</span>
             </label>
 
             <!-- NAVIGATION -->

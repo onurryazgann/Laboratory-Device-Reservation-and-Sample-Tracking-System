@@ -131,8 +131,8 @@ require_once __DIR__ . '/../includes/header.php';
                     </h1>
 
                     <p class="section-subtitle" style="margin-bottom:0;">
-                        Manage your laboratory workflow, reservations and academic station access
-                        from one clean dashboard.
+                        Manage your laboratory reservations, view upcoming station access
+                        and continue your reservation process from one clean dashboard.
                     </p>
                 </div>
 
@@ -209,12 +209,12 @@ require_once __DIR__ . '/../includes/header.php';
                         </h2>
 
                         <p class="section-subtitle" style="margin-bottom:0;">
-                            Continue your main workflow with one click.
+                            Continue your reservation process with one click.
                         </p>
                     </div>
 
                     <span class="badge badge-info">
-                        Workflow
+                        Actions
                     </span>
                 </div>
 
@@ -312,14 +312,6 @@ require_once __DIR__ . '/../includes/header.php';
                     <div class="dashboard-next-meta">
 
                         <div class="dashboard-next-meta-row">
-                            <span>Reservation ID</span>
-
-                            <strong>
-                                #<?= (int) $nextReservation['reservation_id'] ?>
-                            </strong>
-                        </div>
-
-                        <div class="dashboard-next-meta-row">
                             <span>Laboratory</span>
 
                             <strong>
@@ -384,22 +376,22 @@ require_once __DIR__ . '/../includes/header.php';
 
         </div>
 
-        <!-- ACTIVITY GUIDE -->
+        <!-- RESERVATION GUIDE -->
         <div class="card dashboard-guide-card" style="margin-top:32px;">
 
             <div class="dashboard-section-header">
                 <div>
                     <h2 style="margin-top:0; margin-bottom:8px;">
-                        Recommended Demo Flow
+                        Reservation Guide
                     </h2>
 
                     <p class="section-subtitle" style="margin-bottom:0;">
-                        This flow is useful for presentation and screenshot preparation.
+                        Follow these steps to create and manage a laboratory reservation.
                     </p>
                 </div>
 
                 <span class="badge badge-info">
-                    Demo Ready
+                    Guide
                 </span>
             </div>
 
@@ -408,25 +400,25 @@ require_once __DIR__ . '/../includes/header.php';
                 <div>
                     <span>1</span>
                     <strong>Browse Labs</strong>
-                    <p>Open the laboratories page and select a lab.</p>
+                    <p>Open the laboratories page and select a suitable laboratory.</p>
                 </div>
 
                 <div>
                     <span>2</span>
                     <strong>Select Station</strong>
-                    <p>Review station and equipment details.</p>
+                    <p>Review station details, capacity and assigned equipment.</p>
                 </div>
 
                 <div>
                     <span>3</span>
                     <strong>Check Availability</strong>
-                    <p>Choose future start and end times.</p>
+                    <p>Choose a date and available time slot for your reservation.</p>
                 </div>
 
                 <div>
                     <span>4</span>
                     <strong>Manage Reservation</strong>
-                    <p>View, edit or cancel from My Reservations.</p>
+                    <p>View, edit or cancel your reservation from My Reservations.</p>
                 </div>
 
             </div>

@@ -268,7 +268,6 @@ require_once __DIR__ . '/../../includes/header.php';
 
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>Role</th>
                                 <th>Full Name</th>
                                 <th>Email</th>
@@ -290,8 +289,6 @@ require_once __DIR__ . '/../../includes/header.php';
                             <?php foreach ($users as $user): ?>
 
                                 <tr>
-
-                                    <td><?= (int) $user['user_id'] ?></td>
 
                                     <td>
 

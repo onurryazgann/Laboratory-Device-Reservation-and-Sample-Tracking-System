@@ -291,21 +291,6 @@ require_once __DIR__ . '/../includes/header.php';
                 <div class="station-detail-current-grid">
 
                     <div class="station-detail-info-row">
-                        <span>Reservation ID</span>
-                        <strong>#<?= (int) $currentReservation['reservation_id'] ?></strong>
-                    </div>
-
-                    <div class="station-detail-info-row">
-                        <span>User</span>
-                        <strong><?= htmlspecialchars($currentReservation['user_full_name']) ?></strong>
-                    </div>
-
-                    <div class="station-detail-info-row">
-                        <span>Email</span>
-                        <strong><?= htmlspecialchars($currentReservation['user_email'] ?? '-') ?></strong>
-                    </div>
-
-                    <div class="station-detail-info-row">
                         <span>Start Time</span>
                         <strong><?= htmlspecialchars(formatStationDetailDateTime($currentReservation['start_time'])) ?></strong>
                     </div>
@@ -420,8 +405,6 @@ require_once __DIR__ . '/../includes/header.php';
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Reservation ID</th>
-                                <th>User</th>
                                 <th>Start Time</th>
                                 <th>End Time</th>
                                 <th>Status</th>
@@ -432,12 +415,6 @@ require_once __DIR__ . '/../includes/header.php';
                         <tbody>
                             <?php foreach ($upcomingReservations as $reservation): ?>
                                 <tr>
-                                    <td>#<?= (int) $reservation['reservation_id'] ?></td>
-
-                                    <td>
-                                        <?= htmlspecialchars($reservation['user_full_name']) ?>
-                                    </td>
-
                                     <td>
                                         <?= htmlspecialchars(formatStationDetailDateTime($reservation['start_time'])) ?>
                                     </td>
