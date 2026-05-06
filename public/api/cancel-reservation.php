@@ -54,10 +54,27 @@ try {
 
     $pdo->commit();
 
+    $userIdForSummary = isAdmin() ? $reservation['user_id'] : $userId;
+    $allUserReservations = getUserReservations($pdo, (int) $userIdForSummary, 'all');
+    $activeCount = 0;
+    $cancelledCount = 0;
+    $completedCount = 0;
+    foreach ($allUserReservations as $r) {
+        if ($r['status'] === 'active') $activeCount++;
+        elseif ($r['status'] === 'cancelled') $cancelledCount++;
+        elseif ($r['status'] === 'completed') $completedCount++;
+    }
+
     jsonSuccess('Reservation cancelled successfully.', [
         'reservation_id' => (int) $reservationId,
         'old_status' => $oldStatus,
-        'new_status' => 'cancelled'
+        'new_status' => 'cancelled',
+        'summary' => [
+            'total' => count($allUserReservations),
+            'active' => $activeCount,
+            'cancelled' => $cancelledCount,
+            'completed' => $completedCount,
+        ],
     ]);
 } catch (Exception $e) {
     if ($pdo->inTransaction()) {

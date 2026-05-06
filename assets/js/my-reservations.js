@@ -44,16 +44,45 @@ document.addEventListener('DOMContentLoaded', function () {
                                 editLink.style.display = 'none';
                             }
 
-                            var activeKpi = document.querySelector('[data-reservation-kpi="active"]');
+                            if (response.data && response.data.summary) {
+                                var summary = response.data.summary;
+                                var kpiTotal = document.querySelector('[data-reservation-kpi="total"]');
+                                var kpiActive = document.querySelector('[data-reservation-kpi="active"]');
+                                var kpiCancelled = document.querySelector('[data-reservation-kpi="cancelled"]');
+                                var kpiCompleted = document.querySelector('[data-reservation-kpi="completed"]');
+                                if (kpiTotal && summary.total !== undefined) kpiTotal.textContent = summary.total;
+                                if (kpiActive && summary.active !== undefined) kpiActive.textContent = summary.active;
+                                if (kpiCancelled && summary.cancelled !== undefined) kpiCancelled.textContent = summary.cancelled;
+                                if (kpiCompleted && summary.completed !== undefined) kpiCompleted.textContent = summary.completed;
 
-                            if (activeKpi) {
-                                activeKpi.textContent = Math.max(0, parseInt(activeKpi.textContent, 10) - 1);
-                            }
+                                var activeTabCount = document.querySelector('.my-reservations-tab[href*="status=active"] span');
+                                var cancelledTabCount = document.querySelector('.my-reservations-tab[href*="status=cancelled"] span');
+                                var allTabCount = document.querySelector('.my-reservations-tab[href*="status=all"] span');
+                                var completedTabCount = document.querySelector('.my-reservations-tab[href*="status=completed"] span');
+                                if (activeTabCount && summary.active !== undefined) activeTabCount.textContent = summary.active;
+                                if (cancelledTabCount && summary.cancelled !== undefined) cancelledTabCount.textContent = summary.cancelled;
+                                if (allTabCount && summary.total !== undefined) allTabCount.textContent = summary.total;
+                                if (completedTabCount && summary.completed !== undefined) completedTabCount.textContent = summary.completed;
+                            } else {
+                                var activeKpi = document.querySelector('[data-reservation-kpi="active"]');
+                                if (activeKpi) {
+                                    activeKpi.textContent = Math.max(0, parseInt(activeKpi.textContent, 10) - 1);
+                                }
 
-                            var cancelledKpi = document.querySelector('[data-reservation-kpi="cancelled"]');
+                                var cancelledKpi = document.querySelector('[data-reservation-kpi="cancelled"]');
+                                if (cancelledKpi) {
+                                    cancelledKpi.textContent = parseInt(cancelledKpi.textContent, 10) + 1;
+                                }
 
-                            if (cancelledKpi) {
-                                cancelledKpi.textContent = parseInt(cancelledKpi.textContent, 10) + 1;
+                                var activeTabCount = document.querySelector('.my-reservations-tab[href*="status=active"] span');
+                                if (activeTabCount) {
+                                    activeTabCount.textContent = Math.max(0, parseInt(activeTabCount.textContent, 10) - 1);
+                                }
+
+                                var cancelledTabCount = document.querySelector('.my-reservations-tab[href*="status=cancelled"] span');
+                                if (cancelledTabCount) {
+                                    cancelledTabCount.textContent = parseInt(cancelledTabCount.textContent, 10) + 1;
+                                }
                             }
                         }
 

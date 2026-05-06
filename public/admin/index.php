@@ -138,23 +138,23 @@ require_once __DIR__ . '/../../includes/header.php';
                 Latest Reservations
             </h2>
 
-            <?php if (count($latestReservations) > 0): ?>
+            <div class="table-wrapper admin-table-wrapper">
 
-                <div class="table-wrapper admin-table-wrapper">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Laboratory</th>
+                            <th>Station</th>
+                            <th>Start</th>
+                            <th>End</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
 
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>User</th>
-                                <th>Laboratory</th>
-                                <th>Station</th>
-                                <th>Start</th>
-                                <th>End</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
+                    <tbody id="latestReservationsBody">
 
-                        <tbody id="latestReservationsBody">
+                        <?php if (count($latestReservations) > 0): ?>
 
                             <?php foreach ($latestReservations as $reservation): ?>
 
@@ -198,18 +198,16 @@ require_once __DIR__ . '/../../includes/header.php';
 
                             <?php endforeach; ?>
 
-                        </tbody>
-                    </table>
+                        <?php else: ?>
 
-                </div>
+                            <tr><td colspan="6" style="text-align:center; padding:24px; color:var(--color-muted);">No reservations found.</td></tr>
 
-            <?php else: ?>
+                        <?php endif; ?>
 
-                <div class="alert alert-success">
-                    No reservation found.
-                </div>
+                    </tbody>
+                </table>
 
-            <?php endif; ?>
+            </div>
 
         </div>
 

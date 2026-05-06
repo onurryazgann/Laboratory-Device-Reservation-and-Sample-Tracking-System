@@ -15,7 +15,12 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         var tbody = document.getElementById('latestReservationsBody');
-        if (!tbody || !data.latest_reservations) {
+        if (!tbody) {
+            return;
+        }
+
+        if (!data.latest_reservations || data.latest_reservations.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:24px; color:var(--color-muted);">No reservations found.</td></tr>';
             return;
         }
 
