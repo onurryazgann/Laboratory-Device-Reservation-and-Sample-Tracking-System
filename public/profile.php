@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../includes/auth_check.php';
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../helpers/validation_helper.php';
+require_once __DIR__ . '/../includes/csrf.php';
 
 $pageTitle = 'Profile';
 $pageCss = 'profile.css';
@@ -88,6 +89,8 @@ $phone = $profile['phone'] ?? '';
 $programType = $profile['program_type'] ?? '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    requireCsrfToken();
+
     $phone = cleanInput($_POST['phone'] ?? '');
     $programType = cleanInput($_POST['program_type'] ?? '');
 
@@ -436,6 +439,7 @@ require_once __DIR__ . '/../includes/header.php';
             </div>
 
             <form method="POST" action="">
+                <?= csrfInput() ?>
 
                 <div class="grid grid-2">
 

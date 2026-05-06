@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../config/config.php';
 require_once __DIR__ . '/../helpers/auth_helper.php';
+require_once __DIR__ . '/../includes/csrf.php';
 
 $pageTitle = $pageTitle ?? APP_NAME;
 
@@ -28,6 +29,7 @@ if (isset($_SESSION['user_id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?= csrfMetaTag() ?>
     <title><?= htmlspecialchars($pageTitle) ?> - <?= htmlspecialchars(APP_NAME) ?></title>
 
     <!-- Material 3 Global -->

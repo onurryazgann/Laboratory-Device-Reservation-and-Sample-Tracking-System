@@ -128,6 +128,16 @@
   color: var(--color-info);
 }
 
+.badge-secondary {
+  background: rgba(var(--color-muted-rgb), 0.12);
+  color: var(--color-muted);
+}
+
+.badge-danger {
+  background: rgba(var(--color-error-rgb), 0.12);
+  color: var(--color-error);
+}
+
 /* ===== ALERTS ===== */
 .alert {
   padding: 14px 16px;

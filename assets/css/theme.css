@@ -27,6 +27,8 @@
   --color-info: #0288d1;
   --color-info-rgb: 2, 136, 209;
 
+  --color-muted-rgb: 102, 112, 133;
+
   /* Navbar specific colors */
   --color-navbar-bg: #273044;
   --color-navbar-accent: #54ded8;

@@ -5,6 +5,7 @@ require_once __DIR__ . '/../../config/database.php';
 
 $pageTitle = 'Admin Dashboard';
 $pageCss = 'admin-dashboard.css';
+$pageJs = 'admin-dashboard.js';
 
 $totalUsers = (int) $pdo->query("SELECT COUNT(*) AS total FROM users")->fetch()['total'];
 $totalLabs = (int) $pdo->query("SELECT COUNT(*) AS total FROM laboratories")->fetch()['total'];
@@ -75,30 +76,30 @@ require_once __DIR__ . '/../../includes/header.php';
 
             <div class="card card-hover">
                 <h3>Total Users</h3>
-                <p class="admin-kpi-value">
+                <span data-dashboard-stat="total_users" class="admin-kpi-value">
                     <?= $totalUsers ?>
-                </p>
+                </span>
             </div>
 
             <div class="card card-hover">
                 <h3>Laboratories</h3>
-                <p class="admin-kpi-value">
+                <span data-dashboard-stat="total_labs" class="admin-kpi-value">
                     <?= $totalLabs ?>
-                </p>
+                </span>
             </div>
 
             <div class="card card-hover">
                 <h3>Stations</h3>
-                <p class="admin-kpi-value">
+                <span data-dashboard-stat="total_stations" class="admin-kpi-value">
                     <?= $totalStations ?>
-                </p>
+                </span>
             </div>
 
             <div class="card card-hover">
                 <h3>Active Reservations</h3>
-                <p class="admin-kpi-value">
+                <span data-dashboard-stat="active_reservations" class="admin-kpi-value">
                     <?= $totalActiveReservations ?>
-                </p>
+                </span>
             </div>
 
         </div>
@@ -137,23 +138,23 @@ require_once __DIR__ . '/../../includes/header.php';
                 Latest Reservations
             </h2>
 
-            <?php if (count($latestReservations) > 0): ?>
+            <div class="table-wrapper admin-table-wrapper">
 
-                <div class="table-wrapper admin-table-wrapper">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Laboratory</th>
+                            <th>Station</th>
+                            <th>Start</th>
+                            <th>End</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
 
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>User</th>
-                                <th>Laboratory</th>
-                                <th>Station</th>
-                                <th>Start</th>
-                                <th>End</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
+                    <tbody id="latestReservationsBody">
 
-                        <tbody>
+                        <?php if (count($latestReservations) > 0): ?>
 
                             <?php foreach ($latestReservations as $reservation): ?>
 
@@ -197,18 +198,16 @@ require_once __DIR__ . '/../../includes/header.php';
 
                             <?php endforeach; ?>
 
-                        </tbody>
-                    </table>
+                        <?php else: ?>
 
-                </div>
+                            <tr><td colspan="6" style="text-align:center; padding:24px; color:var(--color-muted);">No reservations found.</td></tr>
 
-            <?php else: ?>
+                        <?php endif; ?>
 
-                <div class="alert alert-success">
-                    No reservation found.
-                </div>
+                    </tbody>
+                </table>
 
-            <?php endif; ?>
+            </div>
 
         </div>
 

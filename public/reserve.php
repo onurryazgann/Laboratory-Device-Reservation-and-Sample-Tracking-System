@@ -5,6 +5,7 @@ require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../helpers/lab_helper.php';
 require_once __DIR__ . '/../helpers/reservation_helper.php';
 require_once __DIR__ . '/../helpers/validation_helper.php';
+require_once __DIR__ . '/../includes/csrf.php';
 
 $userId = getCurrentUserId();
 
@@ -69,6 +70,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
  * Asıl yeni akış JS + API üzerinden çalışacak ama burası da güvenli kalmalı.
  */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    requireCsrfToken();
+
     $action = $_POST['action'] ?? '';
 
     $postedLabId = filter_input(INPUT_POST, 'lab_id', FILTER_VALIDATE_INT);
@@ -486,6 +489,8 @@ require_once __DIR__ . '/../includes/header.php';
                 </p>
 
                 <form method="POST" action="" id="reservationForm">
+                    <?= csrfInput() ?>
+
                     <input
                         type="hidden"
                         name="lab_id"
