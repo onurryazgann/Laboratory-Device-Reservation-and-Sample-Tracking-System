@@ -77,10 +77,15 @@ function requireCsrfToken(): void
     if (!csrfVerify($token)) {
         http_response_code(403);
 
-        if (
+        $isAjax = (
             isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
             strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest'
-        ) {
+        ) || (
+            isset($_SERVER['REQUEST_URI']) &&
+            strpos($_SERVER['REQUEST_URI'], '/api/') !== false
+        );
+
+        if ($isAjax) {
             header('Content-Type: application/json; charset=utf-8');
             echo json_encode([
                 'success' => false,

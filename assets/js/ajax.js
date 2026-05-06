@@ -92,13 +92,15 @@
   }
 
   async function request(url, options = {}) {
+    const { headers: extraHeaders, ...restOptions } = options;
+
     const fetchPromise = fetch(url, {
       credentials: 'same-origin',
       headers: {
         'X-Requested-With': 'XMLHttpRequest',
-        ...(options.headers || {})
+        ...(extraHeaders || {})
       },
-      ...options
+      ...restOptions
     }).then(parseJsonResponse);
 
     return Promise.race([
@@ -119,16 +121,17 @@
 
   async function post(endpoint, data = {}, options = {}) {
     var csrfToken = getCsrfToken();
+    var { headers: extraHeaders, ...restOptions } = options;
 
     return request(apiPath(endpoint), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        ...(options.headers || {}),
+        ...(extraHeaders || {}),
         ...(csrfToken ? { 'X-CSRF-Token': csrfToken } : {})
       },
       body: toFormBody(data),
-      ...options
+      ...restOptions
     });
   }
 
