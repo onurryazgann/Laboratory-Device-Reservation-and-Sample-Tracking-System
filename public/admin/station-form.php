@@ -193,7 +193,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 require_once __DIR__ . '/../../includes/header.php';
 ?>
 
-<main class="page-container">
+<main class="page-container admin-form-page">
     <section class="card">
         <h1><?= $isEditMode ? 'Edit Station' : 'Add Station' ?></h1>
         <p>Manage workstation code, laboratory connection, station type, capacity and status.</p>

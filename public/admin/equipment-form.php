@@ -199,7 +199,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 require_once __DIR__ . '/../../includes/header.php';
 ?>
 
-<main class="page-container">
+<main class="page-container admin-form-page">
     <section class="card">
         <h1><?= $isEditMode ? 'Edit Equipment' : 'Add Equipment' ?></h1>
         <p>Manage physical equipment assets, laboratory ownership, station assignment and asset status.</p>

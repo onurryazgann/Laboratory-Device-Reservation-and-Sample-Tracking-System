@@ -37,12 +37,12 @@ if ($currentPageTitle === APP_NAME) {
         <div class="topbar-inner">
 
             <!-- BRAND -->
-            <a class="brand" href="<?= htmlspecialchars($brandUrl) ?>">
+            <a class="brand" href="<?= htmlspecialchars($brandUrl, ENT_QUOTES, 'UTF-8') ?>">
                 <span class="brand-mark">LAB</span>
 
                 <span class="brand-text">
-                    <span class="brand-text-full"><?= htmlspecialchars(APP_NAME) ?></span>
-                    <span class="brand-text-short"><?= htmlspecialchars($currentPageTitle) ?></span>
+                    <span class="brand-text-full"><?= htmlspecialchars(APP_NAME, ENT_QUOTES, 'UTF-8') ?></span>
+                    <span class="brand-text-short"><?= htmlspecialchars($currentPageTitle, ENT_QUOTES, 'UTF-8') ?></span>
                 </span>
             </a>
 
@@ -131,6 +131,7 @@ if ($currentPageTitle === APP_NAME) {
                             </summary>
 
                             <div class="nav-dropdown-menu">
+
                                 <a
                                     class="<?= navLinkActive('/public/admin/index.php') ?>"
                                     href="<?= BASE_URL ?>admin/index.php"
@@ -153,10 +154,24 @@ if ($currentPageTitle === APP_NAME) {
                                 </a>
 
                                 <a
+                                    class="<?= navLinkActive('/public/admin/lab-form.php') ?>"
+                                    href="<?= BASE_URL ?>admin/lab-form.php"
+                                >
+                                    Add Laboratory
+                                </a>
+
+                                <a
                                     class="<?= navLinkActive('/public/admin/stations.php') ?>"
                                     href="<?= BASE_URL ?>admin/stations.php"
                                 >
                                     Stations
+                                </a>
+
+                                <a
+                                    class="<?= navLinkActive('/public/admin/station-form.php') ?>"
+                                    href="<?= BASE_URL ?>admin/station-form.php"
+                                >
+                                    Add Station
                                 </a>
 
                                 <a
@@ -167,43 +182,54 @@ if ($currentPageTitle === APP_NAME) {
                                 </a>
 
                                 <a
+                                    class="<?= navLinkActive('/public/admin/equipment-form.php') ?>"
+                                    href="<?= BASE_URL ?>admin/equipment-form.php"
+                                >
+                                    Add Equipment
+                                </a>
+
+                                <a
                                     class="<?= navLinkActive('/public/admin/users.php') ?>"
                                     href="<?= BASE_URL ?>admin/users.php"
                                 >
                                     Users
                                 </a>
+
                             </div>
                         </details>
 
                     <?php endif; ?>
+
                     <!-- ACCOUNT LINKS -->
                     <a
                         class="nav-profile-link <?= navLinkActive('/public/profile.php') ?>"
                         href="<?= htmlspecialchars(BASE_URL . 'profile.php', ENT_QUOTES, 'UTF-8') ?>"
                         title="<?= htmlspecialchars($userName, ENT_QUOTES, 'UTF-8') ?>"
                         aria-label="Profile: <?= htmlspecialchars($userName, ENT_QUOTES, 'UTF-8') ?>"
-                        >
+                    >
                         <span class="nav-profile-icon" aria-hidden="true">👤</span>
+
                         <span class="nav-profile-name">
                             <?= htmlspecialchars($userName, ENT_QUOTES, 'UTF-8') ?>
                         </span>
                     </a>
-                    <a
-    class="nav-action danger nav-logout-link"
-    href="<?= htmlspecialchars(BASE_URL . 'logout.php', ENT_QUOTES, 'UTF-8') ?>"
-    title="Logout"
-    aria-label="Logout"
->
-    <span class="nav-logout-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M10 6H6.75C5.78 6 5 6.78 5 7.75V16.25C5 17.22 5.78 18 6.75 18H10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <path d="M14 8L18 12L14 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M18 12H10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-    </span>
 
-    <span class="nav-logout-text">Logout</span>
-</a>
+                    <a
+                        class="nav-action danger nav-logout-link"
+                        href="<?= htmlspecialchars(BASE_URL . 'logout.php', ENT_QUOTES, 'UTF-8') ?>"
+                        title="Logout"
+                        aria-label="Logout"
+                    >
+                        <span class="nav-logout-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10 6H6.75C5.78 6 5 6.78 5 7.75V16.25C5 17.22 5.78 18 6.75 18H10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                <path d="M14 8L18 12L14 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M18 12H10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </span>
+
+                        <span class="nav-logout-text">Logout</span>
+                    </a>
 
                 <?php endif; ?>
 
