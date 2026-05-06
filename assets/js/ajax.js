@@ -10,6 +10,11 @@
 (function (window, document) {
   const DEFAULT_TIMEOUT = 15000;
 
+  function getCsrfToken() {
+    var meta = document.querySelector('meta[name="csrf-token"]');
+    return meta ? meta.getAttribute('content') : '';
+  }
+
   function isAdminArea() {
     return window.location.pathname.includes('/admin/');
   }
@@ -113,11 +118,14 @@
   }
 
   async function post(endpoint, data = {}, options = {}) {
+    var csrfToken = getCsrfToken();
+
     return request(apiPath(endpoint), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        ...(options.headers || {})
+        ...(options.headers || {}),
+        ...(csrfToken ? { 'X-CSRF-Token': csrfToken } : {})
       },
       body: toFormBody(data),
       ...options

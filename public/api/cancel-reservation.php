@@ -5,14 +5,21 @@ require_once __DIR__ . '/../../helpers/auth_helper.php';
 require_once __DIR__ . '/../../helpers/validation_helper.php';
 require_once __DIR__ . '/../../helpers/response_helper.php';
 require_once __DIR__ . '/../../helpers/reservation_helper.php';
+require_once __DIR__ . '/../../includes/csrf.php';
 
 if (!isLoggedIn()) {
     jsonError('Authentication is required.', 401);
 }
 
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    jsonError('Only POST requests are allowed.', 405);
+}
+
+requireCsrfToken();
+
 $userId = getCurrentUserId();
 
-$reservationId = $_POST['reservation_id'] ?? $_GET['reservation_id'] ?? '';
+$reservationId = $_POST['reservation_id'] ?? '';
 
 if (!isPositiveInteger($reservationId)) {
     jsonError('Valid reservation ID is required.', 400);

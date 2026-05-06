@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../includes/auth_check.php';
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../helpers/reservation_helper.php';
+require_once __DIR__ . '/../includes/csrf.php';
 
 $userId = getCurrentUserId();
 
@@ -97,6 +98,8 @@ function statusFilterLabel(string $status): string
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    requireCsrfToken();
+
     $action = $_POST['action'] ?? '';
     $reservationId = filter_input(INPUT_POST, 'reservation_id', FILTER_VALIDATE_INT);
 
@@ -433,6 +436,7 @@ require_once __DIR__ . '/../includes/header.php';
                                     class="my-reservation-cancel-form js-cancel-reservation-form"
                                     data-reservation-id="<?= (int) $reservation['reservation_id'] ?>"
                                 >
+                                    <?= csrfInput() ?>
                                     <input
                                         type="hidden"
                                         name="reservation_id"

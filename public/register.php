@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../helpers/auth_helper.php';
 require_once __DIR__ . '/../helpers/validation_helper.php';
+require_once __DIR__ . '/../includes/csrf.php';
 
 if (isLoggedIn()) {
     if (isAdmin()) {
@@ -44,6 +45,7 @@ $departments = $pdo->query("
 ")->fetchAll();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    requireCsrfToken();
 
     $firstName = cleanInput($_POST['first_name'] ?? '');
     $lastName = cleanInput($_POST['last_name'] ?? '');
@@ -279,6 +281,7 @@ require_once __DIR__ . '/../includes/header.php';
                 <?php endif; ?>
 
                 <form method="POST" action="">
+                    <?= csrfInput() ?>
 
                     <div class="grid grid-2">
 

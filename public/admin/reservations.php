@@ -5,6 +5,7 @@ require_once __DIR__ . '/../../includes/admin_check.php';
 require_once __DIR__ . '/../../config/database.php';
 require_once __DIR__ . '/../../helpers/lab_helper.php';
 require_once __DIR__ . '/../../helpers/reservation_helper.php';
+require_once __DIR__ . '/../../includes/csrf.php';
 
 $adminUserId = getCurrentUserId();
 
@@ -61,6 +62,8 @@ function canAdminUpdateReservation(array $reservation): bool
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    requireCsrfToken();
+
     $action = $_POST['action'] ?? '';
     $reservationId = filter_input(INPUT_POST, 'reservation_id', FILTER_VALIDATE_INT);
     $newStatus = trim($_POST['new_status'] ?? '');
@@ -412,6 +415,7 @@ require_once __DIR__ . '/../../includes/header.php';
                                                 data-reservation-id="<?= (int) $reservation['reservation_id'] ?>"
                                                 style="margin:0;"
                                             >
+                                                <?= csrfInput() ?>
                                                 <input
                                                     type="hidden"
                                                     name="reservation_id"

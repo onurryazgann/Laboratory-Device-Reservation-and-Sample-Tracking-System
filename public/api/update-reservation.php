@@ -11,10 +11,13 @@ require_once __DIR__ . '/../../config/database.php';
 require_once __DIR__ . '/../../helpers/auth_helper.php';
 require_once __DIR__ . '/../../helpers/response_helper.php';
 require_once __DIR__ . '/../../helpers/reservation_helper.php';
+require_once __DIR__ . '/../../includes/csrf.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     jsonError('Only POST requests are allowed.', 405);
 }
+
+requireCsrfToken();
 
 if (!isLoggedIn()) {
     jsonError('You must be logged in to update a reservation.', 401);

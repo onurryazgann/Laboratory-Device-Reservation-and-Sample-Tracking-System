@@ -5,17 +5,24 @@ require_once __DIR__ . '/../../helpers/auth_helper.php';
 require_once __DIR__ . '/../../helpers/validation_helper.php';
 require_once __DIR__ . '/../../helpers/response_helper.php';
 require_once __DIR__ . '/../../helpers/reservation_helper.php';
+require_once __DIR__ . '/../../includes/csrf.php';
 
 if (!isLoggedIn()) {
     jsonError('Authentication is required.', 401);
 }
 
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    jsonError('Only POST requests are allowed.', 405);
+}
+
+requireCsrfToken();
+
 $userId = getCurrentUserId();
 
-$stationId = $_POST['station_id'] ?? $_GET['station_id'] ?? '';
-$startTimeInput = $_POST['start_time'] ?? $_GET['start_time'] ?? '';
-$endTimeInput = $_POST['end_time'] ?? $_GET['end_time'] ?? '';
-$purpose = trim($_POST['purpose'] ?? $_GET['purpose'] ?? '');
+$stationId = $_POST['station_id'] ?? '';
+$startTimeInput = $_POST['start_time'] ?? '';
+$endTimeInput = $_POST['end_time'] ?? '';
+$purpose = trim($_POST['purpose'] ?? '');
 
 if (!isPositiveInteger($stationId)) {
     jsonError('Valid station ID is required.', 400);

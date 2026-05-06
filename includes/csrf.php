@@ -53,3 +53,43 @@ function csrfClear(string $key = 'csrf_token'): void
 
     unset($_SESSION[$key]);
 }
+
+function csrfMetaTag(): string
+{
+    $token = csrfToken();
+
+    return '<meta name="csrf-token" content="' .
+        htmlspecialchars($token, ENT_QUOTES, 'UTF-8') .
+        '">';
+}
+
+function csrfTokenFromRequest(): string
+{
+    return $_POST['csrf_token']
+        ?? $_SERVER['HTTP_X_CSRF_TOKEN']
+        ?? '';
+}
+
+function requireCsrfToken(): void
+{
+    $token = csrfTokenFromRequest();
+
+    if (!csrfVerify($token)) {
+        http_response_code(403);
+
+        if (
+            isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+            strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest'
+        ) {
+            header('Content-Type: application/json; charset=utf-8');
+            echo json_encode([
+                'success' => false,
+                'message' => 'Invalid CSRF token. Please refresh the page and try again.',
+                'data' => []
+            ], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+
+        die('Invalid CSRF token. Please refresh the page and try again.');
+    }
+}
