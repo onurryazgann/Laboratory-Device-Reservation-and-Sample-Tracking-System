@@ -5,6 +5,7 @@ require_once __DIR__ . '/../../config/database.php';
 
 $pageTitle = 'Admin Dashboard';
 $pageCss = 'admin-dashboard.css';
+$pageJs = 'admin-dashboard.js';
 
 $totalUsers = (int) $pdo->query("SELECT COUNT(*) AS total FROM users")->fetch()['total'];
 $totalLabs = (int) $pdo->query("SELECT COUNT(*) AS total FROM laboratories")->fetch()['total'];
@@ -75,30 +76,30 @@ require_once __DIR__ . '/../../includes/header.php';
 
             <div class="card card-hover">
                 <h3>Total Users</h3>
-                <p class="admin-kpi-value">
+                <span data-dashboard-stat="total_users" class="admin-kpi-value">
                     <?= $totalUsers ?>
-                </p>
+                </span>
             </div>
 
             <div class="card card-hover">
                 <h3>Laboratories</h3>
-                <p class="admin-kpi-value">
+                <span data-dashboard-stat="total_labs" class="admin-kpi-value">
                     <?= $totalLabs ?>
-                </p>
+                </span>
             </div>
 
             <div class="card card-hover">
                 <h3>Stations</h3>
-                <p class="admin-kpi-value">
+                <span data-dashboard-stat="total_stations" class="admin-kpi-value">
                     <?= $totalStations ?>
-                </p>
+                </span>
             </div>
 
             <div class="card card-hover">
                 <h3>Active Reservations</h3>
-                <p class="admin-kpi-value">
+                <span data-dashboard-stat="active_reservations" class="admin-kpi-value">
                     <?= $totalActiveReservations ?>
-                </p>
+                </span>
             </div>
 
         </div>
@@ -153,7 +154,7 @@ require_once __DIR__ . '/../../includes/header.php';
                             </tr>
                         </thead>
 
-                        <tbody>
+                        <tbody id="latestReservationsBody">
 
                             <?php foreach ($latestReservations as $reservation): ?>
 

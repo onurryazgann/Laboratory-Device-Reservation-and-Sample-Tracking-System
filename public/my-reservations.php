@@ -10,6 +10,7 @@ syncExpiredReservations($pdo);
 
 $pageTitle = 'My Reservations';
 $pageCss = 'my-reservations.css';
+$pageJs = 'my-reservations.js';
 
 $statusFilter = $_GET['status'] ?? 'all';
 
@@ -223,7 +224,7 @@ require_once __DIR__ . '/../includes/header.php';
             <div class="card card-hover my-reservation-kpi-card">
                 <span class="my-reservation-kpi-label">Total</span>
 
-                <strong>
+                <strong data-reservation-kpi="total">
                     <?= (int) $totalCount ?>
                 </strong>
 
@@ -233,7 +234,7 @@ require_once __DIR__ . '/../includes/header.php';
             <div class="card card-hover my-reservation-kpi-card is-active">
                 <span class="my-reservation-kpi-label">Active</span>
 
-                <strong>
+                <strong data-reservation-kpi="active">
                     <?= (int) $activeCount ?>
                 </strong>
 
@@ -243,7 +244,7 @@ require_once __DIR__ . '/../includes/header.php';
             <div class="card card-hover my-reservation-kpi-card is-cancelled">
                 <span class="my-reservation-kpi-label">Cancelled</span>
 
-                <strong>
+                <strong data-reservation-kpi="cancelled">
                     <?= (int) $cancelledCount ?>
                 </strong>
 
@@ -253,7 +254,7 @@ require_once __DIR__ . '/../includes/header.php';
             <div class="card card-hover my-reservation-kpi-card is-completed">
                 <span class="my-reservation-kpi-label">Completed</span>
 
-                <strong>
+                <strong data-reservation-kpi="completed">
                     <?= (int) $completedCount ?>
                 </strong>
 
@@ -333,7 +334,7 @@ require_once __DIR__ . '/../includes/header.php';
                     $purpose = trim($reservation['purpose'] ?? '');
                     ?>
 
-                    <article class="card card-hover my-reservation-card">
+                    <article class="card card-hover my-reservation-card" data-reservation-card="<?= (int) $reservation['reservation_id'] ?>">
 
                         <div class="my-reservation-card-header">
 
@@ -345,7 +346,7 @@ require_once __DIR__ . '/../includes/header.php';
                                 </h3>
                             </div>
 
-                            <span class="badge <?= reservationBadgeClass($status) ?>">
+                            <span class="badge <?= reservationBadgeClass($status) ?>" data-reservation-status="<?= (int) $reservation['reservation_id'] ?>">
                                 <?= htmlspecialchars(reservationStatusLabel($status)) ?>
                             </span>
 
@@ -429,8 +430,8 @@ require_once __DIR__ . '/../includes/header.php';
                                 <form
                                     method="POST"
                                     action="my-reservations.php?status=<?= htmlspecialchars($statusFilter) ?>"
-                                    onsubmit="return confirm('Are you sure you want to cancel this reservation?');"
-                                    class="my-reservation-cancel-form"
+                                    class="my-reservation-cancel-form js-cancel-reservation-form"
+                                    data-reservation-id="<?= (int) $reservation['reservation_id'] ?>"
                                 >
                                     <input
                                         type="hidden"
@@ -443,6 +444,7 @@ require_once __DIR__ . '/../includes/header.php';
                                         name="action"
                                         value="cancel"
                                         class="btn btn-danger-soft"
+                                        id="cancel-btn-<?= (int) $reservation['reservation_id'] ?>"
                                     >
                                         Cancel
                                     </button>

@@ -539,7 +539,7 @@ require_once __DIR__ . '/../includes/header.php';
                     </div>
 
                     <div class="reservation-edit-actions">
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn btn-primary" id="updateReservationButton">
                             Save Changes
                         </button>
 

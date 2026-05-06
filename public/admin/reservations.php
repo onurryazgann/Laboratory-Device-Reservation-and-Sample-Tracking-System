@@ -12,6 +12,7 @@ syncExpiredReservations($pdo, (int) $adminUserId);
 
 $pageTitle = 'Reservation Management';
 $pageCss = 'admin.css';
+$pageJs = 'admin-reservations.js';
 
 $statusOptions = getReservationStatusOptions();
 $labs = getAllLabs($pdo);
@@ -299,7 +300,7 @@ require_once __DIR__ . '/../../includes/header.php';
                 <h3>Total Shown</h3>
 
                 <p style="font-size:36px; font-weight:700; margin:0; color:var(--color-primary);">
-                    <?= (int) $totalCount ?>
+                    <span data-admin-reservation-kpi="total"><?= (int) $totalCount ?></span>
                 </p>
             </div>
 
@@ -307,7 +308,7 @@ require_once __DIR__ . '/../../includes/header.php';
                 <h3>Active</h3>
 
                 <p style="font-size:36px; font-weight:700; margin:0;">
-                    <?= (int) $activeCount ?>
+                    <span data-admin-reservation-kpi="active"><?= (int) $activeCount ?></span>
                 </p>
             </div>
 
@@ -315,7 +316,7 @@ require_once __DIR__ . '/../../includes/header.php';
                 <h3>Cancelled</h3>
 
                 <p style="font-size:36px; font-weight:700; margin:0;">
-                    <?= (int) $cancelledCount ?>
+                    <span data-admin-reservation-kpi="cancelled"><?= (int) $cancelledCount ?></span>
                 </p>
             </div>
 
@@ -323,7 +324,7 @@ require_once __DIR__ . '/../../includes/header.php';
                 <h3>Completed</h3>
 
                 <p style="font-size:36px; font-weight:700; margin:0;">
-                    <?= (int) $completedCount ?>
+                    <span data-admin-reservation-kpi="completed"><?= (int) $completedCount ?></span>
                 </p>
             </div>
         </div>
@@ -351,7 +352,7 @@ require_once __DIR__ . '/../../includes/header.php';
 
                         <tbody>
                             <?php foreach ($reservations as $reservation): ?>
-                                <tr>
+                                <tr data-admin-reservation-row="<?= (int) $reservation['reservation_id'] ?>">
                                     <td>
                                         <?= htmlspecialchars($reservation['user_full_name']) ?>
                                     </td>
@@ -393,7 +394,7 @@ require_once __DIR__ . '/../../includes/header.php';
                                     </td>
 
                                     <td>
-                                        <span class="badge <?= adminReservationBadgeClass($reservation['status']) ?>">
+                                        <span data-admin-reservation-status="<?= (int) $reservation['reservation_id'] ?>" class="badge <?= adminReservationBadgeClass($reservation['status']) ?>">
                                             <?= htmlspecialchars(ucfirst($reservation['status'])) ?>
                                         </span>
                                     </td>
@@ -407,6 +408,8 @@ require_once __DIR__ . '/../../includes/header.php';
                                             <form
                                                 method="POST"
                                                 action="reservations.php?<?= htmlspecialchars(http_build_query($filters)) ?>"
+                                                class="js-admin-reservation-status-form"
+                                                data-reservation-id="<?= (int) $reservation['reservation_id'] ?>"
                                                 style="margin:0;"
                                             >
                                                 <input
@@ -436,7 +439,7 @@ require_once __DIR__ . '/../../includes/header.php';
                                                         name="action"
                                                         value="update_status"
                                                         class="btn btn-primary"
-                                                        onclick="return confirm('Are you sure you want to update this reservation status?');"
+                                                        id="admin-update-btn-<?= (int) $reservation['reservation_id'] ?>"
                                                     >
                                                         Update
                                                     </button>
