@@ -761,3 +761,184 @@
         max-width: calc(100vw - 32px);
     }
 }
+@media (min-width: 1200px) {
+    .admin-area .brand-text,
+    .admin-user .brand-text {
+      max-width: none;
+      overflow: visible;
+      text-overflow: clip;
+    }
+  
+    .admin-area .brand-text-full,
+    .admin-user .brand-text-full {
+      display: inline !important;
+    }
+  
+    .admin-area .brand-text-short,
+    .admin-user .brand-text-short {
+      display: none !important;
+    }
+  }
+  @media (min-width: 1024px) {
+    .nav-links > a:first-of-type {
+      display: none !important;
+    }
+  }
+/* =========================================================
+   CLICKABLE COMPACT PROFILE LINK FIX
+   Profil alanı gerçek link olarak çalışsın.
+   ========================================================= */
+
+   .nav-links .nav-profile-link {
+    position: relative;
+    z-index: 5;
+    min-height: 44px;
+    max-width: 170px;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 14px;
+    border-radius: 999px;
+    background: var(--color-navbar-chip);
+    color: var(--color-navbar-text);
+    font-weight: 800;
+    text-decoration: none;
+    cursor: pointer;
+    pointer-events: auto;
+    flex-shrink: 0;
+  }
+  
+  .nav-links .nav-profile-link:hover,
+  .nav-links .nav-profile-link.active {
+    color: var(--color-navbar-text);
+    background: var(--color-navbar-active);
+    border-color: var(--color-navbar-border);
+  }
+  
+  .nav-profile-icon {
+    width: 22px;
+    height: 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 15px;
+    line-height: 1;
+    pointer-events: none;
+  }
+  
+  .nav-profile-name {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  
+  /* Eski kullanıcı kutusu tamamen kapalı kalsın */
+  .nav-user-chip {
+    display: none !important;
+  }
+  
+  /* Desktop/web görünümünde kompakt */
+  @media (min-width: 1024px) {
+    .nav-links .nav-profile-link {
+      max-width: 155px;
+    }
+  }
+  
+  /* Mobil görünüm korunur */
+  @media (max-width: 1023px) {
+    .nav-links .nav-profile-link {
+      width: 100%;
+      max-width: none;
+      justify-content: flex-start;
+      min-height: 44px;
+      background: transparent;
+      color: var(--color-text);
+    }
+  
+    .nav-links .nav-profile-link:hover,
+    .nav-links .nav-profile-link.active {
+      color: var(--color-text);
+      background: rgba(var(--color-primary-rgb), 0.08);
+    }
+  }
+  /* =========================================================
+   LOGOUT ICON RESPONSIVE FIX
+   Desktop/web: sadece logout ikonu görünür.
+   Mobil: ikon + Logout yazısı görünür.
+   ========================================================= */
+
+.nav-links .nav-action.danger.nav-logout-link {
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+    padding: 0;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  
+  .nav-logout-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: currentColor;
+    line-height: 1;
+    pointer-events: none;
+  }
+  
+  .nav-logout-icon svg {
+    display: block;
+    width: 18px;
+    height: 18px;
+  }
+  
+  .nav-logout-text {
+    display: none;
+    pointer-events: none;
+  }
+  
+  /* Mobilde logout yazısı geri gelsin, yanına ikon eklensin */
+  @media (max-width: 1023px) {
+    .nav-links .nav-action.danger.nav-logout-link {
+      width: 100%;
+      min-width: 0;
+      height: auto;
+      min-height: 44px;
+      padding: 0 14px;
+      justify-content: flex-start !important;
+      gap: 10px;
+      border-radius: 14px;
+    }
+  
+    .nav-logout-text {
+      display: inline;
+    }
+  }
+  /* =========================================================
+   GUEST DESKTOP BRAND FIX
+   Login yapılmadan önce web görünümünde her zaman site adı görünsün.
+   Mobil davranış korunur.
+   ========================================================= */
+
+@media (min-width: 1024px) {
+    .guest-user .brand-text {
+      max-width: none;
+      overflow: visible;
+      text-overflow: clip;
+    }
+  
+    .guest-user .brand-text-full {
+      display: inline !important;
+    }
+  
+    .guest-user .brand-text-short {
+      display: none !important;
+    }
+  }

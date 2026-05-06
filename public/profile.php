@@ -193,13 +193,13 @@ require_once __DIR__ . '/../includes/header.php';
         <div class="profile-overview-grid" style="margin-bottom:32px;">
 
             <div class="card card-hover profile-overview-card">
-                <span class="profile-overview-label">User ID</span>
+                <span class="profile-overview-label">Member Since</span>
 
                 <strong>
-                    #<?= (int) $profile['user_id'] ?>
+                    <?= htmlspecialchars(formatProfileDateTime($profile['created_at'] ?? null), ENT_QUOTES, 'UTF-8') ?>
                 </strong>
 
-                <p>System account identifier</p>
+                <p>Account creation date</p>
             </div>
 
             <div class="card card-hover profile-overview-card is-role">

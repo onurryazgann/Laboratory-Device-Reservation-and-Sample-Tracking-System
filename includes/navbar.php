@@ -176,31 +176,34 @@ if ($currentPageTitle === APP_NAME) {
                         </details>
 
                     <?php endif; ?>
-
                     <!-- ACCOUNT LINKS -->
                     <a
-                        class="<?= navLinkActive('/public/profile.php') ?>"
-                        href="<?= BASE_URL ?>profile.php"
-                    >
-                        Profile
+                        class="nav-profile-link <?= navLinkActive('/public/profile.php') ?>"
+                        href="<?= htmlspecialchars(BASE_URL . 'profile.php', ENT_QUOTES, 'UTF-8') ?>"
+                        title="<?= htmlspecialchars($userName, ENT_QUOTES, 'UTF-8') ?>"
+                        aria-label="Profile: <?= htmlspecialchars($userName, ENT_QUOTES, 'UTF-8') ?>"
+                        >
+                        <span class="nav-profile-icon" aria-hidden="true">👤</span>
+                        <span class="nav-profile-name">
+                            <?= htmlspecialchars($userName, ENT_QUOTES, 'UTF-8') ?>
+                        </span>
                     </a>
-
-                    <div class="nav-user-chip" title="<?= htmlspecialchars($userName) ?>">
-                        <span class="nav-user-name">
-                            <?= htmlspecialchars($userName) ?>
-                        </span>
-
-                        <span class="nav-user-role">
-                            <?= htmlspecialchars($userRole) ?>
-                        </span>
-                    </div>
-
                     <a
-                        class="nav-action danger"
-                        href="<?= BASE_URL ?>logout.php"
-                    >
-                        Logout
-                    </a>
+    class="nav-action danger nav-logout-link"
+    href="<?= htmlspecialchars(BASE_URL . 'logout.php', ENT_QUOTES, 'UTF-8') ?>"
+    title="Logout"
+    aria-label="Logout"
+>
+    <span class="nav-logout-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 6H6.75C5.78 6 5 6.78 5 7.75V16.25C5 17.22 5.78 18 6.75 18H10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M14 8L18 12L14 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M18 12H10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+    </span>
+
+    <span class="nav-logout-text">Logout</span>
+</a>
 
                 <?php endif; ?>
 

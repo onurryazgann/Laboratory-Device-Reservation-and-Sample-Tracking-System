@@ -663,3 +663,19 @@ function getStationComputedAvailability(PDO $pdo, int $stationId): array
         'current_reservation' => null,
     ];
 }
+function formatStationTypeName(?string $typeName): string
+{
+    $labels = [
+        'computer_desk' => 'Computer Desk',
+        'network_desk' => 'Network Desk',
+        'electronics_bench' => 'Electronics Bench',
+        'machine_station' => 'Machine Station',
+        'general_study_desk' => 'General Study Desk',
+    ];
+
+    if ($typeName === null || trim($typeName) === '') {
+        return 'Unknown Type';
+    }
+
+    return $labels[$typeName] ?? ucwords(str_replace('_', ' ', $typeName));
+}
