@@ -1,7 +1,13 @@
 /* ===== GLOBAL CONTAINER ===== */
 .container {
-  width: min(1280px, calc(100% - var(--space-xl) - var(--space-xl)));
+  width: min(var(--layout-max-width), calc(100% - (var(--layout-gutter) * 2)));
   margin: 0 auto;
+}
+
+.container-wide {
+  width: min(var(--layout-wide-max-width), calc(100% - (var(--layout-gutter) * 2)));
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* ===== OVERFLOW SAFETY ===== */
@@ -25,7 +31,8 @@ body {
 
 /* ===== PAGE STRUCTURE ===== */
 .page-section {
-  padding: var(--space-xxl) 0;
+  padding-top: var(--layout-section-y);
+  padding-bottom: calc(var(--layout-section-y) + 12px);
 }
 
 .page-section-sm {
@@ -96,7 +103,7 @@ body {
 
 @media (max-width: 768px) {
   .container {
-    width: min(100%, calc(100% - var(--space-md) - var(--space-md)));
+    width: min(100%, calc(100% - (var(--layout-gutter) * 2)));
   }
 
   .grid-2,

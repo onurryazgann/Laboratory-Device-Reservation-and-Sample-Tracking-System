@@ -57,7 +57,7 @@
 
 .topbar-shell {
     width: 100%;
-    max-width: 1240px;
+    max-width: var(--layout-max-width);
     margin: 0 auto;
 }
 
@@ -917,13 +917,13 @@
 .topbar-shell,
 .main-content {
     width: 100%;
-    max-width: 1240px;
+    max-width: var(--layout-max-width);
     margin-left: auto;
     margin-right: auto;
 }
 
 .main-content {
-    padding: 18px 24px 70px !important;
+    padding: 18px var(--layout-gutter) 70px !important;
 }
 
 @media (max-width: 768px) {
