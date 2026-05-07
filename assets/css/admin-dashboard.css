@@ -24,14 +24,14 @@
     overflow: hidden;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(247, 251, 255, 0.96));
     border: 1px solid rgba(37, 99, 235, 0.10);
-    box-shadow: 0 24px 70px rgba(15, 23, 42, 0.10);
+    box-shadow: var(--shadow-soft);
     transform-style: preserve-3d;
     will-change: transform;
     transition: transform 0.18s ease, box-shadow 0.25s ease;
 }
 
 .admindash-hero:hover {
-    box-shadow: 0 34px 80px rgba(15, 23, 42, 0.14);
+    box-shadow: var(--shadow-elevated);
 }
 
 .admindash-hero::before {
@@ -172,7 +172,7 @@
     border-radius: 32px;
     background: linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(239, 249, 255, 0.96));
     border: 1px solid rgba(37, 99, 235, 0.12);
-    box-shadow: 0 26px 70px rgba(15, 23, 42, 0.14);
+    box-shadow: var(--shadow-soft);
 }
 
 .admindash-mini-header {
@@ -315,7 +315,7 @@
     color: #132238;
     background: rgba(255, 255, 255, 0.94);
     border: 1px solid rgba(37, 99, 235, 0.12);
-    box-shadow: 0 16px 34px rgba(15, 23, 42, 0.12);
+    box-shadow: var(--shadow-elevated);
     font-size: 0.82rem;
     font-weight: 900;
     animation: admindashFloatChip 4.5s ease-in-out infinite;
@@ -369,7 +369,7 @@
     border-radius: 28px;
     background: linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(248, 251, 255, 0.96));
     border: 1px solid rgba(37, 99, 235, 0.10);
-    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.06);
+    box-shadow: var(--shadow-card);
     transition:
         transform 0.25s ease,
         box-shadow 0.25s ease,
@@ -379,7 +379,7 @@
 .admindash-kpi-card:hover {
     transform: translateY(-5px);
     border-color: rgba(37, 99, 235, 0.18);
-    box-shadow: 0 26px 58px rgba(15, 23, 42, 0.10);
+    box-shadow: var(--shadow-elevated);
 }
 
 .admindash-kpi-card::after {
@@ -447,7 +447,7 @@
     border-radius: 32px;
     background: linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(248, 251, 255, 0.96));
     border: 1px solid rgba(37, 99, 235, 0.10);
-    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.06);
+    box-shadow: var(--shadow-card);
 }
 
 .admindash-section-header {
@@ -947,14 +947,14 @@
     overflow: hidden;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(247, 251, 255, 0.96));
     border: 1px solid rgba(37, 99, 235, 0.10);
-    box-shadow: 0 24px 70px rgba(15, 23, 42, 0.10);
+    box-shadow: var(--shadow-soft);
     transform-style: preserve-3d;
     will-change: transform;
     transition: transform 0.18s ease, box-shadow 0.25s ease;
 }
 
 .adminusers-hero:hover {
-    box-shadow: 0 34px 80px rgba(15, 23, 42, 0.14);
+    box-shadow: var(--shadow-elevated);
 }
 
 .adminusers-hero::before {
@@ -1092,7 +1092,7 @@
     border-radius: 32px;
     background: linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(239, 249, 255, 0.96));
     border: 1px solid rgba(37, 99, 235, 0.12);
-    box-shadow: 0 26px 70px rgba(15, 23, 42, 0.14);
+    box-shadow: var(--shadow-soft);
 }
 
 .adminusers-mini-header {
@@ -1237,7 +1237,7 @@
     color: #132238;
     background: rgba(255, 255, 255, 0.94);
     border: 1px solid rgba(37, 99, 235, 0.12);
-    box-shadow: 0 16px 34px rgba(15, 23, 42, 0.12);
+    box-shadow: var(--shadow-elevated);
     font-size: 0.82rem;
     font-weight: 900;
     animation: adminusersFloatChip 4.5s ease-in-out infinite;

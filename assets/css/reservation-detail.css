@@ -98,7 +98,7 @@
 
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(247, 251, 255, 0.96));
     border: 1px solid rgba(37, 99, 235, 0.10);
-    box-shadow: 0 24px 70px rgba(15, 23, 42, 0.10);
+    box-shadow: var(--shadow-soft);
 
     transform-style: preserve-3d;
     will-change: transform;
@@ -106,7 +106,7 @@
 }
 
 .detail-hero:hover {
-    box-shadow: 0 34px 80px rgba(15, 23, 42, 0.14);
+    box-shadow: var(--shadow-elevated);
 }
 
 .detail-hero::before {
@@ -188,7 +188,7 @@
     border-radius: 30px;
     background: #ffffff;
     border: 1px solid rgba(37, 99, 235, 0.10);
-    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+    box-shadow: var(--shadow-card);
 }
 
 .detail-status-header {
@@ -282,7 +282,7 @@
 
     background: linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(248, 251, 255, 0.96));
     border: 1px solid rgba(37, 99, 235, 0.10);
-    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.06);
+    box-shadow: var(--shadow-card);
 }
 
 .detail-time-card::after {
@@ -336,7 +336,7 @@
 
     background: linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(248, 251, 255, 0.96));
     border: 1px solid rgba(37, 99, 235, 0.10);
-    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.06);
+    box-shadow: var(--shadow-card);
 }
 
 .detail-section-header {

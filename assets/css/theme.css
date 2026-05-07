@@ -57,6 +57,12 @@
   --shadow-dropdown: 0 20px 50px rgba(15, 23, 42, 0.22);
   --shadow-mobile-menu: 0 22px 55px rgba(15, 23, 42, 0.22);
 
+  --shadow-soft: 0 6px 20px rgba(15, 23, 42, 0.04);
+  --shadow-card: 0 4px 14px rgba(15, 23, 42, 0.05);
+  --shadow-elevated: 0 8px 26px rgba(15, 23, 42, 0.08);
+  --shadow-button: 0 8px 20px rgba(37, 99, 235, 0.18);
+  --shadow-button-hover: 0 12px 28px rgba(37, 99, 235, 0.24);
+
   --space-xs: 4px;
   --space-sm: 8px;
   --space-md: 16px;
@@ -66,9 +72,9 @@
 
   --font-main: Inter, Roboto, "Segoe UI", Arial, sans-serif;
 
-  --layout-max-width: 1520px;
-  --layout-wide-max-width: 1640px;
-  --layout-gutter: clamp(16px, 3vw, 48px);
+  --layout-max-width: 1600px;
+  --layout-wide-max-width: 1720px;
+  --layout-gutter: clamp(14px, 2vw, 36px);
   --layout-section-y: clamp(18px, 3vw, 36px);
 }
 
