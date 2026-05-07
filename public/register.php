@@ -59,6 +59,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'] ?? '';
     $confirmPassword = $_POST['confirm_password'] ?? '';
 
+    // CSRF token validation
+    if (!csrfVerify(csrfTokenFromRequest())) {
+        $errors[] = 'Form security token expired. Please refresh the page and try again.';
+    }
+
     if (isEmptyValue($firstName)) {
         $errors[] = 'First name is required.';
     }
@@ -317,6 +322,7 @@ require_once __DIR__ . '/../includes/header.php';
             <?php endif; ?>
 
             <form method="POST" action="" class="auth-form" novalidate>
+                    <?= csrfInput() ?>
 
                 <div class="auth-form-grid">
 

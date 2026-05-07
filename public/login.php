@@ -27,60 +27,62 @@ if (isset($_GET['registered']) && $_GET['registered'] === '1') {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    requireCsrfToken();
-
-    $email = trim($_POST['email'] ?? '');
-    $password = $_POST['password'] ?? '';
-
-    if ($email === '' || $password === '') {
-        $error = 'Email and password are required.';
+    if (!csrfVerify(csrfTokenFromRequest())) {
+        $error = 'Form security token expired. Please refresh the page and try again.';
     } else {
-        $stmt = $pdo->prepare("
-            SELECT
-                u.user_id,
-                u.role_id,
-                u.first_name,
-                u.last_name,
-                u.email,
-                u.password_hash,
-                u.password_salt,
-                u.is_active,
-                r.role_name
-            FROM users u
-            INNER JOIN roles r
-                ON u.role_id = r.role_id
-            WHERE u.email = :email
-            LIMIT 1
-        ");
+        $email = trim($_POST['email'] ?? '');
+        $password = $_POST['password'] ?? '';
 
-        $stmt->execute([
-            ':email' => $email
-        ]);
-
-        $user = $stmt->fetch();
-
-        if (!$user) {
-            $error = 'Invalid email or password.';
-        } elseif ((int) $user['is_active'] !== 1) {
-            $error = 'This account is not active.';
-        } elseif (!verifyPassword($password, $user['password_salt'], $user['password_hash'])) {
-            $error = 'Invalid email or password.';
+        if ($email === '' || $password === '') {
+            $error = 'Email and password are required.';
         } else {
-            session_regenerate_id(true);
+            $stmt = $pdo->prepare("
+                SELECT
+                    u.user_id,
+                    u.role_id,
+                    u.first_name,
+                    u.last_name,
+                    u.email,
+                    u.password_hash,
+                    u.password_salt,
+                    u.is_active,
+                    r.role_name
+                FROM users u
+                INNER JOIN roles r
+                    ON u.role_id = r.role_id
+                WHERE u.email = :email
+                LIMIT 1
+            ");
 
-            $_SESSION['user_id'] = (int) $user['user_id'];
-            $_SESSION['role_id'] = (int) $user['role_id'];
-            $_SESSION['role_name'] = $user['role_name'];
-            $_SESSION['full_name'] = $user['first_name'] . ' ' . $user['last_name'];
-            $_SESSION['email'] = $user['email'];
+            $stmt->execute([
+                ':email' => $email
+            ]);
 
-            if ($user['role_name'] === 'admin') {
-                header('Location: admin/index.php');
+            $user = $stmt->fetch();
+
+            if (!$user) {
+                $error = 'Invalid email or password.';
+            } elseif ((int) $user['is_active'] !== 1) {
+                $error = 'This account is not active.';
+            } elseif (!verifyPassword($password, $user['password_salt'], $user['password_hash'])) {
+                $error = 'Invalid email or password.';
             } else {
-                header('Location: dashboard.php');
-            }
+                session_regenerate_id(true);
 
-            exit;
+                $_SESSION['user_id'] = (int) $user['user_id'];
+                $_SESSION['role_id'] = (int) $user['role_id'];
+                $_SESSION['role_name'] = $user['role_name'];
+                $_SESSION['full_name'] = $user['first_name'] . ' ' . $user['last_name'];
+                $_SESSION['email'] = $user['email'];
+
+                if ($user['role_name'] === 'admin') {
+                    header('Location: admin/index.php');
+                } else {
+                    header('Location: dashboard.php');
+                }
+
+                exit;
+            }
         }
     }
 }
@@ -184,6 +186,7 @@ require_once __DIR__ . '/../includes/header.php';
             <?php endif; ?>
 
             <form method="POST" action="" class="auth-form" novalidate>
+                <?= csrfInput() ?>
 
                 <div class="auth-form-group">
                     <label for="email">Email Address</label>
