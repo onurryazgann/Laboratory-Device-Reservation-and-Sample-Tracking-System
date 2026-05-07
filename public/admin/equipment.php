@@ -7,6 +7,50 @@ require_once __DIR__ . '/../../helpers/lab_helper.php';
 $pageTitle = 'Admin Equipment';
 $pageCss = 'admin-equipment.css';
 
+if (!function_exists('adminEquipmentH')) {
+    function adminEquipmentH($value)
+    {
+        return htmlspecialchars((string) ($value ?? ''), ENT_QUOTES, 'UTF-8');
+    }
+}
+
+if (!function_exists('selectedEquipmentAdminOption')) {
+    function selectedEquipmentAdminOption($currentValue, $expectedValue): string
+    {
+        return (string) $currentValue === (string) $expectedValue ? 'selected' : '';
+    }
+}
+
+if (!function_exists('adminEquipmentStatusClass')) {
+    function adminEquipmentStatusClass(string $status): string
+    {
+        if ($status === 'available') {
+            return 'is-available';
+        }
+
+        if ($status === 'in_use') {
+            return 'is-in-use';
+        }
+
+        if ($status === 'maintenance') {
+            return 'is-maintenance';
+        }
+
+        if ($status === 'retired') {
+            return 'is-retired';
+        }
+
+        return 'is-default';
+    }
+}
+
+if (!function_exists('adminEquipmentStatusLabel')) {
+    function adminEquipmentStatusLabel(string $status): string
+    {
+        return ucwords(str_replace('_', ' ', $status));
+    }
+}
+
 $filters = [
     'q' => trim($_GET['q'] ?? ''),
     'lab_id' => $_GET['lab_id'] ?? '',
@@ -15,7 +59,25 @@ $filters = [
     'status' => $_GET['status'] ?? ''
 ];
 
+$allowedStatuses = ['available', 'in_use', 'maintenance', 'retired'];
+
+if ($filters['lab_id'] !== '' && !filter_var($filters['lab_id'], FILTER_VALIDATE_INT)) {
+    $filters['lab_id'] = '';
+}
+
+if ($filters['station_id'] !== '' && !filter_var($filters['station_id'], FILTER_VALIDATE_INT)) {
+    $filters['station_id'] = '';
+}
+
+if ($filters['status'] !== '' && !in_array($filters['status'], $allowedStatuses, true)) {
+    $filters['status'] = '';
+}
+
 $labs = getAllLabs($pdo);
+
+if (!is_array($labs)) {
+    $labs = [];
+}
 
 $stations = $pdo->query("
     SELECT
@@ -30,24 +92,28 @@ $stations = $pdo->query("
     ORDER BY l.lab_code ASC, w.station_code ASC
 ")->fetchAll();
 
+if (!is_array($stations)) {
+    $stations = [];
+}
+
 $categories = $pdo->query("
     SELECT DISTINCT category
     FROM equipment_types
+    WHERE category IS NOT NULL AND category <> ''
     ORDER BY category ASC
 ")->fetchAll();
 
-$allowedStatuses = ['available', 'in_use', 'maintenance', 'retired'];
-
-if ($filters['lab_id'] !== '' && !filter_var($filters['lab_id'], FILTER_VALIDATE_INT)) {
-    $filters['lab_id'] = '';
+if (!is_array($categories)) {
+    $categories = [];
 }
 
-if ($filters['station_id'] !== '' && !filter_var($filters['station_id'], FILTER_VALIDATE_INT)) {
-    $filters['station_id'] = '';
-}
+$categoryValues = array_map(
+    static fn($category) => (string) ($category['category'] ?? ''),
+    $categories
+);
 
-if ($filters['status'] !== '' && !in_array($filters['status'], $allowedStatuses, true)) {
-    $filters['status'] = '';
+if ($filters['category'] !== '' && !in_array($filters['category'], $categoryValues, true)) {
+    $filters['category'] = '';
 }
 
 $sql = "
@@ -140,85 +206,261 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute($params);
 $equipmentList = $stmt->fetchAll();
 
-function selectedEquipmentAdminOption($currentValue, $expectedValue): string
-{
-    return (string) $currentValue === (string) $expectedValue ? 'selected' : '';
+if (!is_array($equipmentList)) {
+    $equipmentList = [];
+}
+
+$totalEquipment = count($equipmentList);
+$availableEquipment = 0;
+$inUseEquipment = 0;
+$maintenanceEquipment = 0;
+$retiredEquipment = 0;
+$linkedStations = [];
+
+foreach ($equipmentList as $equipment) {
+    $status = $equipment['status'] ?? '';
+
+    if ($status === 'available') {
+        $availableEquipment++;
+    } elseif ($status === 'in_use') {
+        $inUseEquipment++;
+    } elseif ($status === 'maintenance') {
+        $maintenanceEquipment++;
+    } elseif ($status === 'retired') {
+        $retiredEquipment++;
+    }
+
+    if (!empty($equipment['station_id'])) {
+        $linkedStations[(string) $equipment['station_id']] = true;
+    }
+}
+
+$linkedStationCount = count($linkedStations);
+
+$itemsPerPage = 8;
+$currentPage = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
+
+if (!$currentPage || $currentPage < 1) {
+    $currentPage = 1;
+}
+
+$totalPages = max((int) ceil($totalEquipment / $itemsPerPage), 1);
+
+if ($currentPage > $totalPages) {
+    $currentPage = $totalPages;
+}
+
+$offset = ($currentPage - 1) * $itemsPerPage;
+$pagedEquipment = array_slice($equipmentList, $offset, $itemsPerPage);
+
+$startItem = $totalEquipment > 0 ? $offset + 1 : 0;
+$endItem = $totalEquipment > 0 ? min($offset + count($pagedEquipment), $totalEquipment) : 0;
+
+$paginationFilters = [];
+
+foreach ($filters as $key => $value) {
+    if ($value !== '' && $value !== null) {
+        $paginationFilters[$key] = $value;
+    }
 }
 
 require_once __DIR__ . '/../../includes/header.php';
 
 ?>
 
-<section class="page-section">
+<section class="adminequipment-page">
     <div class="container">
 
         <!-- HERO -->
-        <div class="admin-card">
+        <div class="adminequipment-hero">
 
-            <div class="admin-page-header">
+            <div class="adminequipment-hero-content">
 
-                <div>
-                    <h1 class="admin-page-title">
-                        Equipment Asset Governance Center
-                    </h1>
+                <span class="adminequipment-eyebrow">
+                    Equipment Governance
+                </span>
 
-                    <p class="section-subtitle">
-                        Monitor inventory ecosystem, manage physical assets,
-                        and oversee equipment lifecycle across laboratories.
-                    </p>
+                <h1>
+                    Equipment Asset Operations Center
+                </h1>
+
+                <p>
+                    Monitor physical inventory, review asset lifecycle state,
+                    and keep laboratory devices aligned with station-based reservation workflows.
+                </p>
+
+                <div class="adminequipment-hero-actions">
+                    <a href="equipment-form.php" class="adminequipment-btn adminequipment-btn-primary">
+                        + Add Equipment
+                    </a>
+
+                    <a href="stations.php" class="adminequipment-btn adminequipment-btn-light">
+                        Manage Stations
+                    </a>
+                </div>
+
+            </div>
+
+            <div class="adminequipment-hero-visual">
+
+                <div class="adminequipment-mini-panel">
+
+                    <div class="adminequipment-mini-header">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+
+                    <div class="adminequipment-mini-body">
+
+                        <div class="adminequipment-mini-title">
+                            <div>
+                                <small>Asset Lifecycle</small>
+                                <strong>Equipment Overview</strong>
+                            </div>
+
+                            <span class="adminequipment-live-badge">
+                                Live
+                            </span>
+                        </div>
+
+                        <div class="adminequipment-mini-list">
+
+                            <div class="adminequipment-mini-item is-active">
+                                <span>01</span>
+                                <div>
+                                    <strong><?= (int) $availableEquipment ?> Available</strong>
+                                    <small>Assets ready for laboratory use.</small>
+                                </div>
+                            </div>
+
+                            <div class="adminequipment-mini-item">
+                                <span>02</span>
+                                <div>
+                                    <strong><?= (int) $maintenanceEquipment ?> Maintenance</strong>
+                                    <small>Assets requiring service or inspection.</small>
+                                </div>
+                            </div>
+
+                            <div class="adminequipment-mini-item">
+                                <span>03</span>
+                                <div>
+                                    <strong><?= (int) $linkedStationCount ?> Linked Stations</strong>
+                                    <small>Stations with equipment in this view.</small>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="adminequipment-floating-chip adminequipment-chip-one">
+                        <span>✓</span>
+                        Inventory Ready
+                    </div>
+
+                    <div class="adminequipment-floating-chip adminequipment-chip-two">
+                        <span>↗</span>
+                        Asset Tracking
+                    </div>
+
                 </div>
 
             </div>
 
         </div>
 
+        <!-- KPI -->
+        <div class="adminequipment-kpi-grid">
+
+            <div class="adminequipment-kpi-card">
+                <span>Total Equipment</span>
+                <strong><?= (int) $totalEquipment ?></strong>
+                <p>Equipment records shown after active filters are applied.</p>
+            </div>
+
+            <div class="adminequipment-kpi-card is-success">
+                <span>Available</span>
+                <strong><?= (int) $availableEquipment ?></strong>
+                <p>Assets currently ready for use in laboratories or stations.</p>
+            </div>
+
+            <div class="adminequipment-kpi-card is-warning">
+                <span>Maintenance</span>
+                <strong><?= (int) $maintenanceEquipment ?></strong>
+                <p>Equipment records marked as temporarily unavailable.</p>
+            </div>
+
+            <div class="adminequipment-kpi-card is-error">
+                <span>Retired</span>
+                <strong><?= (int) $retiredEquipment ?></strong>
+                <p>Assets removed from normal operational usage.</p>
+            </div>
+
+        </div>
+
         <!-- FILTERS -->
-        <div class="admin-card admin-filters">
+        <div class="adminequipment-filter-card">
 
-            <h2>Filters</h2>
+            <div class="adminequipment-section-header">
+                <div>
+                    <span class="adminequipment-section-label">
+                        Search & Filter
+                    </span>
 
-            <form method="GET" action="">
+                    <h2>
+                        Find an equipment record.
+                    </h2>
 
-                <div class="grid grid-2">
+                    <p>
+                        Search by asset code, equipment name, brand, model, laboratory or station.
+                    </p>
+                </div>
 
-                    <div class="form-group">
-                        <label for="q" class="form-label">Search</label>
+                <span class="adminequipment-count-pill">
+                    <?= (int) $totalEquipment ?> results
+                </span>
+            </div>
+
+            <form method="GET" action="" class="adminequipment-filter-form">
+
+                <div class="adminequipment-filter-grid">
+
+                    <div class="adminequipment-field">
+                        <label for="q">Search</label>
                         <input
                             type="text"
                             id="q"
                             name="q"
-                            class="form-control"
-                            value="<?= htmlspecialchars($filters['q']) ?>"
+                            value="<?= adminEquipmentH($filters['q']) ?>"
                             placeholder="Asset, equipment, brand, model or station"
                         >
                     </div>
 
-                    <div class="form-group">
-                        <label for="category" class="form-label">Category</label>
+                    <div class="adminequipment-field">
+                        <label for="category">Category</label>
 
-                        <select id="category" name="category" class="form-control">
+                        <select id="category" name="category">
                             <option value="">All categories</option>
 
                             <?php foreach ($categories as $category): ?>
+                                <?php $categoryValue = (string) ($category['category'] ?? ''); ?>
+
                                 <option
-                                    value="<?= htmlspecialchars($category['category']) ?>"
-                                    <?= selectedEquipmentAdminOption($filters['category'], $category['category']) ?>
+                                    value="<?= adminEquipmentH($categoryValue) ?>"
+                                    <?= selectedEquipmentAdminOption($filters['category'], $categoryValue) ?>
                                 >
-                                    <?= htmlspecialchars($category['category']) ?>
+                                    <?= adminEquipmentH(ucwords(str_replace('_', ' ', $categoryValue))) ?>
                                 </option>
                             <?php endforeach; ?>
 
                         </select>
                     </div>
 
-                </div>
+                    <div class="adminequipment-field">
+                        <label for="lab_id">Laboratory</label>
 
-                <div class="grid grid-3">
-
-                    <div class="form-group">
-                        <label for="lab_id" class="form-label">Laboratory</label>
-
-                        <select id="lab_id" name="lab_id" class="form-control">
+                        <select id="lab_id" name="lab_id">
                             <option value="">All laboratories</option>
 
                             <?php foreach ($labs as $lab): ?>
@@ -226,17 +468,17 @@ require_once __DIR__ . '/../../includes/header.php';
                                     value="<?= (int) $lab['lab_id'] ?>"
                                     <?= selectedEquipmentAdminOption($filters['lab_id'], $lab['lab_id']) ?>
                                 >
-                                    <?= htmlspecialchars($lab['lab_code'] . ' - ' . $lab['lab_name']) ?>
+                                    <?= adminEquipmentH(($lab['lab_code'] ?? '-') . ' - ' . ($lab['lab_name'] ?? '-')) ?>
                                 </option>
                             <?php endforeach; ?>
 
                         </select>
                     </div>
 
-                    <div class="form-group">
-                        <label for="station_id" class="form-label">Station</label>
+                    <div class="adminequipment-field">
+                        <label for="station_id">Station</label>
 
-                        <select id="station_id" name="station_id" class="form-control">
+                        <select id="station_id" name="station_id">
                             <option value="">All stations</option>
 
                             <?php foreach ($stations as $station): ?>
@@ -244,10 +486,10 @@ require_once __DIR__ . '/../../includes/header.php';
                                     value="<?= (int) $station['station_id'] ?>"
                                     <?= selectedEquipmentAdminOption($filters['station_id'], $station['station_id']) ?>
                                 >
-                                    <?= htmlspecialchars(
-                                        $station['lab_code'] . ' - ' .
-                                        $station['station_code'] . ' - ' .
-                                        $station['station_name']
+                                    <?= adminEquipmentH(
+                                        ($station['lab_code'] ?? '-') . ' - ' .
+                                        ($station['station_code'] ?? '-') . ' - ' .
+                                        ($station['station_name'] ?? '-')
                                     ) ?>
                                 </option>
                             <?php endforeach; ?>
@@ -255,18 +497,18 @@ require_once __DIR__ . '/../../includes/header.php';
                         </select>
                     </div>
 
-                    <div class="form-group">
-                        <label for="status" class="form-label">Status</label>
+                    <div class="adminequipment-field">
+                        <label for="status">Status</label>
 
-                        <select id="status" name="status" class="form-control">
+                        <select id="status" name="status">
                             <option value="">All statuses</option>
 
                             <?php foreach ($allowedStatuses as $status): ?>
                                 <option
-                                    value="<?= htmlspecialchars($status) ?>"
+                                    value="<?= adminEquipmentH($status) ?>"
                                     <?= selectedEquipmentAdminOption($filters['status'], $status) ?>
                                 >
-                                    <?= htmlspecialchars(ucfirst($status)) ?>
+                                    <?= adminEquipmentH(adminEquipmentStatusLabel($status)) ?>
                                 </option>
                             <?php endforeach; ?>
 
@@ -275,44 +517,54 @@ require_once __DIR__ . '/../../includes/header.php';
 
                 </div>
 
-                <div class="admin-actions">
-
-                    <button type="submit" class="btn btn-primary">
+                <div class="adminequipment-filter-actions">
+                    <button type="submit" class="adminequipment-btn adminequipment-btn-primary">
                         Apply Filters
                     </button>
 
-                    <a href="equipment.php" class="btn btn-outline">
+                    <a href="equipment.php" class="adminequipment-btn adminequipment-btn-outline">
                         Clear Filters
                     </a>
-
                 </div>
 
             </form>
 
         </div>
 
-        <!-- SUMMARY -->
-        <div class="admin-card">
+        <!-- EQUIPMENT LIST -->
+        <div class="adminequipment-list-section">
 
-            <h2>Results Summary</h2>
+            <div class="adminequipment-section-header">
+                <div>
+                    <span class="adminequipment-section-label">
+                        Equipment List
+                    </span>
 
-            <p style="margin-bottom:0;">
-                Total equipment shown:
-                <strong><?= count($equipmentList) ?></strong>
-            </p>
+                    <h2>
+                        Physical asset inventory records.
+                    </h2>
 
-        </div>
+                    <p>
+                        Showing
+                        <strong><?= (int) $startItem ?></strong>
+                        —
+                        <strong><?= (int) $endItem ?></strong>
+                        of
+                        <strong><?= (int) $totalEquipment ?></strong>
+                        equipment records.
+                    </p>
+                </div>
 
-        <!-- TABLE -->
-        <div class="admin-card">
+                <span class="adminequipment-count-pill">
+                    Page <?= (int) $currentPage ?> / <?= (int) $totalPages ?>
+                </span>
+            </div>
 
-            <h2>Equipment List</h2>
+            <?php if ($totalEquipment > 0): ?>
 
-            <?php if (count($equipmentList) > 0): ?>
+                <div class="adminequipment-table-wrapper">
 
-                <div class="table-wrapper admin-table-wrapper">
-
-                    <table class="table">
+                    <table class="adminequipment-table">
 
                         <thead>
                             <tr>
@@ -325,60 +577,118 @@ require_once __DIR__ . '/../../includes/header.php';
                                 <th>Model</th>
                                 <th>Status</th>
                                 <th>Notes</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
 
                         <tbody>
 
-                            <?php foreach ($equipmentList as $equipment): ?>
+                            <?php foreach ($pagedEquipment as $equipment): ?>
+                                <?php
+                                    $equipmentId = (int) ($equipment['equipment_id'] ?? 0);
+                                    $stationId = (int) ($equipment['station_id'] ?? 0);
+                                    $status = (string) ($equipment['status'] ?? '');
+                                    $statusClass = adminEquipmentStatusClass($status);
+                                ?>
 
                                 <tr>
 
-                                    <td><?= htmlspecialchars($equipment['asset_code']) ?></td>
-
-                                    <td><?= htmlspecialchars($equipment['equipment_name']) ?></td>
-
                                     <td>
-                                        <span class="badge badge-info">
-                                            <?= htmlspecialchars($equipment['category']) ?>
+                                        <span class="adminequipment-code-pill">
+                                            <?= adminEquipmentH($equipment['asset_code'] ?? '-') ?>
                                         </span>
                                     </td>
 
                                     <td>
-                                        <?= htmlspecialchars($equipment['lab_code'] . ' - ' . $equipment['lab_name']) ?>
+                                        <span class="adminequipment-title">
+                                            <?= adminEquipmentH($equipment['equipment_name'] ?? '-') ?>
+                                        </span>
+
+                                        <span class="adminequipment-muted">
+                                            ID: <?= (int) $equipmentId ?>
+                                        </span>
                                     </td>
 
                                     <td>
-                                        <?php if ($equipment['station_id']): ?>
-                                            <a href="../station-detail.php?id=<?= (int) $equipment['station_id'] ?>">
-                                                <?= htmlspecialchars($equipment['station_code'] . ' - ' . $equipment['station_name']) ?>
+                                        <span class="adminequipment-category-badge">
+                                            <?= adminEquipmentH(ucwords(str_replace('_', ' ', (string) ($equipment['category'] ?? '-')))) ?>
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <span class="adminequipment-title">
+                                            <?= adminEquipmentH($equipment['lab_code'] ?? '-') ?>
+                                        </span>
+
+                                        <span class="adminequipment-muted">
+                                            <?= adminEquipmentH($equipment['lab_name'] ?? '-') ?>
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <?php if ($stationId > 0): ?>
+                                            <a
+                                                href="../station-detail.php?id=<?= (int) $stationId ?>"
+                                                class="adminequipment-title"
+                                            >
+                                                <?= adminEquipmentH($equipment['station_code'] ?? '-') ?>
                                             </a>
+
+                                            <span class="adminequipment-muted">
+                                                <?= adminEquipmentH($equipment['station_name'] ?? '-') ?>
+                                            </span>
                                         <?php else: ?>
-                                            -
-                                        <?php endif; ?>
-                                    </td>
-
-                                    <td><?= htmlspecialchars($equipment['brand'] ?? '-') ?></td>
-
-                                    <td><?= htmlspecialchars($equipment['model'] ?? '-') ?></td>
-
-                                    <td>
-
-                                        <?php if ($equipment['status'] === 'available'): ?>
-                                            <span class="badge badge-success">Available</span>
-
-                                        <?php elseif ($equipment['status'] === 'maintenance'): ?>
-                                            <span class="badge badge-warning">Maintenance</span>
-
-                                        <?php else: ?>
-                                            <span class="badge badge-info">
-                                                <?= htmlspecialchars(ucfirst($equipment['status'])) ?>
+                                            <span class="adminequipment-muted">
+                                                Unassigned
                                             </span>
                                         <?php endif; ?>
-
                                     </td>
 
-                                    <td><?= htmlspecialchars($equipment['notes'] ?? '-') ?></td>
+                                    <td>
+                                        <span class="adminequipment-title">
+                                            <?= adminEquipmentH($equipment['brand'] ?? '-') ?>
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <span class="adminequipment-muted">
+                                            <?= adminEquipmentH($equipment['model'] ?? '-') ?>
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <span class="adminequipment-status-badge <?= adminEquipmentH($statusClass) ?>">
+                                            <?= adminEquipmentH(adminEquipmentStatusLabel($status)) ?>
+                                        </span>
+                                    </td>
+
+                                    <td class="adminequipment-notes">
+                                        <span>
+                                            <?= adminEquipmentH($equipment['notes'] ?? '-') ?>
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <div class="adminequipment-action-group">
+
+                                            <?php if ($stationId > 0): ?>
+                                                <a
+                                                    href="../station-detail.php?id=<?= (int) $stationId ?>"
+                                                    class="adminequipment-btn adminequipment-btn-outline adminequipment-btn-sm"
+                                                >
+                                                    Station
+                                                </a>
+                                            <?php endif; ?>
+
+                                            <a
+                                                href="equipment-form.php?id=<?= (int) $equipmentId ?>"
+                                                class="adminequipment-btn adminequipment-btn-primary adminequipment-btn-sm"
+                                            >
+                                                Edit
+                                            </a>
+
+                                        </div>
+                                    </td>
 
                                 </tr>
 
@@ -390,10 +700,78 @@ require_once __DIR__ . '/../../includes/header.php';
 
                 </div>
 
+                <?php if ($totalPages > 1): ?>
+
+                    <div class="adminequipment-pagination">
+
+                        <div class="adminequipment-pagination-info">
+                            Showing <?= (int) $startItem ?> to <?= (int) $endItem ?> of <?= (int) $totalEquipment ?> results
+                        </div>
+
+                        <div class="adminequipment-pagination-list">
+
+                            <?php
+                                $prevPage = max($currentPage - 1, 1);
+                                $nextPage = min($currentPage + 1, $totalPages);
+
+                                $prevQuery = http_build_query(array_merge($paginationFilters, ['page' => $prevPage]));
+                                $nextQuery = http_build_query(array_merge($paginationFilters, ['page' => $nextPage]));
+                            ?>
+
+                            <a
+                                href="equipment.php?<?= adminEquipmentH($prevQuery) ?>"
+                                class="adminequipment-page-link <?= $currentPage <= 1 ? 'is-disabled' : '' ?>"
+                            >
+                                Prev
+                            </a>
+
+                            <?php for ($page = 1; $page <= $totalPages; $page++): ?>
+                                <?php
+                                    $pageQuery = http_build_query(array_merge($paginationFilters, ['page' => $page]));
+                                ?>
+
+                                <a
+                                    href="equipment.php?<?= adminEquipmentH($pageQuery) ?>"
+                                    class="adminequipment-page-link <?= $page === $currentPage ? 'is-active' : '' ?>"
+                                >
+                                    <?= (int) $page ?>
+                                </a>
+                            <?php endfor; ?>
+
+                            <a
+                                href="equipment.php?<?= adminEquipmentH($nextQuery) ?>"
+                                class="adminequipment-page-link <?= $currentPage >= $totalPages ? 'is-disabled' : '' ?>"
+                            >
+                                Next
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                <?php endif; ?>
+
             <?php else: ?>
 
-                <div class="alert alert-success">
-                    No equipment found.
+                <div class="adminequipment-empty-state">
+
+                    <div class="adminequipment-empty-icon">
+                        0
+                    </div>
+
+                    <h3>
+                        No equipment found.
+                    </h3>
+
+                    <p>
+                        No equipment record matches the current filters. Clear filters or search with a broader
+                        asset code, device name, brand, model, laboratory or station keyword.
+                    </p>
+
+                    <a href="equipment.php" class="adminequipment-btn adminequipment-btn-primary">
+                        Clear Filters
+                    </a>
+
                 </div>
 
             <?php endif; ?>
