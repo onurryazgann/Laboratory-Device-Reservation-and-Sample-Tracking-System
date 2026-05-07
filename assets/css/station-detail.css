@@ -1,0 +1,869 @@
+/* =========================================================
+   STATION DETAIL PAGE - MODERN LIGHT FRONTEND
+   ========================================================= */
+
+   .stationdet-page {
+    width: 100%;
+    padding: 18px 0 70px;
+    color: #132238;
+}
+
+.stationdet-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+
+.stationdet-btn {
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 22px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    font-size: 0.94rem;
+    font-weight: 900;
+    text-decoration: none;
+    cursor: pointer;
+    font-family: inherit;
+    transition: 0.22s ease;
+}
+
+.stationdet-btn:hover {
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
+.stationdet-btn-primary {
+    color: #ffffff;
+    background: linear-gradient(135deg, #2563eb, #06b6d4);
+    box-shadow: 0 14px 28px rgba(37, 99, 235, 0.24);
+}
+
+.stationdet-btn-light {
+    color: #2563eb;
+    background: #ffffff;
+    border-color: rgba(37, 99, 235, 0.14);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+}
+
+.stationdet-btn-outline {
+    color: #132238;
+    background: rgba(255, 255, 255, 0.55);
+    border-color: rgba(15, 23, 42, 0.10);
+}
+
+.stationdet-btn-disabled {
+    color: #94a3b8;
+    background: #f1f5f9;
+    border-color: rgba(148, 163, 184, 0.18);
+    cursor: not-allowed;
+}
+
+.stationdet-btn-disabled:hover {
+    transform: none;
+}
+
+/* HERO */
+
+.stationdet-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(340px, 0.95fr);
+    gap: 40px;
+    align-items: center;
+    padding: 46px;
+    border-radius: 34px;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(247, 251, 255, 0.96));
+    border: 1px solid rgba(37, 99, 235, 0.10);
+    box-shadow: 0 24px 70px rgba(15, 23, 42, 0.10);
+    transform-style: preserve-3d;
+    will-change: transform;
+    transition: transform 0.18s ease, box-shadow 0.25s ease;
+}
+
+.stationdet-hero:hover {
+    box-shadow: 0 34px 80px rgba(15, 23, 42, 0.14);
+}
+
+.stationdet-hero::before {
+    content: "";
+    position: absolute;
+    width: 360px;
+    height: 360px;
+    right: -130px;
+    top: -130px;
+    border-radius: 50%;
+    background: rgba(37, 99, 235, 0.05);
+    animation: stationdetGlowMove 8s ease-in-out infinite;
+}
+
+.stationdet-hero::after {
+    content: "";
+    position: absolute;
+    width: 280px;
+    height: 280px;
+    left: -110px;
+    bottom: -110px;
+    border-radius: 50%;
+    background: rgba(6, 182, 212, 0.05);
+    animation: stationdetGlowMove 9s ease-in-out infinite reverse;
+}
+
+.stationdet-hero-content,
+.stationdet-hero-visual {
+    position: relative;
+    z-index: 2;
+}
+
+.stationdet-eyebrow,
+.stationdet-section-label {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 7px 13px;
+    border-radius: 999px;
+    color: #2563eb;
+    background: rgba(37, 99, 235, 0.08);
+    font-size: 0.78rem;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.stationdet-hero h1 {
+    max-width: 760px;
+    margin: 22px 0 18px;
+    color: #102033;
+    font-size: clamp(2rem, 3.6vw, 3.45rem);
+    line-height: 1.05;
+    letter-spacing: -0.055em;
+}
+
+.stationdet-hero p {
+    max-width: 650px;
+    margin: 0;
+    color: #64748b;
+    font-size: 1rem;
+    line-height: 1.75;
+}
+
+.stationdet-hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    flex-wrap: wrap;
+    margin-top: 24px;
+}
+
+.stationdet-alert {
+    margin-top: 22px;
+    padding: 16px 18px;
+    border-radius: 22px;
+    font-size: 0.92rem;
+    font-weight: 850;
+    line-height: 1.55;
+}
+
+.stationdet-alert.is-success {
+    color: #047857;
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(16, 185, 129, 0.18);
+}
+
+.stationdet-alert.is-warning {
+    color: #b45309;
+    background: rgba(245, 158, 11, 0.14);
+    border: 1px solid rgba(245, 158, 11, 0.18);
+}
+
+/* MINI PANEL */
+
+.stationdet-mini-panel {
+    max-width: 520px;
+    margin-left: auto;
+    padding: 18px;
+    border-radius: 32px;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(239, 249, 255, 0.96));
+    border: 1px solid rgba(37, 99, 235, 0.12);
+    box-shadow: 0 26px 70px rgba(15, 23, 42, 0.14);
+}
+
+.stationdet-mini-header {
+    height: 42px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 12px;
+    border-radius: 20px;
+    background: #f1f7ff;
+    border: 1px solid rgba(37, 99, 235, 0.08);
+}
+
+.stationdet-mini-header span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #cbd5e1;
+}
+
+.stationdet-mini-header span:nth-child(1) {
+    background: #ef4444;
+}
+
+.stationdet-mini-header span:nth-child(2) {
+    background: #f59e0b;
+}
+
+.stationdet-mini-header span:nth-child(3) {
+    background: #10b981;
+}
+
+.stationdet-mini-body {
+    margin-top: 16px;
+    padding: 24px;
+    border-radius: 26px;
+    background: radial-gradient(circle at 20% 0%, rgba(37, 99, 235, 0.08), transparent 30%),
+        linear-gradient(180deg, #ffffff, #f8fbff);
+    border: 1px solid rgba(37, 99, 235, 0.08);
+}
+
+.stationdet-mini-title {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 22px;
+}
+
+.stationdet-mini-title small {
+    display: block;
+    margin-bottom: 6px;
+    color: #64748b;
+    font-size: 0.78rem;
+    font-weight: 800;
+}
+
+.stationdet-mini-title strong {
+    display: block;
+    color: #132238;
+    font-size: 1.35rem;
+    letter-spacing: -0.035em;
+}
+
+.stationdet-mini-list {
+    display: grid;
+    gap: 12px;
+}
+
+.stationdet-mini-item {
+    display: grid;
+    grid-template-columns: 42px 1fr;
+    gap: 13px;
+    align-items: center;
+    padding: 14px;
+    border-radius: 20px;
+    background: #f8fbff;
+    border: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.stationdet-mini-item > span {
+    width: 42px;
+    height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    color: #2563eb;
+    background: rgba(37, 99, 235, 0.10);
+    font-size: 0.82rem;
+    font-weight: 950;
+}
+
+.stationdet-mini-item.is-active > span {
+    color: #ffffff;
+    background: linear-gradient(135deg, #2563eb, #06b6d4);
+    box-shadow: 0 12px 22px rgba(37, 99, 235, 0.18);
+}
+
+.stationdet-mini-item strong {
+    display: block;
+    color: #132238;
+    font-size: 0.94rem;
+    font-weight: 900;
+}
+
+.stationdet-mini-item small {
+    display: block;
+    margin-top: 4px;
+    color: #64748b;
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+/* FLOATING */
+
+.stationdet-floating-chip {
+    position: absolute;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 42px;
+    padding: 0 14px;
+    border-radius: 999px;
+    color: #132238;
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid rgba(37, 99, 235, 0.12);
+    box-shadow: 0 16px 34px rgba(15, 23, 42, 0.12);
+    font-size: 0.82rem;
+    font-weight: 900;
+    animation: stationdetFloatChip 4.5s ease-in-out infinite;
+    z-index: 4;
+}
+
+.stationdet-floating-chip span {
+    width: 24px;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: #ffffff;
+    background: linear-gradient(135deg, #2563eb, #06b6d4);
+}
+
+.stationdet-chip-one {
+    top: 34px;
+    left: -12px;
+}
+
+.stationdet-chip-two {
+    right: -10px;
+    top: 44%;
+    animation-delay: 0.8s;
+}
+
+.stationdet-chip-three {
+    left: 34px;
+    bottom: 20px;
+    animation-delay: 1.4s;
+}
+
+/* BADGE */
+
+.stationdet-status-badge {
+    min-height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 12px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 950;
+    white-space: nowrap;
+}
+
+.stationdet-status-badge.is-success {
+    color: #047857;
+    background: rgba(16, 185, 129, 0.12);
+}
+
+.stationdet-status-badge.is-warning {
+    color: #b45309;
+    background: rgba(245, 158, 11, 0.14);
+}
+
+.stationdet-status-badge.is-error {
+    color: #dc2626;
+    background: rgba(239, 68, 68, 0.10);
+}
+
+.stationdet-status-badge.is-info {
+    color: #2563eb;
+    background: rgba(37, 99, 235, 0.08);
+}
+
+/* KPI */
+
+.stationdet-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+    margin-top: 28px;
+}
+
+.stationdet-kpi-card {
+    position: relative;
+    overflow: hidden;
+    min-height: 170px;
+    padding: 26px;
+    border-radius: 28px;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(248, 251, 255, 0.96));
+    border: 1px solid rgba(37, 99, 235, 0.10);
+    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.06);
+}
+
+.stationdet-kpi-card::after {
+    content: "";
+    position: absolute;
+    right: -34px;
+    top: -34px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: rgba(37, 99, 235, 0.10);
+}
+
+.stationdet-kpi-card span,
+.stationdet-kpi-card strong,
+.stationdet-kpi-card p {
+    position: relative;
+    z-index: 2;
+}
+
+.stationdet-kpi-card span {
+    display: block;
+    color: #64748b;
+    font-size: 0.82rem;
+    font-weight: 900;
+}
+
+.stationdet-kpi-card strong {
+    display: block;
+    margin: 14px 0 10px;
+    color: #2563eb;
+    font-size: 2.6rem;
+    font-weight: 950;
+    line-height: 1;
+    letter-spacing: -0.06em;
+}
+
+.stationdet-kpi-card p {
+    margin: 0;
+    color: #64748b;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* PANELS */
+
+.stationdet-panel {
+    margin-top: 28px;
+    padding: 30px;
+    border-radius: 32px;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(248, 251, 255, 0.96));
+    border: 1px solid rgba(37, 99, 235, 0.10);
+    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.06);
+}
+
+.stationdet-section-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 22px;
+}
+
+.stationdet-section-header h2 {
+    margin: 14px 0 8px;
+    color: #132238;
+    font-size: 1.65rem;
+    line-height: 1.1;
+    letter-spacing: -0.045em;
+}
+
+.stationdet-section-header p {
+    margin: 0;
+    color: #64748b;
+    font-size: 0.94rem;
+    line-height: 1.65;
+}
+
+/* INFO */
+
+.stationdet-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.stationdet-info-row {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: 18px;
+    background: #ffffff;
+    border: 1px solid rgba(37, 99, 235, 0.08);
+}
+
+.stationdet-info-row span {
+    color: #64748b;
+    font-size: 0.76rem;
+    font-weight: 900;
+}
+
+.stationdet-info-row strong {
+    color: #132238;
+    font-size: 0.9rem;
+    line-height: 1.45;
+}
+
+/* EQUIPMENT */
+
+.stationdet-equipment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 22px;
+}
+
+.stationdet-equipment-card {
+    padding: 24px;
+    border-radius: 28px;
+    background: #ffffff;
+    border: 1px solid rgba(37, 99, 235, 0.10);
+    box-shadow: 0 16px 38px rgba(15, 23, 42, 0.06);
+}
+
+.stationdet-equipment-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 18px;
+}
+
+.stationdet-equipment-code {
+    display: inline-flex;
+    align-items: center;
+    min-height: 30px;
+    padding: 0 10px;
+    border-radius: 999px;
+    color: #2563eb;
+    background: rgba(37, 99, 235, 0.08);
+    font-size: 0.76rem;
+    font-weight: 950;
+}
+
+.stationdet-equipment-card h3 {
+    margin: 12px 0 0;
+    color: #132238;
+    font-size: 1.18rem;
+    line-height: 1.25;
+}
+
+.stationdet-equipment-info-grid {
+    grid-template-columns: 1fr;
+}
+
+/* TABLE */
+
+.stationdet-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 22px;
+    border: 1px solid rgba(37, 99, 235, 0.10);
+    background: #ffffff;
+}
+
+.stationdet-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.stationdet-table th,
+.stationdet-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(37, 99, 235, 0.08);
+    text-align: left;
+    white-space: nowrap;
+}
+
+.stationdet-table th {
+    background: #f8fbff;
+    color: #132238;
+    font-weight: 950;
+}
+
+.stationdet-table tr:last-child td {
+    border-bottom: 0;
+}
+
+/* EMPTY */
+
+.stationdet-empty-state {
+    padding: 34px;
+    border-radius: 28px;
+    text-align: center;
+    background: #f8fbff;
+    border: 1px dashed rgba(37, 99, 235, 0.16);
+}
+
+.stationdet-empty-state h3 {
+    margin: 18px 0 10px;
+    color: #132238;
+    font-size: 1.35rem;
+}
+
+.stationdet-empty-state p {
+    margin: 0;
+    color: #64748b;
+    line-height: 1.65;
+}
+
+/* REVEAL */
+
+.reveal-on-scroll {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+.reveal-on-scroll.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ANIMATION */
+
+@keyframes stationdetFloatChip {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-12px);
+    }
+}
+
+@keyframes stationdetGlowMove {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    50% {
+        transform: translate(18px, -12px) scale(1.08);
+    }
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1180px) {
+    .stationdet-hero {
+        grid-template-columns: 1fr;
+    }
+
+    .stationdet-mini-panel {
+        margin: 0 auto;
+    }
+
+    .stationdet-kpi-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 900px) {
+    .stationdet-hero {
+        padding: 34px;
+        border-radius: 28px;
+    }
+
+    .stationdet-section-header {
+        flex-direction: column;
+    }
+
+    .stationdet-info-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 720px) {
+    .stationdet-page {
+        padding-top: 10px;
+    }
+
+    .stationdet-hero {
+        padding: 26px;
+    }
+
+    .stationdet-hero h1 {
+        font-size: 2.1rem;
+    }
+
+    .stationdet-topbar,
+    .stationdet-hero-actions {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .stationdet-btn {
+        width: 100%;
+    }
+
+    .stationdet-floating-chip {
+        display: none;
+    }
+
+    .stationdet-kpi-grid,
+    .stationdet-equipment-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stationdet-panel {
+        padding: 22px;
+        border-radius: 28px;
+    }
+
+    .stationdet-info-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 560px) {
+    .stationdet-mini-body {
+        padding: 18px;
+    }
+
+    .stationdet-mini-item {
+        grid-template-columns: 1fr;
+    }
+
+    .stationdet-equipment-top {
+        flex-direction: column;
+    }
+}
+/* =========================================================
+   EQUIPMENT CAROUSEL FINAL
+   ========================================================= */
+
+   .stationdet-equipment-carousel-section {
+    overflow: hidden;
+}
+
+.stationdet-equipment-carousel-shell {
+    position: relative;
+    width: 100%;
+    overflow: visible;
+}
+
+/* Equipment kartlarını carousel yapar */
+.stationdet-equipment-grid {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    gap: 22px !important;
+
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+
+    scroll-behavior: smooth !important;
+    scroll-snap-type: x mandatory !important;
+
+    padding: 10px 66px 28px !important;
+    margin-top: 0 !important;
+}
+
+/* Kart genişliği sabit */
+.stationdet-equipment-grid .stationdet-equipment-card {
+    flex: 0 0 390px !important;
+    width: 390px !important;
+    min-width: 390px !important;
+    max-width: 390px !important;
+
+    scroll-snap-align: start !important;
+}
+
+/* Scrollbar */
+.stationdet-equipment-grid::-webkit-scrollbar {
+    height: 8px;
+}
+
+.stationdet-equipment-grid::-webkit-scrollbar-track {
+    background: rgba(37, 99, 235, 0.08);
+    border-radius: 999px;
+}
+
+.stationdet-equipment-grid::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #2563eb, #06b6d4);
+    border-radius: 999px;
+}
+
+/* Sağ-sol ikon butonları */
+.stationdet-carousel-btn {
+    position: absolute;
+    top: 50%;
+    z-index: 60;
+
+    width: 54px;
+    height: 54px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(37, 99, 235, 0.14);
+    border-radius: 50%;
+
+    color: #2563eb;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 18px 38px rgba(15, 23, 42, 0.16);
+
+    cursor: pointer;
+    transform: translateY(-50%);
+
+    transition:
+        background 0.22s ease,
+        color 0.22s ease,
+        box-shadow 0.22s ease;
+}
+
+.stationdet-carousel-btn svg {
+    width: 26px;
+    height: 26px;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.stationdet-carousel-btn:hover {
+    color: #ffffff;
+    background: linear-gradient(135deg, #2563eb, #06b6d4);
+    border-color: transparent;
+    box-shadow: 0 22px 46px rgba(37, 99, 235, 0.28);
+}
+
+.stationdet-carousel-left {
+    left: 8px;
+}
+
+.stationdet-carousel-right {
+    right: 8px;
+}
+
+/* Mobilde oklar gizlenir, elle kaydırma kalır */
+@media (max-width: 760px) {
+    .stationdet-equipment-grid {
+        padding-left: 8px !important;
+        padding-right: 8px !important;
+    }
+
+    .stationdet-equipment-grid .stationdet-equipment-card {
+        flex: 0 0 86vw !important;
+        width: 86vw !important;
+        min-width: 86vw !important;
+        max-width: 86vw !important;
+    }
+
+    .stationdet-carousel-btn {
+        display: none !important;
+    }
+}

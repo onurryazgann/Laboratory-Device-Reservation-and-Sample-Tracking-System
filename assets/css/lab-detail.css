@@ -1,0 +1,1122 @@
+/* =========================================================
+   LAB DETAIL PAGE - MODERN LIGHT FRONTEND
+   ========================================================= */
+
+   .labdet-page {
+    width: 100%;
+    padding: 18px 0 70px;
+    color: #132238;
+}
+
+/* ===== TOPBAR ===== */
+
+.labdet-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+
+/* ===== BUTTONS ===== */
+
+.labdet-btn {
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 22px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+
+    font-size: 0.94rem;
+    font-weight: 900;
+    text-decoration: none;
+    cursor: pointer;
+    font-family: inherit;
+
+    transition:
+        transform 0.22s ease,
+        box-shadow 0.22s ease,
+        background 0.22s ease,
+        color 0.22s ease,
+        border-color 0.22s ease;
+}
+
+.labdet-btn:hover {
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
+.labdet-btn-primary {
+    color: #ffffff;
+    background: linear-gradient(135deg, #2563eb, #06b6d4);
+    box-shadow: 0 14px 28px rgba(37, 99, 235, 0.24);
+}
+
+.labdet-btn-primary:hover {
+    color: #ffffff;
+    box-shadow: 0 18px 36px rgba(37, 99, 235, 0.32);
+}
+
+.labdet-btn-light {
+    color: #2563eb;
+    background: #ffffff;
+    border-color: rgba(37, 99, 235, 0.14);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+}
+
+.labdet-btn-outline {
+    color: #132238;
+    background: rgba(255, 255, 255, 0.55);
+    border-color: rgba(15, 23, 42, 0.10);
+}
+
+.labdet-btn-outline:hover {
+    color: #2563eb;
+    background: rgba(37, 99, 235, 0.08);
+    border-color: rgba(37, 99, 235, 0.14);
+}
+
+.labdet-btn-disabled {
+    color: #94a3b8;
+    background: #f1f5f9;
+    border-color: rgba(148, 163, 184, 0.18);
+    cursor: not-allowed;
+}
+
+.labdet-btn-disabled:hover {
+    transform: none;
+}
+
+/* ===== HERO ===== */
+
+.labdet-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(340px, 0.95fr);
+    gap: 40px;
+    align-items: center;
+
+    padding: 46px;
+    border-radius: 34px;
+    position: relative;
+    overflow: hidden;
+
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(247, 251, 255, 0.96));
+    border: 1px solid rgba(37, 99, 235, 0.10);
+    box-shadow: 0 24px 70px rgba(15, 23, 42, 0.10);
+
+    transform-style: preserve-3d;
+    will-change: transform;
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.25s ease;
+}
+
+.labdet-hero:hover {
+    box-shadow: 0 34px 80px rgba(15, 23, 42, 0.14);
+}
+
+.labdet-hero::before {
+    content: "";
+    position: absolute;
+    width: 360px;
+    height: 360px;
+    right: -130px;
+    top: -130px;
+    border-radius: 50%;
+    background: rgba(37, 99, 235, 0.05);
+    animation: labdetGlowMove 8s ease-in-out infinite;
+}
+
+.labdet-hero::after {
+    content: "";
+    position: absolute;
+    width: 280px;
+    height: 280px;
+    left: -110px;
+    bottom: -110px;
+    border-radius: 50%;
+    background: rgba(6, 182, 212, 0.05);
+    animation: labdetGlowMove 9s ease-in-out infinite reverse;
+}
+
+.labdet-hero-content,
+.labdet-hero-visual {
+    position: relative;
+    z-index: 2;
+}
+
+.labdet-eyebrow,
+.labdet-section-label {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 7px 13px;
+    border-radius: 999px;
+
+    color: #2563eb;
+    background: rgba(37, 99, 235, 0.08);
+
+    font-size: 0.78rem;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.labdet-hero h1 {
+    max-width: 760px;
+    margin: 22px 0 18px;
+    color: #102033;
+    font-size: clamp(2rem, 3.6vw, 3.45rem);
+    line-height: 1.05;
+    letter-spacing: -0.055em;
+}
+
+.labdet-hero p {
+    max-width: 650px;
+    margin: 0;
+    color: #64748b;
+    font-size: 1rem;
+    line-height: 1.75;
+}
+
+.labdet-hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    flex-wrap: wrap;
+    margin-top: 28px;
+}
+
+/* ===== HERO VISUAL ===== */
+
+.labdet-hero-visual {
+    perspective: 1000px;
+}
+
+.labdet-mini-panel {
+    max-width: 520px;
+    margin-left: auto;
+    padding: 18px;
+    border-radius: 32px;
+
+    background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(239, 249, 255, 0.96));
+    border: 1px solid rgba(37, 99, 235, 0.12);
+    box-shadow: 0 26px 70px rgba(15, 23, 42, 0.14);
+}
+
+.labdet-mini-header {
+    height: 42px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 0 12px;
+    border-radius: 20px;
+    background: #f1f7ff;
+    border: 1px solid rgba(37, 99, 235, 0.08);
+}
+
+.labdet-mini-header span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #cbd5e1;
+}
+
+.labdet-mini-header span:nth-child(1) {
+    background: #ef4444;
+}
+
+.labdet-mini-header span:nth-child(2) {
+    background: #f59e0b;
+}
+
+.labdet-mini-header span:nth-child(3) {
+    background: #10b981;
+}
+
+.labdet-mini-body {
+    margin-top: 16px;
+    padding: 24px;
+    border-radius: 26px;
+
+    background:
+        radial-gradient(circle at 20% 0%, rgba(37, 99, 235, 0.08), transparent 30%),
+        linear-gradient(180deg, #ffffff, #f8fbff);
+    border: 1px solid rgba(37, 99, 235, 0.08);
+}
+
+.labdet-mini-title {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 22px;
+}
+
+.labdet-mini-title small {
+    display: block;
+    margin-bottom: 6px;
+    color: #64748b;
+    font-size: 0.78rem;
+    font-weight: 800;
+}
+
+.labdet-mini-title strong {
+    display: block;
+    color: #132238;
+    font-size: 1.35rem;
+    letter-spacing: -0.035em;
+}
+
+.labdet-mini-title > span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 30px;
+    padding: 0 11px;
+    border-radius: 999px;
+
+    color: #047857;
+    background: rgba(16, 185, 129, 0.12);
+
+    font-size: 0.78rem;
+    font-weight: 900;
+}
+
+.labdet-mini-list {
+    display: grid;
+    gap: 12px;
+}
+
+.labdet-mini-item {
+    display: grid;
+    grid-template-columns: 42px 1fr;
+    gap: 13px;
+    align-items: center;
+
+    padding: 14px;
+    border-radius: 20px;
+    background: #f8fbff;
+    border: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.labdet-mini-item > span {
+    width: 42px;
+    height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 15px;
+    color: #2563eb;
+    background: rgba(37, 99, 235, 0.10);
+
+    font-size: 0.82rem;
+    font-weight: 950;
+}
+
+.labdet-mini-item.is-active > span {
+    color: #ffffff;
+    background: linear-gradient(135deg, #2563eb, #06b6d4);
+    box-shadow: 0 12px 22px rgba(37, 99, 235, 0.18);
+}
+
+.labdet-mini-item strong {
+    display: block;
+    color: #132238;
+    font-size: 0.94rem;
+    font-weight: 900;
+}
+
+.labdet-mini-item small {
+    display: block;
+    margin-top: 4px;
+    color: #64748b;
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+/* ===== FLOATING CHIPS ===== */
+
+.labdet-floating-chip {
+    position: absolute;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    min-height: 42px;
+    padding: 0 14px;
+    border-radius: 999px;
+
+    color: #132238;
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid rgba(37, 99, 235, 0.12);
+    box-shadow: 0 16px 34px rgba(15, 23, 42, 0.12);
+
+    font-size: 0.82rem;
+    font-weight: 900;
+    animation: labdetFloatChip 4.5s ease-in-out infinite;
+    z-index: 4;
+}
+
+.labdet-floating-chip span {
+    width: 24px;
+    height: 24px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+    color: #ffffff;
+    background: linear-gradient(135deg, #2563eb, #06b6d4);
+}
+
+.labdet-chip-one {
+    top: 34px;
+    left: -12px;
+}
+
+.labdet-chip-two {
+    right: -10px;
+    top: 44%;
+    animation-delay: 0.8s;
+}
+
+.labdet-chip-three {
+    left: 34px;
+    bottom: 20px;
+    animation-delay: 1.4s;
+}
+
+/* ===== STATUS BADGE ===== */
+
+.labdet-status-badge {
+    min-height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 12px;
+    border-radius: 999px;
+
+    font-size: 0.78rem;
+    font-weight: 950;
+    white-space: nowrap;
+}
+
+.labdet-status-badge.is-success {
+    color: #047857;
+    background: rgba(16, 185, 129, 0.12);
+}
+
+.labdet-status-badge.is-warning {
+    color: #b45309;
+    background: rgba(245, 158, 11, 0.14);
+}
+
+.labdet-status-badge.is-error {
+    color: #dc2626;
+    background: rgba(239, 68, 68, 0.10);
+}
+
+.labdet-status-badge.is-info {
+    color: #2563eb;
+    background: rgba(37, 99, 235, 0.08);
+}
+
+/* ===== KPI ===== */
+
+.labdet-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+    margin-top: 28px;
+}
+
+.labdet-kpi-card {
+    position: relative;
+    overflow: hidden;
+
+    min-height: 170px;
+    padding: 26px;
+    border-radius: 28px;
+
+    background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(248, 251, 255, 0.96));
+    border: 1px solid rgba(37, 99, 235, 0.10);
+    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.06);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+.labdet-kpi-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(37, 99, 235, 0.18);
+    box-shadow: 0 26px 58px rgba(15, 23, 42, 0.10);
+}
+
+.labdet-kpi-card::after {
+    content: "";
+    position: absolute;
+    right: -34px;
+    top: -34px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: rgba(37, 99, 235, 0.10);
+}
+
+.labdet-kpi-card.is-active::after {
+    background: rgba(16, 185, 129, 0.12);
+}
+
+.labdet-kpi-card.is-available::after {
+    background: rgba(37, 99, 235, 0.12);
+}
+
+.labdet-kpi-card.is-equipment::after {
+    background: rgba(6, 182, 212, 0.12);
+}
+
+.labdet-kpi-card span,
+.labdet-kpi-card strong,
+.labdet-kpi-card p {
+    position: relative;
+    z-index: 2;
+}
+
+.labdet-kpi-card span {
+    display: block;
+    color: #64748b;
+    font-size: 0.82rem;
+    font-weight: 900;
+}
+
+.labdet-kpi-card strong {
+    display: block;
+    margin: 14px 0 10px;
+
+    color: #2563eb;
+    font-size: 2.6rem;
+    font-weight: 950;
+    line-height: 1;
+    letter-spacing: -0.06em;
+}
+
+.labdet-kpi-card p {
+    margin: 0;
+    color: #64748b;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* ===== PANELS ===== */
+
+.labdet-panel {
+    margin-top: 28px;
+    padding: 30px;
+    border-radius: 32px;
+
+    background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(248, 251, 255, 0.96));
+    border: 1px solid rgba(37, 99, 235, 0.10);
+    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.06);
+}
+
+.labdet-section-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 22px;
+}
+
+.labdet-section-header h2 {
+    margin: 14px 0 8px;
+    color: #132238;
+    font-size: 1.65rem;
+    line-height: 1.1;
+    letter-spacing: -0.045em;
+}
+
+.labdet-section-header p {
+    margin: 0;
+    color: #64748b;
+    font-size: 0.94rem;
+    line-height: 1.65;
+}
+
+/* ===== EQUIPMENT ===== */
+
+.labdet-equipment-overview {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 22px;
+}
+
+.labdet-equipment-overview > div {
+    padding: 18px;
+    border-radius: 22px;
+
+    background:
+        radial-gradient(circle at 18% 0%, rgba(37, 99, 235, 0.10), transparent 36%),
+        linear-gradient(135deg, #ffffff, #f3f8ff);
+    border: 1px solid rgba(37, 99, 235, 0.10);
+}
+
+.labdet-equipment-overview span {
+    display: block;
+    margin-bottom: 8px;
+    color: #64748b;
+    font-size: 0.76rem;
+    font-weight: 900;
+}
+
+.labdet-equipment-overview strong {
+    display: block;
+    color: #2563eb;
+    font-size: 1.7rem;
+    font-weight: 950;
+    line-height: 1;
+}
+
+/* ===== TABLE ===== */
+
+.labdet-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 22px;
+    border: 1px solid rgba(37, 99, 235, 0.10);
+    background: #ffffff;
+}
+
+.labdet-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.labdet-table th,
+.labdet-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(37, 99, 235, 0.08);
+    text-align: left;
+    white-space: nowrap;
+}
+
+.labdet-table th {
+    background: #f8fbff;
+    color: #132238;
+    font-weight: 950;
+}
+
+.labdet-table tr:last-child td {
+    border-bottom: 0;
+}
+
+/* ===== STATIONS ===== */
+
+.labdet-station-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 22px;
+    align-items: stretch;
+}
+
+.labdet-station-card {
+    min-height: 540px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+
+    padding: 26px;
+    border-radius: 30px;
+    position: relative;
+    overflow: hidden;
+
+    background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(248, 251, 255, 0.96));
+    border: 1px solid rgba(37, 99, 235, 0.10);
+    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.06);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+.labdet-station-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(37, 99, 235, 0.18);
+    box-shadow: 0 26px 58px rgba(15, 23, 42, 0.10);
+}
+
+.labdet-station-card::after {
+    content: "";
+    position: absolute;
+    right: -45px;
+    top: -45px;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: rgba(37, 99, 235, 0.08);
+}
+
+.labdet-station-card > * {
+    position: relative;
+    z-index: 2;
+}
+
+.labdet-station-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.labdet-type-icon {
+    width: 62px;
+    height: 62px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 22px;
+    color: #ffffff;
+    background:
+        radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.55), transparent 35%),
+        linear-gradient(135deg, rgba(37, 99, 235, 0.95), rgba(6, 182, 212, 0.92));
+    box-shadow: 0 14px 28px rgba(37, 99, 235, 0.20);
+}
+
+.labdet-type-icon span {
+    font-size: 0.88rem;
+    font-weight: 950;
+    letter-spacing: 0.05em;
+}
+
+.labdet-code-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.labdet-code-row span,
+.labdet-code-row strong {
+    display: inline-flex;
+    align-items: center;
+    min-height: 30px;
+    padding: 0 10px;
+    border-radius: 999px;
+
+    font-size: 0.76rem;
+    font-weight: 900;
+    white-space: nowrap;
+}
+
+.labdet-code-row span {
+    color: #2563eb;
+    background: rgba(37, 99, 235, 0.08);
+}
+
+.labdet-code-row strong {
+    color: #475569;
+    background: #f1f7ff;
+}
+
+.labdet-station-card h3 {
+    min-height: 54px;
+    margin: 0;
+    color: #132238;
+    font-size: 1.25rem;
+    line-height: 1.25;
+    letter-spacing: -0.035em;
+}
+
+.labdet-station-meta {
+    display: grid;
+    gap: 10px;
+}
+
+.labdet-meta-row {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 12px;
+
+    padding: 13px 14px;
+    border-radius: 18px;
+
+    background: #ffffff;
+    border: 1px solid rgba(37, 99, 235, 0.08);
+}
+
+.labdet-meta-row span {
+    color: #64748b;
+    font-size: 0.74rem;
+    font-weight: 900;
+    letter-spacing: 0.02em;
+}
+
+.labdet-meta-row strong {
+    color: #132238;
+    font-size: 0.86rem;
+    font-weight: 850;
+    line-height: 1.45;
+}
+
+.labdet-station-equipment-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: auto;
+}
+
+.labdet-station-equipment-grid > div {
+    padding: 16px;
+    border-radius: 22px;
+
+    background:
+        radial-gradient(circle at 18% 0%, rgba(37, 99, 235, 0.10), transparent 36%),
+        linear-gradient(135deg, #ffffff, #f3f8ff);
+    border: 1px solid rgba(37, 99, 235, 0.10);
+}
+
+.labdet-station-equipment-grid span {
+    display: block;
+    margin-bottom: 7px;
+    color: #64748b;
+    font-size: 0.76rem;
+    font-weight: 900;
+}
+
+.labdet-station-equipment-grid strong {
+    display: block;
+    color: #2563eb;
+    font-size: 1.45rem;
+    font-weight: 950;
+    line-height: 1;
+}
+
+.labdet-station-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.labdet-station-actions .labdet-btn {
+    flex: 1;
+    min-height: 46px;
+    padding: 0 16px;
+    font-size: 0.86rem;
+}
+
+/* ===== EMPTY ===== */
+
+.labdet-empty-state,
+.labdet-empty-inline {
+    padding: 34px;
+    border-radius: 28px;
+    text-align: center;
+    background: #f8fbff;
+    border: 1px dashed rgba(37, 99, 235, 0.16);
+    color: #64748b;
+    font-weight: 800;
+}
+
+.labdet-empty-state h3 {
+    margin: 18px 0 10px;
+    color: #132238;
+    font-size: 1.35rem;
+}
+
+.labdet-empty-state p {
+    margin: 0;
+    color: #64748b;
+    line-height: 1.65;
+}
+
+/* ===== REVEAL ===== */
+
+.reveal-on-scroll {
+    opacity: 0;
+    transform: translateY(22px);
+    transition:
+        opacity 0.55s ease,
+        transform 0.55s ease;
+}
+
+.reveal-on-scroll.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ===== ANIMATIONS ===== */
+
+@keyframes labdetFloatChip {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-12px);
+    }
+}
+
+@keyframes labdetGlowMove {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    50% {
+        transform: translate(18px, -12px) scale(1.08);
+    }
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 1180px) {
+    .labdet-hero {
+        grid-template-columns: 1fr;
+    }
+
+    .labdet-mini-panel {
+        margin: 0 auto;
+    }
+
+    .labdet-kpi-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .labdet-equipment-overview {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 900px) {
+    .labdet-hero {
+        padding: 34px;
+        border-radius: 28px;
+    }
+
+    .labdet-section-header {
+        flex-direction: column;
+    }
+
+    .labdet-station-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 720px) {
+    .labdet-page {
+        padding-top: 10px;
+    }
+
+    .labdet-hero {
+        padding: 26px;
+    }
+
+    .labdet-hero h1 {
+        font-size: 2.1rem;
+    }
+
+    .labdet-topbar,
+    .labdet-hero-actions,
+    .labdet-station-actions {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .labdet-btn {
+        width: 100%;
+    }
+
+    .labdet-floating-chip {
+        display: none;
+    }
+
+    .labdet-kpi-grid,
+    .labdet-equipment-overview {
+        grid-template-columns: 1fr;
+    }
+
+    .labdet-panel {
+        padding: 22px;
+        border-radius: 28px;
+    }
+
+    .labdet-station-card {
+        min-height: auto;
+        padding: 22px;
+        border-radius: 28px;
+    }
+}
+
+@media (max-width: 560px) {
+    .labdet-mini-body {
+        padding: 18px;
+    }
+
+    .labdet-mini-item,
+    .labdet-meta-row {
+        grid-template-columns: 1fr;
+    }
+
+    .labdet-code-row,
+    .labdet-station-top {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .labdet-station-equipment-grid {
+        grid-template-columns: 1fr;
+    }
+}
+/* =========================================================
+   STATION CAROUSEL FINAL
+   ========================================================= */
+
+   .labdet-stations-carousel-section {
+    overflow: hidden;
+}
+
+.labdet-station-carousel-shell {
+    position: relative;
+    width: 100%;
+    overflow: visible;
+}
+
+.labdet-station-grid {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    gap: 22px !important;
+
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+
+    scroll-behavior: smooth !important;
+    scroll-snap-type: x mandatory !important;
+
+    padding: 10px 66px 28px !important;
+    margin-top: 0 !important;
+}
+
+.labdet-station-grid .labdet-station-card {
+    flex: 0 0 430px !important;
+    width: 430px !important;
+    min-width: 430px !important;
+    max-width: 430px !important;
+    min-height: 540px !important;
+
+    scroll-snap-align: start !important;
+}
+
+/* Scrollbar */
+.labdet-station-grid::-webkit-scrollbar {
+    height: 8px;
+}
+
+.labdet-station-grid::-webkit-scrollbar-track {
+    background: rgba(37, 99, 235, 0.08);
+    border-radius: 999px;
+}
+
+.labdet-station-grid::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #2563eb, #06b6d4);
+    border-radius: 999px;
+}
+
+/* Side buttons */
+.labdet-carousel-btn {
+    position: absolute;
+    top: 50%;
+    z-index: 60;
+
+    width: 54px;
+    height: 54px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(37, 99, 235, 0.14);
+    border-radius: 50%;
+
+    color: #2563eb;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 18px 38px rgba(15, 23, 42, 0.16);
+
+    cursor: pointer;
+    transform: translateY(-50%);
+
+    transition:
+        background 0.22s ease,
+        color 0.22s ease,
+        box-shadow 0.22s ease,
+        transform 0.22s ease;
+}
+
+.labdet-carousel-btn svg {
+    width: 26px;
+    height: 26px;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.labdet-carousel-btn:hover {
+    color: #ffffff;
+    background: linear-gradient(135deg, #2563eb, #06b6d4);
+    border-color: transparent;
+    box-shadow: 0 22px 46px rgba(37, 99, 235, 0.28);
+}
+
+.labdet-carousel-left {
+    left: 8px;
+}
+
+.labdet-carousel-right {
+    right: 8px;
+}
+
+/* Kart içi butonlar düzgün kalsın */
+.labdet-station-actions {
+    margin-top: auto;
+}
+
+/* Mobilde okları gizle, elle kaydırma kalsın */
+@media (max-width: 760px) {
+    .labdet-station-grid {
+        padding-left: 8px !important;
+        padding-right: 8px !important;
+    }
+
+    .labdet-station-grid .labdet-station-card {
+        flex: 0 0 86vw !important;
+        width: 86vw !important;
+        min-width: 86vw !important;
+        max-width: 86vw !important;
+        min-height: auto !important;
+    }
+
+    .labdet-carousel-btn {
+        display: none !important;
+    }
+}

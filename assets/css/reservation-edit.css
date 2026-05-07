@@ -1,0 +1,173 @@
+/* =========================================================
+   RESERVATION EDIT PAGE - FINAL
+   This file loads both reservation and detail styles.
+   ========================================================= */
+
+   @import url("reservation.css");
+   @import url("reservation-detail.css");
+   
+   /* =========================================================
+      EDIT PAGE BASE
+      ========================================================= */
+   
+   .edit-page {
+       width: 100%;
+       padding: 18px 0 70px;
+       color: #132238;
+   }
+   
+   /* Eğer detail class'ları import edilmezse temel görünüm bozulmasın */
+   .edit-page .detail-topbar {
+       display: flex;
+       align-items: center;
+       justify-content: space-between;
+       gap: 14px;
+       flex-wrap: wrap;
+       margin-bottom: 24px;
+   }
+   
+   .edit-page .detail-hero {
+       display: grid;
+       grid-template-columns: minmax(0, 1.05fr) minmax(330px, 0.8fr);
+       gap: 40px;
+       align-items: center;
+   
+       padding: 46px;
+       border-radius: 34px;
+       position: relative;
+       overflow: hidden;
+   
+       background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(247, 251, 255, 0.96));
+       border: 1px solid rgba(37, 99, 235, 0.10);
+       box-shadow: 0 24px 70px rgba(15, 23, 42, 0.10);
+   }
+   
+   .edit-page .detail-hero::before {
+       content: "";
+       position: absolute;
+       width: 360px;
+       height: 360px;
+       right: -130px;
+       top: -130px;
+       border-radius: 50%;
+       background: rgba(37, 99, 235, 0.05);
+   }
+   
+   .edit-page .detail-hero::after {
+       content: "";
+       position: absolute;
+       width: 280px;
+       height: 280px;
+       left: -110px;
+       bottom: -110px;
+       border-radius: 50%;
+       background: rgba(6, 182, 212, 0.05);
+   }
+   
+   .edit-page .detail-hero-content,
+   .edit-page .detail-status-panel {
+       position: relative;
+       z-index: 2;
+   }
+   
+   /* =========================================================
+      EDIT FORM PANEL
+      ========================================================= */
+   
+   .edit-form-panel {
+       border-color: rgba(37, 99, 235, 0.14);
+   }
+   
+   .edit-page .reserve-form {
+       gap: 20px;
+   }
+   
+   .edit-page .reserve-form-group {
+       display: grid;
+       gap: 8px;
+   }
+   
+   .edit-page .reserve-form-group label {
+       color: #132238;
+       font-size: 0.88rem;
+       font-weight: 900;
+   }
+   
+   .edit-page .reserve-form-group textarea {
+       width: 100%;
+       min-height: 120px;
+       padding: 14px 15px;
+       border-radius: 18px;
+   
+       color: #132238;
+       background: #ffffff;
+       border: 1px solid rgba(37, 99, 235, 0.14);
+       outline: none;
+   
+       font-size: 0.95rem;
+       font-weight: 700;
+       font-family: inherit;
+       line-height: 1.6;
+   
+       resize: vertical;
+   }
+   
+   .edit-page .reserve-form-group textarea:focus {
+       border-color: rgba(37, 99, 235, 0.45);
+       box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.10);
+   }
+   
+   /* Hidden start/end inputlar görünmesin */
+   #reservationEditForm #start_time,
+   #reservationEditForm #end_time {
+       display: none;
+   }
+   
+   /* =========================================================
+      EDIT MESSAGE
+      ========================================================= */
+   
+   .edit-page .reserve-availability-message,
+   .edit-page .reservation-availability-message {
+       margin-bottom: 4px;
+   }
+   
+   /* =========================================================
+      EDIT TABLE
+      ========================================================= */
+   
+   .edit-page .detail-table .detail-status-badge {
+       min-height: 28px;
+       font-size: 0.72rem;
+   }
+   
+   /* =========================================================
+      MOBILE
+      ========================================================= */
+   
+   @media (max-width: 1180px) {
+       .edit-page .detail-hero {
+           grid-template-columns: 1fr;
+       }
+   }
+   
+   @media (max-width: 720px) {
+       .edit-page {
+           padding-top: 10px;
+       }
+   
+       .edit-page .detail-hero {
+           padding: 26px;
+           border-radius: 28px;
+       }
+   
+       .edit-page .detail-topbar {
+           flex-direction: column;
+           align-items: stretch;
+       }
+   
+       .edit-page .detail-btn,
+       .edit-page .reserve-btn {
+           width: 100%;
+       }
+   }
