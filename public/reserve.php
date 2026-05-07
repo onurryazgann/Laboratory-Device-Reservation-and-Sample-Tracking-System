@@ -645,6 +645,7 @@ require_once __DIR__ . '/../includes/header.php';
             </div>
 
             <form method="POST" action="" id="reservationForm" class="reserve-form">
+                <?= csrfInput() ?>
 
                 <input
                     type="hidden"
