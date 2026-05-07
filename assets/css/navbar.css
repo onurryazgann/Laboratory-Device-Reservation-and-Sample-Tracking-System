@@ -46,7 +46,7 @@
     position: sticky;
     top: 0;
     z-index: 1000;
-    padding: 18px 24px 10px;
+    padding: 18px 0 10px;
     background:
         radial-gradient(circle at top left, rgba(var(--nav-primary-rgb), 0.18), transparent 34%),
         radial-gradient(circle at top right, rgba(var(--nav-secondary-rgb), 0.18), transparent 34%),
@@ -56,8 +56,7 @@
 }
 
 .topbar-shell {
-    width: 100%;
-    max-width: 1240px;
+    width: min(var(--layout-max-width), calc(100% - (var(--layout-gutter) * 2)));
     margin: 0 auto;
 }
 
@@ -916,14 +915,13 @@
 
 .topbar-shell,
 .main-content {
-    width: 100%;
-    max-width: 1240px;
+    width: min(var(--layout-max-width), calc(100% - (var(--layout-gutter) * 2)));
     margin-left: auto;
     margin-right: auto;
 }
 
 .main-content {
-    padding: 18px 24px 70px !important;
+    padding: 18px 0 70px !important;
 }
 
 @media (max-width: 768px) {

@@ -672,6 +672,7 @@ require_once __DIR__ . '/../../includes/header.php';
                                 action="reservations.php?<?= htmlspecialchars(http_build_query(array_merge($paginationFilters, ['page' => $currentPage])), ENT_QUOTES, 'UTF-8') ?>"
                                 onsubmit="return confirm('Are you sure you want to update this reservation status?');"
                             >
+                                <?= csrfInput() ?>
                                 <input
                                     type="hidden"
                                     name="reservation_id"

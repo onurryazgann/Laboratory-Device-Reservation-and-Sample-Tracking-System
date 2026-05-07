@@ -513,6 +513,7 @@ require_once __DIR__ . '/../includes/header.php';
         </div>
 
         <form method="POST" action="" class="profile-form">
+            <?= csrfInput() ?>
 
             <div class="profile-form-grid">
 
