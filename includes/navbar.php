@@ -2,10 +2,13 @@
 
 $currentPath = str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? '');
 
-function navLinkActive(string $pathPart): string
-{
-    $currentPath = str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? '');
-    return strpos($currentPath, $pathPart) !== false ? 'active' : '';
+if (!function_exists('navLinkActive')) {
+    function navLinkActive(string $pathPart): string
+    {
+        $currentPath = str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? '');
+
+        return strpos($currentPath, $pathPart) !== false ? 'active' : '';
+    }
 }
 
 $isLoggedIn = isLoggedIn();
@@ -31,6 +34,7 @@ if ($currentPageTitle === APP_NAME) {
 }
 
 ?>
+
 <header class="topbar">
     <div class="topbar-shell">
 
@@ -38,7 +42,33 @@ if ($currentPageTitle === APP_NAME) {
 
             <!-- BRAND -->
             <a class="brand" href="<?= htmlspecialchars($brandUrl, ENT_QUOTES, 'UTF-8') ?>">
-                <span class="brand-mark">LAB</span>
+
+                <span class="brand-mark" aria-hidden="true">
+                    <svg class="brand-logo-svg" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="deviceLogoGradient" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="#2563eb"/>
+                                <stop offset="100%" stop-color="#14b8a6"/>
+                            </linearGradient>
+                        </defs>
+
+                        <rect x="7" y="7" width="50" height="50" rx="18" fill="url(#deviceLogoGradient)"/>
+
+                        <rect x="19" y="17" width="26" height="30" rx="7" fill="rgba(255,255,255,0.18)" stroke="white" stroke-width="3"/>
+
+                        <path d="M24 27H40" stroke="white" stroke-width="3" stroke-linecap="round"/>
+                        <path d="M24 34H35" stroke="white" stroke-width="3" stroke-linecap="round"/>
+
+                        <circle cx="25" cy="43" r="2.6" fill="white"/>
+                        <circle cx="32" cy="43" r="2.6" fill="white"/>
+                        <circle cx="39" cy="43" r="2.6" fill="white"/>
+
+                        <path d="M32 13V8" stroke="white" stroke-width="3" stroke-linecap="round"/>
+                        <path d="M32 56V51" stroke="white" stroke-width="3" stroke-linecap="round"/>
+                        <path d="M13 32H8" stroke="white" stroke-width="3" stroke-linecap="round"/>
+                        <path d="M56 32H51" stroke="white" stroke-width="3" stroke-linecap="round"/>
+                    </svg>
+                </span>
 
                 <span class="brand-text">
                     <span class="brand-text-full"><?= htmlspecialchars(APP_NAME, ENT_QUOTES, 'UTF-8') ?></span>
@@ -65,132 +95,105 @@ if ($currentPageTitle === APP_NAME) {
 
             <!-- NAVIGATION -->
             <nav class="nav-links" aria-label="Main navigation">
-
-                <!-- PUBLIC LINKS -->
-                <a
-                    class="<?= navLinkActive('/public/index.php') ?>"
-                    href="<?= BASE_URL ?>index.php"
-                >
-                    Home
-                </a>
-
-                <a
-                    class="<?= navLinkActive('/public/labs.php') ?>"
-                    href="<?= BASE_URL ?>labs.php"
-                >
-                    Laboratories
-                </a>
+            <a
+                class="nav-home-mobile <?= htmlspecialchars(navLinkActive('/public/index.php'), ENT_QUOTES, 'UTF-8') ?>"
+                href="<?= htmlspecialchars(BASE_URL . 'index.php', ENT_QUOTES, 'UTF-8') ?>"
+            >
+                Home
+            </a>
+            <a
+                class="nav-labs-link <?= htmlspecialchars(navLinkActive('/public/labs.php'), ENT_QUOTES, 'UTF-8') ?>"
+                href="<?= htmlspecialchars(BASE_URL . 'labs.php', ENT_QUOTES, 'UTF-8') ?>"
+            >
+                Laboratories
+            </a>
 
                 <?php if (!$isLoggedIn): ?>
 
-                    <!-- GUEST LINKS -->
                     <a
-                        class="<?= navLinkActive('/public/login.php') ?>"
-                        href="<?= BASE_URL ?>login.php"
+                        class="<?= htmlspecialchars(navLinkActive('/public/login.php'), ENT_QUOTES, 'UTF-8') ?>"
+                        href="<?= htmlspecialchars(BASE_URL . 'login.php', ENT_QUOTES, 'UTF-8') ?>"
                     >
                         Login
                     </a>
 
                     <a
-                        class="nav-action primary <?= navLinkActive('/public/register.php') ?>"
-                        href="<?= BASE_URL ?>register.php"
+                        class="nav-action primary <?= htmlspecialchars(navLinkActive('/public/register.php'), ENT_QUOTES, 'UTF-8') ?>"
+                        href="<?= htmlspecialchars(BASE_URL . 'register.php', ENT_QUOTES, 'UTF-8') ?>"
                     >
                         Register
                     </a>
 
                 <?php else: ?>
 
-                    <!-- USER LINKS -->
                     <a
-                        class="<?= navLinkActive('/public/dashboard.php') ?>"
-                        href="<?= BASE_URL ?>dashboard.php"
+                        class="<?= htmlspecialchars(navLinkActive('/public/dashboard.php'), ENT_QUOTES, 'UTF-8') ?>"
+                        href="<?= htmlspecialchars(BASE_URL . 'dashboard.php', ENT_QUOTES, 'UTF-8') ?>"
                     >
                         Dashboard
                     </a>
 
                     <a
-                        class="<?= navLinkActive('/public/reserve.php') ?>"
-                        href="<?= BASE_URL ?>reserve.php"
+                        class="<?= htmlspecialchars(navLinkActive('/public/reserve.php'), ENT_QUOTES, 'UTF-8') ?>"
+                        href="<?= htmlspecialchars(BASE_URL . 'reserve.php', ENT_QUOTES, 'UTF-8') ?>"
                     >
                         Reserve
                     </a>
 
                     <a
-                        class="<?= navLinkActive('/public/my-reservations.php') ?>"
-                        href="<?= BASE_URL ?>my-reservations.php"
+                        class="<?= htmlspecialchars(navLinkActive('/public/my-reservations.php'), ENT_QUOTES, 'UTF-8') ?>"
+                        href="<?= htmlspecialchars(BASE_URL . 'my-reservations.php', ENT_QUOTES, 'UTF-8') ?>"
                     >
                         My Reservations
                     </a>
 
                     <?php if ($isAdmin): ?>
 
-                        <!-- ADMIN TOOLS -->
                         <details class="nav-dropdown">
-                            <summary class="<?= navLinkActive('/public/admin/') ?>">
+                            <summary class="<?= htmlspecialchars(navLinkActive('/public/admin/'), ENT_QUOTES, 'UTF-8') ?>">
                                 Admin Tools
                             </summary>
 
                             <div class="nav-dropdown-menu">
 
                                 <a
-                                    class="<?= navLinkActive('/public/admin/index.php') ?>"
-                                    href="<?= BASE_URL ?>admin/index.php"
+                                    class="<?= htmlspecialchars(navLinkActive('/public/admin/index.php'), ENT_QUOTES, 'UTF-8') ?>"
+                                    href="<?= htmlspecialchars(BASE_URL . 'admin/index.php', ENT_QUOTES, 'UTF-8') ?>"
                                 >
                                     Admin Dashboard
                                 </a>
 
                                 <a
-                                    class="<?= navLinkActive('/public/admin/reservations.php') ?>"
-                                    href="<?= BASE_URL ?>admin/reservations.php"
+                                    class="<?= htmlspecialchars(navLinkActive('/public/admin/reservations.php'), ENT_QUOTES, 'UTF-8') ?>"
+                                    href="<?= htmlspecialchars(BASE_URL . 'admin/reservations.php', ENT_QUOTES, 'UTF-8') ?>"
                                 >
                                     Reservations
                                 </a>
 
                                 <a
-                                    class="<?= navLinkActive('/public/admin/labs.php') ?>"
-                                    href="<?= BASE_URL ?>admin/labs.php"
+                                    class="<?= htmlspecialchars(navLinkActive('/public/admin/labs.php'), ENT_QUOTES, 'UTF-8') ?>"
+                                    href="<?= htmlspecialchars(BASE_URL . 'admin/labs.php', ENT_QUOTES, 'UTF-8') ?>"
                                 >
                                     Laboratories
                                 </a>
 
                                 <a
-                                    class="<?= navLinkActive('/public/admin/lab-form.php') ?>"
-                                    href="<?= BASE_URL ?>admin/lab-form.php"
-                                >
-                                    Add Laboratory
-                                </a>
-
-                                <a
-                                    class="<?= navLinkActive('/public/admin/stations.php') ?>"
-                                    href="<?= BASE_URL ?>admin/stations.php"
+                                    class="<?= htmlspecialchars(navLinkActive('/public/admin/stations.php'), ENT_QUOTES, 'UTF-8') ?>"
+                                    href="<?= htmlspecialchars(BASE_URL . 'admin/stations.php', ENT_QUOTES, 'UTF-8') ?>"
                                 >
                                     Stations
                                 </a>
 
                                 <a
-                                    class="<?= navLinkActive('/public/admin/station-form.php') ?>"
-                                    href="<?= BASE_URL ?>admin/station-form.php"
-                                >
-                                    Add Station
-                                </a>
-
-                                <a
-                                    class="<?= navLinkActive('/public/admin/equipment.php') ?>"
-                                    href="<?= BASE_URL ?>admin/equipment.php"
+                                    class="<?= htmlspecialchars(navLinkActive('/public/admin/equipment.php'), ENT_QUOTES, 'UTF-8') ?>"
+                                    href="<?= htmlspecialchars(BASE_URL . 'admin/equipment.php', ENT_QUOTES, 'UTF-8') ?>"
                                 >
                                     Equipment
                                 </a>
 
                                 <a
-                                    class="<?= navLinkActive('/public/admin/equipment-form.php') ?>"
-                                    href="<?= BASE_URL ?>admin/equipment-form.php"
-                                >
-                                    Add Equipment
-                                </a>
-
-                                <a
-                                    class="<?= navLinkActive('/public/admin/users.php') ?>"
-                                    href="<?= BASE_URL ?>admin/users.php"
+                                    class="<?= htmlspecialchars(navLinkActive('/public/admin/users.php'), ENT_QUOTES, 'UTF-8') ?>"
+                                    href="<?= htmlspecialchars(BASE_URL . 'admin/users.php', ENT_QUOTES, 'UTF-8') ?>"
                                 >
                                     Users
                                 </a>
@@ -200,9 +203,8 @@ if ($currentPageTitle === APP_NAME) {
 
                     <?php endif; ?>
 
-                    <!-- ACCOUNT LINKS -->
                     <a
-                        class="nav-profile-link <?= navLinkActive('/public/profile.php') ?>"
+                        class="nav-profile-link <?= htmlspecialchars(navLinkActive('/public/profile.php'), ENT_QUOTES, 'UTF-8') ?>"
                         href="<?= htmlspecialchars(BASE_URL . 'profile.php', ENT_QUOTES, 'UTF-8') ?>"
                         title="<?= htmlspecialchars($userName, ENT_QUOTES, 'UTF-8') ?>"
                         aria-label="Profile: <?= htmlspecialchars($userName, ENT_QUOTES, 'UTF-8') ?>"

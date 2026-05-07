@@ -10,12 +10,14 @@ if (isLoggedIn()) {
     } else {
         header('Location: dashboard.php');
     }
+
     exit;
 }
 
 $pageTitle = 'Login';
 $pageCss = 'auth.css';
 $pageJs = 'auth.js';
+$bodyClass = 'page-auth page-login';
 
 $error = '';
 $successMessage = '';
@@ -77,6 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 header('Location: dashboard.php');
             }
+
             exit;
         }
     }
@@ -86,109 +89,249 @@ require_once __DIR__ . '/../includes/header.php';
 
 ?>
 
-<section class="page-section">
-    <div class="container">
+<section class="auth-page">
 
-        <div class="grid grid-2" style="align-items:center; gap:48px;">
+    <div class="auth-shell">
 
-            <!-- LEFT -->
-            <div>
-                <h1 class="section-title" style="font-size:40px;">
-                    Welcome Back
-                </h1>
+        <!-- LEFT CONTENT -->
+        <div class="auth-intro" data-auth-tilt-card>
 
-                <p class="section-subtitle" style="font-size:18px;">
-                    Access your laboratory dashboard, manage reservations,
-                    explore laboratories and continue your academic workflow.
-                </p>
+            <span class="auth-eyebrow">
+                Secure Access
+            </span>
 
-                <div class="card" style="margin-top:32px;">
-                    <h3 style="margin-top:0;">System Access</h3>
+            <h1>
+                Welcome back to your reservation workspace.
+            </h1>
 
-                    <ul>
-                        <li>Laboratory browsing</li>
-                        <li>Station reservations</li>
-                        <li>Reservation management</li>
-                        <li>Academic dashboard</li>
-                    </ul>
-                </div>
+            <p>
+                Sign in to browse laboratories, create station reservations,
+                review your requests and continue your academic workflow.
+            </p>
+            <div class="auth-floating-elements" aria-hidden="true">
+                <span class="auth-float-chip auth-float-one">
+                    <span>✓</span>
+                    Secure Login
+                </span>
+
+                <span class="auth-float-chip auth-float-two">
+                    <span>⏱</span>
+                    Quick Access
+                </span>
+
+                <span class="auth-float-chip auth-float-three">
+                    <span>📌</span>
+                    Track Requests
+                </span>
             </div>
+            <div class="auth-info-grid">
 
-            <!-- RIGHT -->
-            <div class="card" style="max-width:520px; width:100%; margin:0 auto;">
-
-                <h2 style="margin-top:0;">Login</h2>
-
-                <?php if ($successMessage !== ''): ?>
-                    <div class="alert alert-success">
-                        <?= htmlspecialchars($successMessage) ?>
+                <div class="auth-info-card">
+                    <span class="auth-info-icon">01</span>
+                    <div>
+                        <strong>Browse Laboratories</strong>
+                        <small>Explore available laboratory areas and stations.</small>
                     </div>
-                <?php endif; ?>
+                </div>
 
-                <?php if ($error !== ''): ?>
-                    <div class="alert alert-error">
-                        <?= htmlspecialchars($error) ?>
+                <div class="auth-info-card">
+                    <span class="auth-info-icon">02</span>
+                    <div>
+                        <strong>Create Reservations</strong>
+                        <small>Select a station and reserve a suitable time.</small>
                     </div>
-                <?php endif; ?>
+                </div>
 
-                <form method="POST" action="">
-                    <?= csrfInput() ?>
-
-                    <div class="form-group">
-                        <label for="email" class="form-label">Email</label>
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            class="form-control"
-                            value="<?= htmlspecialchars($_POST['email'] ?? '') ?>"
-                            required
-                        >
+                <div class="auth-info-card">
+                    <span class="auth-info-icon">03</span>
+                    <div>
+                        <strong>Track Requests</strong>
+                        <small>View, edit or cancel your reservations.</small>
                     </div>
-
-                    <div class="form-group">
-                        <label for="password" class="form-label">Password</label>
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            class="form-control"
-                            required
-                        >
-                    </div>
-
-                    <button type="submit" class="btn btn-primary" style="width:100%;">
-                        Login
-                    </button>
-
-                </form>
-
-                <p style="margin-top:24px; text-align:center;">
-                    Do not have an account?
-                    <a href="register.php" style="color:var(--color-primary); font-weight:600;">
-                        Create an account
-                    </a>
-                </p>
-
-                <hr style="margin:24px 0; border:none; border-top:1px solid var(--color-border);">
-
-                <div style="font-size:14px; color:var(--color-muted);">
-                    <p>
-                        <strong>Test admin:</strong>
-                        admin@lab.local / 123456
-                    </p>
-
-                    <p>
-                        <strong>Test student:</strong>
-                        onur.demo@ogrenci.karabuk.edu.tr / 123456
-                    </p>
                 </div>
 
             </div>
 
         </div>
 
+        <!-- RIGHT FORM -->
+        <div class="auth-card">
+
+            <div class="auth-card-header">
+                <span class="auth-card-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="12" cy="8" r="4"></circle>
+                        <path d="M4 20c1.7-4 4.8-6 8-6s6.3 2 8 6"></path>
+                    </svg>
+                </span>
+
+                <div>
+                    <h2>Login</h2>
+                    <p>Enter your credentials to continue.</p>
+                </div>
+            </div>
+
+            <?php if ($successMessage !== ''): ?>
+                <div class="auth-alert auth-alert-success">
+                    <?= htmlspecialchars($successMessage, ENT_QUOTES, 'UTF-8') ?>
+                </div>
+            <?php endif; ?>
+
+            <?php if ($error !== ''): ?>
+                <div class="auth-alert auth-alert-error">
+                    <?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?>
+                </div>
+            <?php endif; ?>
+
+            <form method="POST" action="" class="auth-form" novalidate>
+
+                <div class="auth-form-group">
+                    <label for="email">Email Address</label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value="<?= htmlspecialchars($_POST['email'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
+                        placeholder="example@domain.com"
+                        autocomplete="email"
+                        required
+                    >
+
+                    <small class="auth-field-message" data-message-for="email"></small>
+                </div>
+
+                <div class="auth-form-group">
+                    <label for="password">Password</label>
+
+                    <div class="auth-password-wrap">
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="auth-password-toggle"
+                            aria-label="Show or hide password"
+                            data-toggle-password
+                        >
+                            Show
+                        </button>
+                    </div>
+
+                    <small class="auth-field-message" data-message-for="password"></small>
+                </div>
+
+                <button type="submit" class="auth-submit-btn">
+                    Login
+                </button>
+
+            </form>
+
+            <div class="auth-switch">
+                <span>Do not have an account?</span>
+                <a href="register.php">Create an account</a>
+            </div>
+
+        
+
+        </div>
+
     </div>
+
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const passwordInput = document.getElementById('password');
+    const toggleButton = document.querySelector('[data-toggle-password]');
+
+    if (passwordInput && toggleButton) {
+        toggleButton.addEventListener('click', function () {
+            const isPassword = passwordInput.type === 'password';
+
+            passwordInput.type = isPassword ? 'text' : 'password';
+            toggleButton.textContent = isPassword ? 'Hide' : 'Show';
+            toggleButton.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
+            
+        });
+    }
+
+    const form = document.querySelector('.auth-form');
+
+    if (!form) {
+        return;
+    }
+
+    form.addEventListener('submit', function (event) {
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+
+        let isValid = true;
+
+        document.querySelectorAll('.auth-field-message').forEach(function (message) {
+            message.textContent = '';
+        });
+
+        if (!emailInput.value.trim()) {
+            const message = document.querySelector('[data-message-for="email"]');
+
+            if (message) {
+                message.textContent = 'Email address is required.';
+            }
+
+            isValid = false;
+        }
+
+        if (!passwordInput.value.trim()) {
+            const message = document.querySelector('[data-message-for="password"]');
+
+            if (message) {
+                message.textContent = 'Password is required.';
+            }
+
+            isValid = false;
+        }
+
+        if (!isValid) {
+            event.preventDefault();
+        }
+    });
+    const authTiltCard = document.querySelector('[data-auth-tilt-card]');
+
+if (authTiltCard) {
+    authTiltCard.addEventListener('pointermove', function (event) {
+        const rect = authTiltCard.getBoundingClientRect();
+
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+
+        const rotateY = ((x / rect.width) - 0.5) * 7;
+        const rotateX = ((y / rect.height) - 0.5) * -7;
+
+        authTiltCard.style.transform =
+            'perspective(1100px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) translateY(-4px)';
+    });
+
+    authTiltCard.addEventListener('pointerleave', function () {
+        authTiltCard.style.transform =
+            'perspective(1100px) rotateX(0deg) rotateY(0deg) translateY(0)';
+    });
+
+    authTiltCard.addEventListener('pointerdown', function () {
+        authTiltCard.classList.add('is-touching');
+    });
+
+    authTiltCard.addEventListener('pointerup', function () {
+        authTiltCard.classList.remove('is-touching');
+    });
+}
+});
+</script>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>

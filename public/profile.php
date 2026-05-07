@@ -7,6 +7,7 @@ require_once __DIR__ . '/../includes/csrf.php';
 
 $pageTitle = 'Profile';
 $pageCss = 'profile.css';
+$bodyClass = 'page-profile';
 
 $userId = getCurrentUserId();
 
@@ -78,6 +79,11 @@ function profileRoleLabel(?string $roleName): string
     return ucfirst(str_replace('_', ' ', $roleName));
 }
 
+function profileStatusClass(int $isActive): string
+{
+    return $isActive === 1 ? 'is-success' : 'is-warning';
+}
+
 $profile = getCurrentUserProfile($pdo, (int) $userId);
 
 if (!$profile) {
@@ -129,9 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $profile = getCurrentUserProfile($pdo, (int) $userId);
         $phone = $profile['phone'] ?? '';
         $programType = $profile['program_type'] ?? '';
-
     } catch (Exception $e) {
-
         if ($pdo->inTransaction()) {
             $pdo->rollBack();
         }
@@ -144,360 +148,468 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
+$fullName = trim($profile['first_name'] . ' ' . $profile['last_name']);
+$roleLabel = profileRoleLabel($profile['role_name']);
+$isActive = (int) $profile['is_active'] === 1;
+
 require_once __DIR__ . '/../includes/header.php';
 
 ?>
 
-<section class="page-section profile-page">
-    <div class="container">
+<section class="profile-page">
 
-        <!-- HERO -->
-        <div class="card profile-hero-card" style="margin-bottom:32px;">
-            <div class="profile-hero-content">
+    <!-- HERO -->
+    <section class="profile-hero" data-profile-tilt-card>
 
+        <div class="profile-hero-content">
+
+            <span class="profile-eyebrow">
+                Academic Identity
+            </span>
+
+            <h1>
+                Manage your profile and academic information.
+            </h1>
+
+            <p>
+                Review your account details, student information and editable contact fields
+                from one clean profile workspace.
+            </p>
+
+            <div class="profile-hero-actions">
+                <a href="dashboard.php" class="profile-btn profile-btn-primary">
+                    Dashboard
+                </a>
+
+                <a href="my-reservations.php" class="profile-btn profile-btn-light">
+                    My Reservations
+                </a>
+            </div>
+
+        </div>
+
+        <div class="profile-hero-visual">
+
+            <div class="profile-mini-panel">
+
+                <div class="profile-mini-header">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+                <div class="profile-mini-body">
+
+                    <div class="profile-user-avatar">
+                        <?= htmlspecialchars(mb_substr($profile['first_name'], 0, 1) . mb_substr($profile['last_name'], 0, 1), ENT_QUOTES, 'UTF-8') ?>
+                    </div>
+
+                    <h3>
+                        <?= htmlspecialchars($fullName, ENT_QUOTES, 'UTF-8') ?>
+                    </h3>
+
+                    <p>
+                        <?= htmlspecialchars($profile['email'], ENT_QUOTES, 'UTF-8') ?>
+                    </p>
+
+                    <div class="profile-mini-list">
+
+                        <div class="profile-mini-item is-active">
+                            <span>01</span>
+                            <div>
+                                <strong>Role</strong>
+                                <small><?= htmlspecialchars($roleLabel, ENT_QUOTES, 'UTF-8') ?></small>
+                            </div>
+                        </div>
+
+                        <div class="profile-mini-item">
+                            <span>02</span>
+                            <div>
+                                <strong>Status</strong>
+                                <small><?= $isActive ? 'Active account' : 'Passive account' ?></small>
+                            </div>
+                        </div>
+
+                        <div class="profile-mini-item">
+                            <span>03</span>
+                            <div>
+                                <strong>Profile Update</strong>
+                                <small>Phone and program information can be updated.</small>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="profile-floating-chip profile-chip-one">
+                <span>✓</span>
+                Account
+            </div>
+
+            <div class="profile-floating-chip profile-chip-two">
+                <span>👤</span>
+                Identity
+            </div>
+
+            <div class="profile-floating-chip profile-chip-three">
+                <span>✎</span>
+                Editable
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- MESSAGE -->
+    <?php if ($message !== ''): ?>
+        <section class="profile-alert <?= $messageStatus ? 'is-success' : 'is-error' ?> reveal-on-scroll">
+            <?= htmlspecialchars($message, ENT_QUOTES, 'UTF-8') ?>
+        </section>
+    <?php endif; ?>
+
+    <!-- OVERVIEW -->
+    <section class="profile-kpi-grid">
+
+        <article class="profile-kpi-card reveal-on-scroll">
+            <span>Member Since</span>
+
+            <strong>
+                <?= htmlspecialchars(formatProfileDateTime($profile['created_at'] ?? null), ENT_QUOTES, 'UTF-8') ?>
+            </strong>
+
+            <p>
+                Account creation date.
+            </p>
+        </article>
+
+        <article class="profile-kpi-card is-role reveal-on-scroll">
+            <span>Role</span>
+
+            <strong>
+                <?= htmlspecialchars($roleLabel, ENT_QUOTES, 'UTF-8') ?>
+            </strong>
+
+            <p>
+                Current authorization level.
+            </p>
+        </article>
+
+        <article class="profile-kpi-card is-status reveal-on-scroll">
+            <span>Account Status</span>
+
+            <strong>
+                <?= $isActive ? 'Active' : 'Passive' ?>
+            </strong>
+
+            <p>
+                <?= $isActive ? 'Your account can use the system.' : 'Your account is currently inactive.' ?>
+            </p>
+        </article>
+
+    </section>
+
+    <!-- MAIN INFORMATION -->
+    <section class="profile-main-grid">
+
+        <!-- ACCOUNT INFORMATION -->
+        <article class="profile-panel reveal-on-scroll">
+
+            <div class="profile-section-header">
                 <div>
-                    <span class="badge badge-info">
-                        Academic Identity
+                    <span class="profile-section-label">
+                        Account
                     </span>
 
-                    <h1 class="section-title" style="margin-bottom:8px; margin-top:16px;">
-                        My Profile
-                    </h1>
+                    <h2>
+                        Account Information
+                    </h2>
 
-                    <p class="section-subtitle" style="margin-bottom:0;">
-                        Manage your account information, student identity and academic profile settings.
+                    <p>
+                        Core login and identity information.
                     </p>
                 </div>
 
-                <div class="profile-hero-actions">
-                    <a href="dashboard.php" class="btn btn-primary">
-                        Dashboard
-                    </a>
+                <span class="profile-status-badge <?= profileStatusClass((int) $profile['is_active']) ?>">
+                    <?= $isActive ? 'Active' : 'Passive' ?>
+                </span>
+            </div>
 
-                    <a href="my-reservations.php" class="btn btn-outline">
-                        My Reservations
-                    </a>
+            <div class="profile-info-grid">
+
+                <div class="profile-info-row">
+                    <span>Full Name</span>
+                    <strong><?= htmlspecialchars($fullName, ENT_QUOTES, 'UTF-8') ?></strong>
+                </div>
+
+                <div class="profile-info-row">
+                    <span>Email</span>
+                    <strong><?= htmlspecialchars($profile['email'], ENT_QUOTES, 'UTF-8') ?></strong>
+                </div>
+
+                <div class="profile-info-row">
+                    <span>Phone</span>
+                    <strong><?= htmlspecialchars($profile['phone'] ?? '-', ENT_QUOTES, 'UTF-8') ?></strong>
+                </div>
+
+                <div class="profile-info-row">
+                    <span>Role</span>
+                    <strong><?= htmlspecialchars($roleLabel, ENT_QUOTES, 'UTF-8') ?></strong>
+                </div>
+
+                <div class="profile-info-row">
+                    <span>Created At</span>
+                    <strong><?= htmlspecialchars(formatProfileDateTime($profile['created_at'] ?? null), ENT_QUOTES, 'UTF-8') ?></strong>
+                </div>
+
+                <div class="profile-info-row">
+                    <span>Updated At</span>
+                    <strong><?= htmlspecialchars(formatProfileDateTime($profile['updated_at'] ?? null), ENT_QUOTES, 'UTF-8') ?></strong>
                 </div>
 
             </div>
-        </div>
 
-        <!-- MESSAGE -->
-        <?php if ($message !== ''): ?>
-            <div
-                class="alert <?= $messageStatus ? 'alert-success' : 'alert-error' ?>"
-                style="margin-bottom:24px;"
-            >
-                <?= htmlspecialchars($message) ?>
-            </div>
-        <?php endif; ?>
+        </article>
 
-        <!-- PROFILE OVERVIEW -->
-        <div class="profile-overview-grid" style="margin-bottom:32px;">
+        <!-- STUDENT INFORMATION -->
+        <?php if ($profile['role_name'] === 'student'): ?>
 
-            <div class="card card-hover profile-overview-card">
-                <span class="profile-overview-label">Member Since</span>
-
-                <strong>
-                    <?= htmlspecialchars(formatProfileDateTime($profile['created_at'] ?? null), ENT_QUOTES, 'UTF-8') ?>
-                </strong>
-
-                <p>Account creation date</p>
-            </div>
-
-            <div class="card card-hover profile-overview-card is-role">
-                <span class="profile-overview-label">Role</span>
-
-                <strong>
-                    <?= htmlspecialchars(profileRoleLabel($profile['role_name'])) ?>
-                </strong>
-
-                <p>Current authorization level</p>
-            </div>
-
-            <div class="card card-hover profile-overview-card is-status">
-                <span class="profile-overview-label">Account Status</span>
-
-                <?php if ((int) $profile['is_active'] === 1): ?>
-                    <strong>Active</strong>
-                    <p>Your account can use the system.</p>
-                <?php else: ?>
-                    <strong>Passive</strong>
-                    <p>Your account is currently inactive.</p>
-                <?php endif; ?>
-            </div>
-
-        </div>
-
-        <!-- MAIN GRID -->
-        <div class="profile-main-grid">
-
-            <!-- ACCOUNT INFORMATION -->
-            <div class="card profile-section-card">
+            <article class="profile-panel reveal-on-scroll">
 
                 <div class="profile-section-header">
                     <div>
-                        <h2 style="margin-top:0; margin-bottom:8px;">
-                            Account Information
+                        <span class="profile-section-label">
+                            Student
+                        </span>
+
+                        <h2>
+                            Student Information
                         </h2>
 
-                        <p class="section-subtitle" style="margin-bottom:0;">
-                            Core login and identity information.
+                        <p>
+                            Academic profile and department information.
                         </p>
                     </div>
 
-                    <?php if ((int) $profile['is_active'] === 1): ?>
-                        <span class="badge badge-success">Active</span>
-                    <?php else: ?>
-                        <span class="badge badge-warning">Passive</span>
-                    <?php endif; ?>
+                    <span class="profile-status-badge is-info">
+                        Student
+                    </span>
                 </div>
 
                 <div class="profile-info-grid">
 
                     <div class="profile-info-row">
-                        <span>Full Name</span>
-                        <strong>
-                            <?= htmlspecialchars($profile['first_name'] . ' ' . $profile['last_name']) ?>
-                        </strong>
+                        <span>Student No</span>
+                        <strong><?= htmlspecialchars($profile['student_no'] ?? '-', ENT_QUOTES, 'UTF-8') ?></strong>
                     </div>
 
                     <div class="profile-info-row">
-                        <span>Email</span>
-                        <strong>
-                            <?= htmlspecialchars($profile['email']) ?>
-                        </strong>
+                        <span>Faculty</span>
+                        <strong><?= htmlspecialchars($profile['faculty_name'] ?? '-', ENT_QUOTES, 'UTF-8') ?></strong>
                     </div>
 
                     <div class="profile-info-row">
-                        <span>Phone</span>
-                        <strong>
-                            <?= htmlspecialchars($profile['phone'] ?? '-') ?>
-                        </strong>
+                        <span>Department</span>
+                        <strong><?= htmlspecialchars($profile['department_name'] ?? '-', ENT_QUOTES, 'UTF-8') ?></strong>
                     </div>
 
                     <div class="profile-info-row">
-                        <span>Role</span>
-                        <strong>
-                            <?= htmlspecialchars(profileRoleLabel($profile['role_name'])) ?>
-                        </strong>
+                        <span>Class Year</span>
+                        <strong><?= $profile['class_year'] !== null ? (int) $profile['class_year'] : '-' ?></strong>
                     </div>
 
                     <div class="profile-info-row">
-                        <span>Created At</span>
-                        <strong>
-                            <?= htmlspecialchars(formatProfileDateTime($profile['created_at'] ?? null)) ?>
-                        </strong>
-                    </div>
-
-                    <div class="profile-info-row">
-                        <span>Updated At</span>
-                        <strong>
-                            <?= htmlspecialchars(formatProfileDateTime($profile['updated_at'] ?? null)) ?>
-                        </strong>
+                        <span>Program Type</span>
+                        <strong><?= htmlspecialchars($profile['program_type'] ?? '-', ENT_QUOTES, 'UTF-8') ?></strong>
                     </div>
 
                 </div>
 
-            </div>
+            </article>
 
-            <!-- STUDENT INFORMATION -->
-            <?php if ($profile['role_name'] === 'student'): ?>
+        <?php endif; ?>
 
-                <div class="card profile-section-card">
+    </section>
 
-                    <div class="profile-section-header">
-                        <div>
-                            <h2 style="margin-top:0; margin-bottom:8px;">
-                                Student Information
-                            </h2>
+    <!-- QUICK ACTIONS -->
+    <section class="profile-panel reveal-on-scroll">
 
-                            <p class="section-subtitle" style="margin-bottom:0;">
-                                Academic profile and department information.
-                            </p>
-                        </div>
-
-                        <span class="badge badge-info">
-                            Student
-                        </span>
-                    </div>
-
-                    <div class="profile-info-grid">
-
-                        <div class="profile-info-row">
-                            <span>Student No</span>
-                            <strong>
-                                <?= htmlspecialchars($profile['student_no'] ?? '-') ?>
-                            </strong>
-                        </div>
-
-                        <div class="profile-info-row">
-                            <span>Faculty</span>
-                            <strong>
-                                <?= htmlspecialchars($profile['faculty_name'] ?? '-') ?>
-                            </strong>
-                        </div>
-
-                        <div class="profile-info-row">
-                            <span>Department</span>
-                            <strong>
-                                <?= htmlspecialchars($profile['department_name'] ?? '-') ?>
-                            </strong>
-                        </div>
-
-                        <div class="profile-info-row">
-                            <span>Class Year</span>
-                            <strong>
-                                <?= $profile['class_year'] !== null ? (int) $profile['class_year'] : '-' ?>
-                            </strong>
-                        </div>
-
-                        <div class="profile-info-row">
-                            <span>Program Type</span>
-                            <strong>
-                                <?= htmlspecialchars($profile['program_type'] ?? '-') ?>
-                            </strong>
-                        </div>
-
-                    </div>
-
-                </div>
-
-            <?php endif; ?>
-
-        </div>
-
-        <!-- QUICK ACTIONS -->
-        <div class="card profile-actions-card" style="margin-top:32px; margin-bottom:32px;">
-
-            <div class="profile-section-header">
-                <div>
-                    <h2 style="margin-top:0; margin-bottom:8px;">
-                        Quick Actions
-                    </h2>
-
-                    <p class="section-subtitle" style="margin-bottom:0;">
-                        Continue your academic reservation workflow.
-                    </p>
-                </div>
-
-                <span class="badge badge-info">
+        <div class="profile-section-header">
+            <div>
+                <span class="profile-section-label">
                     Workflow
                 </span>
+
+                <h2>
+                    Quick Actions
+                </h2>
+
+                <p>
+                    Continue your academic reservation workflow.
+                </p>
             </div>
 
-            <div class="profile-action-grid">
+            <span class="profile-status-badge is-info">
+                Shortcut
+            </span>
+        </div>
 
-                <a href="labs.php" class="profile-action-item">
-                    <span>01</span>
+        <div class="profile-action-grid">
 
-                    <div>
-                        <strong>Browse Laboratories</strong>
-                        <p>Explore laboratories and available stations.</p>
-                    </div>
-                </a>
+            <a href="labs.php" class="profile-action-item">
+                <span>01</span>
 
-                <a href="reserve.php" class="profile-action-item">
-                    <span>02</span>
+                <div>
+                    <strong>Browse Laboratories</strong>
+                    <p>Explore laboratories and available stations.</p>
+                </div>
+            </a>
 
-                    <div>
-                        <strong>New Reservation</strong>
-                        <p>Create a new reservation with availability check.</p>
-                    </div>
-                </a>
+            <a href="reserve.php" class="profile-action-item">
+                <span>02</span>
 
-                <a href="my-reservations.php" class="profile-action-item">
-                    <span>03</span>
+                <div>
+                    <strong>New Reservation</strong>
+                    <p>Create a new reservation with availability check.</p>
+                </div>
+            </a>
 
-                    <div>
-                        <strong>My Reservations</strong>
-                        <p>View, edit or cancel your reservation records.</p>
-                    </div>
-                </a>
+            <a href="my-reservations.php" class="profile-action-item">
+                <span>03</span>
 
-            </div>
+                <div>
+                    <strong>My Reservations</strong>
+                    <p>View, edit or cancel your reservation records.</p>
+                </div>
+            </a>
 
         </div>
 
-        <!-- EDIT -->
-        <div class="card profile-edit-card">
+    </section>
 
-            <div class="profile-section-header">
-                <div>
-                    <h2 style="margin-top:0; margin-bottom:8px;">
-                        Edit Profile
-                    </h2>
+    <!-- EDIT -->
+    <section class="profile-panel reveal-on-scroll">
 
-                    <p class="section-subtitle" style="margin-bottom:0;">
-                        You can update editable contact and program information.
-                    </p>
-                </div>
-
-                <span class="badge badge-info">
+        <div class="profile-section-header">
+            <div>
+                <span class="profile-section-label">
                     Editable
                 </span>
+
+                <h2>
+                    Edit Profile
+                </h2>
+
+                <p>
+                    You can update editable contact and program information.
+                </p>
             </div>
 
-            <form method="POST" action="">
-                <?= csrfInput() ?>
+            <span class="profile-status-badge is-info">
+                Update
+            </span>
+        </div>
 
-                <div class="grid grid-2">
+        <form method="POST" action="" class="profile-form">
 
-                    <div class="form-group">
-                        <label for="phone" class="form-label">Phone</label>
+            <div class="profile-form-grid">
+
+                <div class="profile-form-group">
+                    <label for="phone">Phone</label>
+
+                    <input
+                        type="text"
+                        id="phone"
+                        name="phone"
+                        value="<?= htmlspecialchars($phone, ENT_QUOTES, 'UTF-8') ?>"
+                        placeholder="Example: 0555 111 2233"
+                    >
+
+                    <small>
+                        Optional contact number.
+                    </small>
+                </div>
+
+                <?php if ($profile['role_name'] === 'student'): ?>
+
+                    <div class="profile-form-group">
+                        <label for="program_type">Program Type</label>
 
                         <input
                             type="text"
-                            id="phone"
-                            name="phone"
-                            class="form-control"
-                            value="<?= htmlspecialchars($phone) ?>"
-                            placeholder="Example: 0555 111 2233"
+                            id="program_type"
+                            name="program_type"
+                            value="<?= htmlspecialchars($programType, ENT_QUOTES, 'UTF-8') ?>"
+                            placeholder="Example: 100% Turkish"
                         >
 
-                        <small class="field-feedback">
-                            Optional contact number.
+                        <small>
+                            Optional academic program detail.
                         </small>
                     </div>
 
-                    <?php if ($profile['role_name'] === 'student'): ?>
+                <?php endif; ?>
 
-                        <div class="form-group">
-                            <label for="program_type" class="form-label">Program Type</label>
+            </div>
 
-                            <input
-                                type="text"
-                                id="program_type"
-                                name="program_type"
-                                class="form-control"
-                                value="<?= htmlspecialchars($programType) ?>"
-                                placeholder="Example: 100% Turkish"
-                            >
+            <div class="profile-form-actions">
+                <button type="submit" class="profile-btn profile-btn-primary">
+                    Update Profile
+                </button>
 
-                            <small class="field-feedback">
-                                Optional academic program detail.
-                            </small>
-                        </div>
+                <a href="dashboard.php" class="profile-btn profile-btn-outline">
+                    Cancel
+                </a>
+            </div>
 
-                    <?php endif; ?>
+        </form>
 
-                </div>
+    </section>
 
-                <div class="profile-edit-actions">
-                    <button type="submit" class="btn btn-primary">
-                        Update Profile
-                    </button>
-
-                    <a href="dashboard.php" class="btn btn-outline">
-                        Cancel
-                    </a>
-                </div>
-
-            </form>
-
-        </div>
-
-    </div>
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const revealItems = document.querySelectorAll('.reveal-on-scroll');
+
+    const observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+            }
+        });
+    }, {
+        threshold: 0.12
+    });
+
+    revealItems.forEach(function (item) {
+        observer.observe(item);
+    });
+
+    const profileTiltCard = document.querySelector('[data-profile-tilt-card]');
+
+    if (profileTiltCard) {
+        profileTiltCard.addEventListener('pointermove', function (event) {
+            const rect = profileTiltCard.getBoundingClientRect();
+
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+
+            const rotateY = ((x / rect.width) - 0.5) * 5;
+            const rotateX = ((y / rect.height) - 0.5) * -5;
+
+            profileTiltCard.style.transform =
+                'perspective(1200px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg)';
+        });
+
+        profileTiltCard.addEventListener('pointerleave', function () {
+            profileTiltCard.style.transform =
+                'perspective(1200px) rotateX(0deg) rotateY(0deg)';
+        });
+    }
+});
+</script>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
