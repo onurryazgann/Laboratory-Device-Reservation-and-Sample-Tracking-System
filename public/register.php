@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../helpers/auth_helper.php';
 require_once __DIR__ . '/../helpers/validation_helper.php';
+require_once __DIR__ . '/../includes/csrf.php';
 
 if (isLoggedIn()) {
     if (isAdmin()) {

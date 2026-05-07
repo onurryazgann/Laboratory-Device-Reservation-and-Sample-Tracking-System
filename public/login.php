@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../helpers/auth_helper.php';
+require_once __DIR__ . '/../includes/csrf.php';
 
 if (isLoggedIn()) {
     if (isAdmin()) {
@@ -26,6 +27,8 @@ if (isset($_GET['registered']) && $_GET['registered'] === '1') {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    requireCsrfToken();
+
     $email = trim($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';
 

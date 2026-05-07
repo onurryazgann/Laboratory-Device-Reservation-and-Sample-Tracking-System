@@ -155,6 +155,7 @@ if ($currentPageTitle === APP_NAME) {
                             </summary>
 
                             <div class="nav-dropdown-menu">
+
                                 <a
                                     class="<?= htmlspecialchars(navLinkActive('/public/admin/index.php'), ENT_QUOTES, 'UTF-8') ?>"
                                     href="<?= htmlspecialchars(BASE_URL . 'admin/index.php', ENT_QUOTES, 'UTF-8') ?>"
@@ -196,6 +197,7 @@ if ($currentPageTitle === APP_NAME) {
                                 >
                                     Users
                                 </a>
+
                             </div>
                         </details>
 

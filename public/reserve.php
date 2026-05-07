@@ -5,6 +5,7 @@ require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../helpers/lab_helper.php';
 require_once __DIR__ . '/../helpers/reservation_helper.php';
 require_once __DIR__ . '/../helpers/validation_helper.php';
+require_once __DIR__ . '/../includes/csrf.php';
 
 $userId = getCurrentUserId();
 
@@ -68,6 +69,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
  * Safe fallback if AJAX does not work.
  */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    requireCsrfToken();
+
     $action = $_POST['action'] ?? '';
 
     $postedLabId = filter_input(INPUT_POST, 'lab_id', FILTER_VALIDATE_INT);

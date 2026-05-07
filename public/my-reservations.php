@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../includes/auth_check.php';
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../helpers/reservation_helper.php';
+require_once __DIR__ . '/../includes/csrf.php';
 
 $userId = getCurrentUserId();
 
@@ -111,6 +112,8 @@ if (!function_exists('myReservationStatusClass')) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    requireCsrfToken();
+
     $action = $_POST['action'] ?? '';
     $reservationId = filter_input(INPUT_POST, 'reservation_id', FILTER_VALIDATE_INT);
 
@@ -556,6 +559,7 @@ require_once __DIR__ . '/../includes/header.php';
                                     onsubmit="return confirm('Are you sure you want to cancel this reservation?');"
                                     class="myres-cancel-form"
                                 >
+                                    <?= csrfInput() ?>
                                     <input
                                         type="hidden"
                                         name="reservation_id"

@@ -5,6 +5,7 @@ require_once __DIR__ . '/../../config/database.php';
 
 $pageTitle = 'Admin Dashboard';
 $pageCss = 'admin-dashboard.css';
+$pageJs = 'admin-dashboard.js';
 
 $totalUsers = (int) $pdo->query("SELECT COUNT(*) AS total FROM users")->fetch()['total'];
 $totalLabs = (int) $pdo->query("SELECT COUNT(*) AS total FROM laboratories")->fetch()['total'];
@@ -195,7 +196,7 @@ require_once __DIR__ . '/../../includes/header.php';
 
                     </div>
 
-                </div>
+                            <tr><td colspan="6" style="text-align:center; padding:24px; color:var(--color-muted);">No reservations found.</td></tr>
 
             </div>
 

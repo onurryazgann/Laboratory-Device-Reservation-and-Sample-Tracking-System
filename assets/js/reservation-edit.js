@@ -367,18 +367,131 @@ document.addEventListener('DOMContentLoaded', () => {
         selectSlot(button);
     });
 
-    form.addEventListener('submit', (event) => {
+    let isSubmitting = false;
+
+    function buildConflictHtml(conflicts) {
+        if (!Array.isArray(conflicts) || conflicts.length === 0) {
+            return '';
+        }
+
+        const rows = conflicts.map((conflict) => {
+            const user = conflict.user_full_name || '-';
+            const start = conflict.start_time || '-';
+            const end = conflict.end_time || '-';
+            const status = conflict.status || '-';
+            const purpose = conflict.purpose || '-';
+
+            return `
+                <tr>
+                    <td>${window.LabAjax.escapeHtml(String(conflict.reservation_id || '-'))}</td>
+                    <td>${window.LabAjax.escapeHtml(user)}</td>
+                    <td>${window.LabAjax.escapeHtml(start)}</td>
+                    <td>${window.LabAjax.escapeHtml(end)}</td>
+                    <td>${window.LabAjax.escapeHtml(status)}</td>
+                    <td>${window.LabAjax.escapeHtml(purpose)}</td>
+                </tr>
+            `;
+        }).join('');
+
+        return `
+            <div class="table-wrapper reservation-detail-history-table" style="margin-top:16px;">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>User</th>
+                            <th>Start</th>
+                            <th>End</th>
+                            <th>Status</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            </div>
+        `;
+    }
+
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        if (isSubmitting) {
+            return;
+        }
+
         const startTime = startTimeInput.value;
         const endTime = endTimeInput.value;
+        const purpose = document.getElementById('purpose') ? document.getElementById('purpose').value.trim() : '';
 
         const validation = validateSlotClientSide(startTime, endTime);
 
         if (!validation.valid) {
-            event.preventDefault();
             showClientMessage('error', validation.message);
-
             if (window.LabAjax.showToast) {
                 window.LabAjax.showToast(validation.message, 'error');
+            }
+            return;
+        }
+
+        const payload = {
+            reservation_id: reservationId,
+            start_time: startTime,
+            end_time: endTime,
+            purpose: purpose
+        };
+
+        const submitButton = document.getElementById('updateReservationButton');
+        let originalButtonText = '';
+        if (submitButton) {
+            originalButtonText = submitButton.textContent;
+            submitButton.disabled = true;
+            submitButton.textContent = 'Saving...';
+        }
+
+        isSubmitting = true;
+
+        try {
+            const response = await window.LabAjax.post('update-reservation.php', payload);
+
+            if (response.success) {
+                showClientMessage('success', response.message || 'Reservation updated successfully.');
+                if (window.LabAjax.showToast) {
+                    window.LabAjax.showToast('Reservation updated successfully.', 'success');
+                }
+
+                if (response.data && response.data.reservation) {
+                    const r = response.data.reservation;
+                    const summaryBadge = document.querySelector('.reservation-detail-section-card .badge');
+                    if (summaryBadge && r.status) {
+                        summaryBadge.textContent = r.status.charAt(0).toUpperCase() + r.status.slice(1);
+                    }
+                }
+
+                window.setTimeout(() => {
+                    window.location.href = 'reservation-detail.php?id=' + reservationId;
+                }, 1200);
+            }
+        } catch (error) {
+            showClientMessage('error', error.message || 'Reservation update failed.');
+
+            if (error.payload && error.payload.data && error.payload.data.conflicts) {
+                const conflicts = error.payload.data.conflicts;
+                if (conflicts.length > 0) {
+                    const conflictHtml = buildConflictHtml(conflicts);
+                    if (clientMessage) {
+                        clientMessage.innerHTML = clientMessage.innerHTML + conflictHtml;
+                    }
+                }
+            }
+
+            if (window.LabAjax.showToast) {
+                window.LabAjax.showToast(error.message || 'Reservation update failed.', 'error');
+            }
+        } finally {
+            isSubmitting = false;
+            if (submitButton) {
+                submitButton.disabled = false;
+                submitButton.textContent = originalButtonText;
             }
         }
     });

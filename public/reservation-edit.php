@@ -4,6 +4,7 @@ require_once __DIR__ . '/../includes/auth_check.php';
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../helpers/lab_helper.php';
 require_once __DIR__ . '/../helpers/reservation_helper.php';
+require_once __DIR__ . '/../includes/csrf.php';
 
 $userId = getCurrentUserId();
 
@@ -120,6 +121,8 @@ $purposeValue = $reservation['purpose'] ?? '';
 $canEdit = isEditableReservation($reservation);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    requireCsrfToken();
+
     if (!$canEdit) {
         $messageStatus = false;
         $message = 'This reservation cannot be edited.';
