@@ -4,14 +4,20 @@ require_once __DIR__ . '/../config/config.php';
 require_once __DIR__ . '/../helpers/auth_helper.php';
 require_once __DIR__ . '/../includes/csrf.php';
 
-if (file_exists(__DIR__ . '/../includes/csrf.php')) {
-    require_once __DIR__ . '/../includes/csrf.php';
-}
-
 $pageTitle = $pageTitle ?? APP_NAME;
 
 $currentPath = str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? '');
 $isAdminArea = strpos($currentPath, '/public/admin/') !== false;
+
+/*
+|--------------------------------------------------------------------------
+| Asset Version
+|--------------------------------------------------------------------------
+| CSS değişikliklerinde tarayıcı cache sorununu azaltmak için kullanılır.
+|--------------------------------------------------------------------------
+*/
+
+$assetVersion = defined('ASSET_VERSION') ? (string) ASSET_VERSION : '20260508';
 
 /*
 |--------------------------------------------------------------------------
@@ -45,6 +51,23 @@ if (isset($_SESSION['user_id'])) {
     $bodyClass .= ' guest-user';
 }
 
+/*
+|--------------------------------------------------------------------------
+| Page Specific CSS Normalization
+|--------------------------------------------------------------------------
+| $pageCss string veya array olabilir.
+| Örnek:
+| $pageCss = 'admin-forms.css';
+| $pageCss = ['admin-labs.css', 'admin-forms.css'];
+|--------------------------------------------------------------------------
+*/
+
+$pageCssFiles = [];
+
+if (!empty($pageCss)) {
+    $pageCssFiles = is_array($pageCss) ? $pageCss : [$pageCss];
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="tr">
@@ -57,31 +80,38 @@ if (isset($_SESSION['user_id'])) {
         <?= csrfMetaTag() ?>
     <?php endif; ?>
 
-    <title><?= htmlspecialchars($pageTitle) ?> - <?= htmlspecialchars(APP_NAME) ?></title>
+    <title><?= htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8') ?> - <?= htmlspecialchars(APP_NAME, ENT_QUOTES, 'UTF-8') ?></title>
 
     <!-- Global Theme CSS -->
-    <link rel="stylesheet" href="<?= htmlspecialchars(asset_url('css/theme.css')) ?>">
-    <link rel="stylesheet" href="<?= htmlspecialchars(asset_url('css/layout.css')) ?>">
-    <link rel="stylesheet" href="<?= htmlspecialchars(asset_url('css/components.css')) ?>">
+    <link rel="stylesheet" href="<?= htmlspecialchars(asset_url('css/theme.css') . '?v=' . $assetVersion, ENT_QUOTES, 'UTF-8') ?>">
+    <link rel="stylesheet" href="<?= htmlspecialchars(asset_url('css/layout.css') . '?v=' . $assetVersion, ENT_QUOTES, 'UTF-8') ?>">
+    <link rel="stylesheet" href="<?= htmlspecialchars(asset_url('css/components.css') . '?v=' . $assetVersion, ENT_QUOTES, 'UTF-8') ?>">
 
     <!-- Base CSS -->
-    <link rel="stylesheet" href="<?= htmlspecialchars(asset_url('css/style.css')) ?>">
+    <link rel="stylesheet" href="<?= htmlspecialchars(asset_url('css/style.css') . '?v=' . $assetVersion, ENT_QUOTES, 'UTF-8') ?>">
 
     <!-- Admin CSS -->
     <?php if ($isAdminArea): ?>
-        <link rel="stylesheet" href="<?= htmlspecialchars(asset_url('css/admin.css')) ?>">
+        <link rel="stylesheet" href="<?= htmlspecialchars(asset_url('css/admin.css') . '?v=' . $assetVersion, ENT_QUOTES, 'UTF-8') ?>">
     <?php endif; ?>
 
     <!-- Page Specific CSS -->
-    <?php if (!empty($pageCss)): ?>
-        <link rel="stylesheet" href="<?= htmlspecialchars(asset_url('css/' . $pageCss)) ?>">
-    <?php endif; ?>
+    <?php foreach ($pageCssFiles as $cssFile): ?>
+        <?php
+            $cssFile = trim((string) $cssFile);
+
+            if ($cssFile === '') {
+                continue;
+            }
+        ?>
+        <link rel="stylesheet" href="<?= htmlspecialchars(asset_url('css/' . $cssFile) . '?v=' . $assetVersion, ENT_QUOTES, 'UTF-8') ?>">
+    <?php endforeach; ?>
 
     <!-- Navbar CSS -->
-    <link rel="stylesheet" href="<?= htmlspecialchars(asset_url('css/navbar.css')) ?>">
+    <link rel="stylesheet" href="<?= htmlspecialchars(asset_url('css/navbar.css') . '?v=' . $assetVersion, ENT_QUOTES, 'UTF-8') ?>">
 </head>
 
-<body class="<?= htmlspecialchars($bodyClass) ?>">
+<body class="<?= htmlspecialchars($bodyClass, ENT_QUOTES, 'UTF-8') ?>">
 
 <?php require_once __DIR__ . '/navbar.php'; ?>
 
