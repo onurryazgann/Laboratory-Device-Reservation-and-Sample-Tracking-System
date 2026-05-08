@@ -39,7 +39,7 @@ INSERT INTO users (
     user_id, role_id, first_name, last_name, email,
     password_hash, password_salt, phone, is_active
 ) VALUES
-(1, 2, 'Admin', '', 'admin@lab.local',
+(1, 2, 'Admin',' ' ,'admin@lab.local',
  'a86f9067e8f738efc670010f9fa28eb36ad74d47b69c22f73f54f8d84bc1873e',
  'salt_admin_2026', '0370 000 0000', 1),
 
