@@ -24,8 +24,15 @@ if ($isLoggedIn && $isAdmin) {
     $brandUrl = BASE_URL . 'admin/index.php';
 }
 
-$userName = $isLoggedIn ? getCurrentUserName() : '';
 $userRole = $_SESSION['role_name'] ?? 'user';
+
+if ($isLoggedIn && $isAdmin) {
+    $userName = 'Admin';
+} elseif ($isLoggedIn) {
+    $userName = getCurrentUserName();
+} else {
+    $userName = '';
+}
 
 $currentPageTitle = trim($pageTitle ?? APP_NAME);
 
